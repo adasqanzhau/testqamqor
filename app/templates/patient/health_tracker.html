@@ -41,8 +41,8 @@
 
     <div class="row g-4">
         <div class="col-lg-5">
-            <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white">
+            <div class="card med-widget mb-4">
+                    <div class="card-header med-widget-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-plus-circle me-2 text-success"></i>{{ t('patient.health_tracker.new_entry') }}</h5>
                 </div>
                 <div class="card-body">
@@ -65,8 +65,8 @@
                 </div>
             </div>
 
-            <div class="card shadow-sm">
-                    <div class="card-header bg-white">
+            <div class="card med-widget">
+                    <div class="card-header med-widget-header">
                     <h5 class="mb-0"><i class="fas fa-lightbulb me-2 text-warning"></i>{{ t('patient.health_tracker.tips_title') }}</h5>
                 </div>
                 <div class="card-body p-0">
@@ -121,15 +121,15 @@
         </div>
 
         <div class="col-lg-7">
-            <div class="card shadow-sm">
-                    <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div class="card med-widget">
+                    <div class="card-header med-widget-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-history me-2 text-primary"></i>{{ t('patient.health_tracker.history_title') }}</h5>
                     <span class="badge bg-primary rounded-pill">{{ records|length if records else 0 }}</span>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         {% for record in records %}
-                        <div class="list-group-item health-entry py-3 px-4">
+                        <div class="list-group-item med-list-item health-entry py-3 px-4">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div class="d-flex align-items-center">
                                     <i class="fas fa-calendar-day text-primary me-2"></i>

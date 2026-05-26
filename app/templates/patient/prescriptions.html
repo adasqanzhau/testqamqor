@@ -37,8 +37,8 @@
     <div class="row g-4">
         {% for prescription in prescriptions %}
         <div class="col-lg-6">
-            <div class="card prescription-card shadow-sm h-100">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center py-3">
+            <div class="card med-widget prescription-card h-100">
+                <div class="card-header med-widget-header d-flex justify-content-between align-items-center py-3">
                     <div class="d-flex align-items-center">
                         <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3 text-center" style="width: 42px; height: 42px;">
                             <i class="fas fa-user-md text-primary mt-1"></i>
@@ -66,7 +66,7 @@
                             <i class="fas fa-pills me-1"></i>{{ t('patient.prescriptions.medications_label') }}
                         </h6>
                         {% for medication in prescription.medications %}
-                        <div class="medication-item">
+                        <div class="medication-item med-list-item">
                             <div class="d-flex align-items-center">
                                 <i class="fas fa-capsules text-primary me-2"></i>
                                 <span>{{ medication }}</span>
@@ -87,7 +87,7 @@
         </div>
         {% else %}
         <div class="col-12">
-            <div class="card shadow-sm">
+            <div class="card med-widget">
                 <div class="card-body text-center py-5">
                     <i class="fas fa-prescription-bottle fa-4x text-muted mb-3 d-block opacity-50"></i>
                     <h5 class="text-muted">{{ t('patient.prescriptions.none_found_title') }}</h5>
