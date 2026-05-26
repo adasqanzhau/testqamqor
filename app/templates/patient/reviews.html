@@ -3,26 +3,6 @@
 {% block title %}{{ t('patient.reviews.title') }}{% endblock %}
 
 {% block extra_css %}
-<style>
-    .review-card {
-        border-radius: 12px;
-        transition: all 0.2s ease;
-    }
-    .review-card:hover {
-        box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.1) !important;
-    }
-    .star-rating .fas.fa-star { color: #ffc107; }
-    .star-rating .far.fa-star { color: #ddd; }
-    .pending-review-card {
-        border: 2px dashed #dee2e6;
-        border-radius: 12px;
-        transition: all 0.2s ease;
-    }
-    .pending-review-card:hover {
-        border-color: #ffc107;
-        background-color: #fffef5;
-    }
-</style>
 {% endblock %}
 
 {% block content %}

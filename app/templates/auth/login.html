@@ -12,7 +12,8 @@
     .auth-wrapper {
         position: relative;
         min-height: 100vh;
-        background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 50%, #6610f2 100%);
+        background:
+            radial-gradient(circle at top, rgba(109, 40, 217, 0.28) 0%, rgba(124, 58, 237, 0.12) 45%, rgba(247, 247, 251, 1) 100%);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -32,20 +33,20 @@
     .auth-icon {
         width: 72px;
         height: 72px;
-        background: linear-gradient(135deg, #0d6efd, #0dcaf0);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         margin: 0 auto 1.25rem;
-        box-shadow: 0 4px 15px rgba(13, 110, 253, 0.4);
+        box-shadow: 0 4px 15px rgba(109, 40, 217, 0.35);
     }
     .auth-icon i {
         font-size: 2rem;
         color: #fff;
     }
     .btn-gradient {
-        background: linear-gradient(135deg, #0d6efd, #6610f2);
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
         border: none;
         color: #fff;
         padding: 0.75rem 1.5rem;
@@ -63,8 +64,8 @@
         color: #fff;
     }
     .form-floating > .form-control:focus {
-        border-color: #0d6efd;
-        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15);
+        border-color: var(--primary);
+        box-shadow: 0 0 0 0.2rem rgba(109, 40, 217, 0.15);
     }
     .auth-language-switcher {
         position: absolute;

@@ -3,40 +3,6 @@
 {% block title %}{{ t('patient.panel_title', 'Панель пациента') }}{% endblock %}
 
 {% block extra_css %}
-<style>
-    .stat-card {
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-    .stat-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 0.5rem 1.5rem rgba(0,0,0,0.12) !important;
-    }
-    .quick-action-btn {
-        transition: all 0.2s ease;
-        border-radius: 12px;
-        padding: 1.2rem;
-    }
-    .quick-action-btn:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 0.4rem 1rem rgba(0,0,0,0.1);
-    }
-    .appointment-card {
-        border-left: 4px solid transparent;
-        transition: all 0.2s ease;
-    }
-    .appointment-card:hover {
-        background-color: #f8f9ff;
-    }
-    .appointment-card.status-scheduled {
-        border-left-color: #0d6efd;
-    }
-    .appointment-card.status-in_progress {
-        border-left-color: #ffc107;
-    }
-    .appointment-card.status-completed {
-        border-left-color: #198754;
-    }
-</style>
 {% endblock %}
 
 {% block content %}

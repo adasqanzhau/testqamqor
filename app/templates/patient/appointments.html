@@ -3,23 +3,6 @@
 {% block title %}{{ t('patient.appointments.title') }}{% endblock %}
 
 {% block extra_css %}
-<style>
-    .appointment-item {
-        border-left: 4px solid transparent;
-        transition: all 0.2s ease;
-    }
-    .appointment-item:hover {
-        background-color: #f8f9ff;
-    }
-    .appointment-item.border-status-scheduled { border-left-color: #0d6efd; }
-    .appointment-item.border-status-in_progress { border-left-color: #ffc107; }
-    .appointment-item.border-status-completed { border-left-color: #198754; }
-    .appointment-item.border-status-cancelled { border-left-color: #dc3545; }
-    .filter-btn.active {
-        background-color: #0d6efd;
-        color: white;
-    }
-</style>
 {% endblock %}
 
 {% block content %}
