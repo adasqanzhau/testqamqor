@@ -10,7 +10,7 @@
         padding-top: 80px;
         padding-bottom: 20px;
         min-height: 100vh;
-        background: var(--bg);
+        background: #f0f2f5;
     }
 
     .chat-wrapper {
@@ -27,7 +27,7 @@
 
     .chat-header {
         padding: 16px 24px;
-        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        background: linear-gradient(135deg, #0d6efd 0%, #0b5ed7 100%);
         color: #fff;
         display: flex;
         justify-content: space-between;
@@ -84,7 +84,7 @@
         display: flex;
         flex-direction: column;
         gap: 8px;
-        background: var(--bg);
+        background: #f0f2f5;
     }
 
     .chat-messages::-webkit-scrollbar {
@@ -132,7 +132,7 @@
     }
 
     .message-row.user .message-bubble {
-        background: var(--primary);
+        background: #0d6efd;
         color: #fff;
         border-bottom-right-radius: 4px;
     }
@@ -158,14 +158,14 @@
 
     .message-row.user .message-avatar {
         margin-left: 8px;
-        background: var(--primary-bg);
-        color: var(--primary);
+        background: #e3ecfc;
+        color: #0d6efd;
     }
 
     .message-row.assistant .message-avatar {
         margin-right: 8px;
-        background: rgba(109, 40, 217, 0.10);
-        color: var(--primary);
+        background: #e8f5e9;
+        color: #2e7d32;
     }
 
     .message-time {
@@ -195,7 +195,7 @@
         width: 8px;
         height: 8px;
         border-radius: 50%;
-        background: var(--text-muted);
+        background: #90a4ae;
         animation: typingBounce 1.4s infinite;
     }
 
@@ -217,7 +217,7 @@
     .chat-welcome i {
         font-size: 3rem;
         margin-bottom: 16px;
-        color: var(--primary);
+        color: #0d6efd;
         opacity: .4;
     }
 
@@ -270,7 +270,7 @@
         height: 42px;
         border-radius: 50%;
         border: none;
-        background: var(--primary);
+        background: #0d6efd;
         color: #fff;
         font-size: 1rem;
         cursor: pointer;
@@ -282,7 +282,7 @@
     }
 
     .btn-send:hover {
-        background: var(--primary-dark);
+        background: #0b5ed7;
         transform: scale(1.05);
     }
 
@@ -327,7 +327,7 @@
         font-size: .82em;
     }
     .message-row.assistant .message-bubble blockquote {
-        border-left: 3px solid var(--primary);
+        border-left: 3px solid #0d6efd;
         margin: 0.4em 0;
         padding-left: 0.9em;
         color: #546e7a;

@@ -24,7 +24,7 @@
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-        <div class="container-xxl px-4">
+        <div class="container-fluid px-4">
             <a class="navbar-brand d-flex align-items-center" href="{% if current_user.is_authenticated %}{% if current_user.role == 'superadmin' %}{{ url_for('admin.dashboard') }}{% elif current_user.role == 'clinic_admin' %}{{ url_for('clinic.dashboard') }}{% elif current_user.role == 'doctor' %}{{ url_for('doctor.dashboard') }}{% elif current_user.role == 'patient' %}{{ url_for('patient.index') }}{% else %}{{ url_for('landing') }}{% endif %}{% else %}{{ url_for('landing') }}{% endif %}">
                 <i class="fas fa-heartbeat me-2"></i>
                 <span class="fw-bold">Qamqor</span>
@@ -250,13 +250,11 @@
     </div>
 
     <main class="main-content">
-        <div class="app-page">
-            {% block content %}{% endblock %}
-        </div>
+        {% block content %}{% endblock %}
     </main>
 
     <footer class="app-footer">
-        <div class="container-xxl text-center">
+        <div class="container text-center">
             <p class="mb-2">&copy; {{ now.year if now is defined else '2026' }} <strong>Qamqor</strong>. {{ t('landing.all_rights_reserved') }}</p>
             <div>
                 <a href="#" class="text-muted me-3"><i class="fas fa-shield-alt me-1"></i>{{ t('landing.privacy_policy') }}</a>

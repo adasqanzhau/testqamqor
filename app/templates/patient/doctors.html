@@ -3,6 +3,63 @@
 {% block title %}{{ t('patient.doctors.title', 'Наши врачи') }}{% endblock %}
 
 {% block extra_css %}
+<style>
+    .doctor-card {
+        transition: all 0.3s ease;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .doctor-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 0.75rem 2rem rgba(0,0,0,0.12) !important;
+    }
+    
+    .doctor-card .card-body {
+        display: flex;
+        flex-direction: column;
+    }
+    .doctor-card .book-btn-wrap {
+        margin-top: auto;
+    }
+    .doctor-avatar {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #e9ecef;
+    }
+    .doctor-avatar-placeholder {
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 2rem;
+    }
+    .star-rating .fas.fa-star {
+        color: #ffc107;
+    }
+    .star-rating .far.fa-star {
+        color: #ddd;
+    }
+    .star-rating .fas.fa-star-half-alt {
+        color: #ffc107;
+    }
+    .search-box {
+        border-radius: 50px;
+        padding-left: 2.5rem;
+    }
+    .search-icon {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #adb5bd;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
