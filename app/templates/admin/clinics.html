@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t('admin.clinics.title') }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-hospital me-2"></i>{{ t('admin.clinics.title') }}</h2>
+        <a href="{{ url_for('admin.create_clinic') }}" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>{{ t('admin.clinics.add_clinic') }}
+        </a>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('admin.clinics') }}">
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="text" name="search" class="form-control" placeholder="{{ t('admin.clinics.search_placeholder') }}" value="{{ request.args.get('search', '') }}">
+                    <button type="submit" class="btn btn-primary">{{ t('buttons.search') }}</button>
+                    {% if request.args.get('search') %}
+                        <a href="{{ url_for('admin.clinics') }}" class="btn btn-outline-secondary">{{ t('admin.clinics.reset') }}</a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow-sm">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th style="width: 60px;">{{ t('admin.clinics.logo') }}</th>
+                            <th>{{ t('admin.clinics.name') }}</th>
+                            <th>{{ t('admin.clinics.address') }}</th>
+                            <th>{{ t('admin.clinics.phone') }}</th>
+                            <th class="text-center">{{ t('admin.clinics.doctors') }}</th>
+                            <th class="text-center">{{ t('common.status') }}</th>
+                            <th class="text-center">{{ t('admin.clinics.actions') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for clinic in clinics.items %}
+                        <tr>
+                            <td>
+                                {% if clinic.logo %}
+                                    <img src="{{ url_for('static', filename='uploads/clinics/' + clinic.logo) }}" alt="{{ clinic.name }}" class="rounded" style="width: 45px; height: 45px; object-fit: cover;">
+                                {% else %}
+                                    <div class="bg-light rounded d-flex align-items-center justify-content-center" style="width: 45px; height: 45px;">
+                                        <i class="fas fa-hospital text-muted"></i>
+                                    </div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="fw-bold">{{ clinic.name }}</div>
+                                <small class="text-muted">{{ clinic.email }}</small>
+                            </td>
+                            <td>{{ clinic.address or '—' }}</td>
+                            <td>{{ clinic.phone or '—' }}</td>
+                            <td class="text-center">
+                                <span class="badge bg-info">{{ clinic.users | selectattr('role', 'equalto', 'doctor') | list | length }}</span>
+                            </td>
+                            <td class="text-center">
+                                <form method="POST" action="{{ url_for('admin.toggle_clinic', clinic_id=clinic.id) }}" class="d-inline">
+                                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                    {% if clinic.is_active %}
+                                        <button type="submit" class="btn btn-sm btn-success" title="{{ t('admin.clinics.deactivate_tooltip') }}">
+                                            <i class="fas fa-check-circle"></i> {{ t('admin.clinics.active') }}
+                                        </button>
+                                    {% else %}
+                                        <button type="submit" class="btn btn-sm btn-secondary" title="{{ t('admin.clinics.activate_tooltip') }}">
+                                            <i class="fas fa-times-circle"></i> {{ t('admin.clinics.inactive') }}
+                                        </button>
+                                    {% endif %}
+                                </form>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="{{ url_for('admin.edit_clinic', clinic_id=clinic.id) }}" class="btn btn-outline-primary" title="{{ t('buttons.edit') }}">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <form method="POST" action="{{ url_for('admin.delete_clinic', clinic_id=clinic.id) }}" class="d-inline"
+                                          data-confirm-delete-form
+                                          data-confirm-message="{{ t('admin.clinics.confirm_delete') % {'name': clinic.name} }}">
+                                        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        <button type="submit" class="btn btn-outline-danger" title="{{ t('buttons.delete') }}">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center text-muted py-4">
+                                <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                                {{ t('admin.clinics.none_found') }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        {% if clinics.pages > 1 %}
+        <div class="card-footer bg-white">
+            <nav>
+                <ul class="pagination justify-content-center mb-0">
+                    <li class="page-item {% if not clinics.has_prev %}disabled{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.clinics', page=clinics.prev_num, search=request.args.get('search', '')) }}">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% for page_num in clinics.iter_pages(left_edge=1, right_edge=1, left_current=2, right_current=2) %}
+                        {% if page_num %}
+                            <li class="page-item {% if page_num == clinics.page %}active{% endif %}">
+                                <a class="page-link" href="{{ url_for('admin.clinics', page=page_num, search=request.args.get('search', '')) }}">{{ page_num }}</a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled"><span class="page-link">...</span></li>
+                        {% endif %}
+                    {% endfor %}
+                    <li class="page-item {% if not clinics.has_next %}disabled{% endif %}">
+                        <a class="page-link" href="{{ url_for('admin.clinics', page=clinics.next_num, search=request.args.get('search', '')) }}">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

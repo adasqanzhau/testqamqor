@@ -1,0 +1,220 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t('doctor.dashboard.title') }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-user-md me-2"></i>{{ t('doctor.dashboard.welcome_name').replace('%(name)s', current_user.first_name ~ ' ' ~ current_user.last_name) }}</h2>
+        <div>
+            <a href="{{ url_for('doctor.appointments') }}" class="btn btn-outline-primary">
+                <i class="fas fa-calendar-alt me-1"></i>{{ t('doctor.dashboard.all_appointments') }}
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-start border-primary border-4 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted text-uppercase small fw-bold">{{ t('doctor.dashboard.today_appointments') }}</div>
+                            <div class="h3 fw-bold mb-0">{{ today_appointments|length }}</div>
+                        </div>
+                        <div class="text-primary opacity-50">
+                            <i class="fas fa-calendar-day fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-start border-info border-4 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted text-uppercase small fw-bold">{{ t('doctor.dashboard.total_appointments') }}</div>
+                            <div class="h3 fw-bold mb-0">{{ total_appointments }}</div>
+                        </div>
+                        <div class="text-info opacity-50">
+                            <i class="fas fa-calendar-check fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-start border-success border-4 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted text-uppercase small fw-bold">{{ t('doctor.dashboard.completed_appointments') }}</div>
+                            <div class="h3 fw-bold mb-0">{{ completed_appointments }}</div>
+                        </div>
+                        <div class="text-success opacity-50">
+                            <i class="fas fa-check-circle fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-start border-warning border-4 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="text-muted text-uppercase small fw-bold">{{ t('doctor.dashboard.patients_count') }}</div>
+                            <div class="h3 fw-bold mb-0">{{ unique_patients }}</div>
+                        </div>
+                        <div class="text-warning opacity-50">
+                            <i class="fas fa-users fa-2x"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-clock me-2"></i>{{ t('doctor.dashboard.today_schedule') }}</h5>
+                    <span class="badge bg-primary rounded-pill">{{ today_appointments|length }}</span>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>{{ t('doctor.dashboard.time') }}</th>
+                                    <th>{{ t('doctor.dashboard.patient') }}</th>
+                                    <th>{{ t('doctor.dashboard.symptoms') }}</th>
+                                    <th>{{ t('doctor.dashboard.status') }}</th>
+                                    <th>{{ t('doctor.dashboard.action') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in today_appointments %}
+                                <tr>
+                                    <td>{{ appointment.scheduled_time.strftime('%H:%M') }}</td>
+                                    <td>{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</td>
+                                    <td>
+                                        {% if appointment.symptoms %}
+                                            {{ appointment.symptoms[:50] }}{% if appointment.symptoms|length > 50 %}...{% endif %}
+                                        {% else %}
+                                            <span class="text-muted">{{ t('doctor.dashboard.not_specified') }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if appointment.status == 'scheduled' %}
+                                            <span class="badge bg-primary">{{ t('status.scheduled') }}</span>
+                                        {% elif appointment.status == 'in_progress' %}
+                                            <span class="badge bg-warning text-dark">{{ t('status.in_progress') }}</span>
+                                        {% elif appointment.status == 'awaiting_report' %}
+                                            <span class="badge bg-orange text-white" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
+                                        {% elif appointment.status == 'completed' %}
+                                            <span class="badge bg-success">{{ t('status.completed') }}</span>
+                                        {% elif appointment.status == 'cancelled' %}
+                                            <span class="badge bg-danger">{{ t('status.cancelled') }}</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary">{{ appointment.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if appointment.status == 'scheduled' %}
+                                                <a href="{{ url_for('doctor.start_video_call', appointment_id=appointment.id) }}" class="btn btn-sm btn-success">
+                                                <i class="fas fa-video me-1"></i>{{ t('doctor.dashboard.start_appointment') }}
+                                            </a>
+                                        {% elif appointment.status == 'in_progress' %}
+                                            <a href="{{ url_for('doctor.start_video_call', appointment_id=appointment.id) }}" class="btn btn-sm btn-warning">
+                                                <i class="fas fa-video me-1"></i>{{ t('doctor.dashboard.continue_appointment') }}
+                                            </a>
+                                        {% elif appointment.status == 'awaiting_report' %}
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ url_for('doctor.create_prescription', appointment_id=appointment.id) }}" class="btn btn-primary" title="{{ t('doctor.dashboard.prescription') }}">
+                                                    <i class="fas fa-prescription"></i>
+                                                </a>
+                                                <a href="{{ url_for('doctor.patient_detail', patient_id=appointment.patient.id) }}" class="btn btn-info text-white" title="{{ t('doctor.dashboard.medical_record') }}">
+                                                    <i class="fas fa-file-medical"></i>
+                                                </a>
+                                                <form method="POST" action="{{ url_for('doctor.update_appointment_status', appointment_id=appointment.id) }}" class="d-inline">
+                                                    <input type="hidden" name="status" value="completed">
+                                                    <button type="submit" class="btn btn-success" title="{{ t('doctor.dashboard.finish_appointment') }}">
+                                                        <i class="fas fa-check"></i>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        {% elif appointment.status == 'completed' %}
+                                            <a href="{{ url_for('doctor.patient_detail', patient_id=appointment.patient.id) }}" class="btn btn-sm btn-outline-secondary">
+                                                <i class="fas fa-eye me-1"></i>{{ t('doctor.dashboard.view') }}
+                                            </a>
+                                        {% else %}
+                                            <span class="text-muted small">-</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-4">
+                                        <i class="fas fa-calendar-times fa-2x mb-2 d-block"></i>
+                                        {{ t('doctor.dashboard.no_today_appointments') }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>{{ t('doctor.dashboard.upcoming_appointments') }}</h5>
+                    <a href="{{ url_for('doctor.appointments') }}" class="btn btn-sm btn-outline-primary">{{ t('doctor.dashboard.all') }}</a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for appointment in upcoming_appointments %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <h6 class="mb-1">{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</h6>
+                                    <small class="text-muted">
+                                        <i class="fas fa-calendar me-1"></i>{{ appointment.scheduled_time.strftime('%d.%m.%Y') }}
+                                        <i class="fas fa-clock ms-2 me-1"></i>{{ appointment.scheduled_time.strftime('%H:%M') }}
+                                    </small>
+                                </div>
+                                <div>
+                                    {% if appointment.status == 'scheduled' %}
+                                        <span class="badge bg-primary">{{ t('status.scheduled') }}</span>
+                                    {% elif appointment.status == 'in_progress' %}
+                                        <span class="badge bg-warning text-dark">{{ t('status.in_progress') }}</span>
+                                    {% elif appointment.status == 'awaiting_report' %}
+                                        <span class="badge text-white" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
+                                    {% elif appointment.status == 'completed' %}
+                                        <span class="badge bg-success">{{ t('status.completed') }}</span>
+                                    {% elif appointment.status == 'cancelled' %}
+                                        <span class="badge bg-danger">{{ t('status.cancelled') }}</span>
+                                    {% else %}
+                                        <span class="badge bg-secondary">{{ appointment.status }}</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                        {% else %}
+                        <div class="list-group-item text-center text-muted py-4">
+                            <i class="fas fa-calendar-check fa-2x mb-2 d-block"></i>
+                            {{ t('doctor.dashboard.no_upcoming_appointments') }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

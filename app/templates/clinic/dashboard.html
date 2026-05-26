@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% set display_clinic_name = t('common.clinic_densaulyq') if clinic.name in ['Денсаулық', 'Клиника "Денсаулық"', 'Клиника «Денсаулық»', '"Денсаулық" клиникасы', 'Densaulyq Clinic'] else clinic.name %}
+
+{% block title %}{{ t('clinic.dashboard.title') }} - {{ display_clinic_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="fas fa-hospital-alt text-primary me-2"></i>{{ display_clinic_name }}
+            </h2>
+            <p class="text-muted mb-0">{{ t('clinic.dashboard.welcome') }}</p>
+        </div>
+        <div>
+            <a href="{{ url_for('clinic.statistics') }}" class="btn btn-outline-primary">
+                <i class="fas fa-chart-bar me-1"></i> {{ t('clinic.dashboard.statistics') }}
+            </a>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-user-md fa-2x text-primary"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">{{ t('clinic.dashboard.doctors') }}</h6>
+                            <h3 class="fw-bold mb-0">{{ doctors_count }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-users fa-2x text-success"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">{{ t('clinic.dashboard.patients') }}</h6>
+                            <h3 class="fw-bold mb-0">{{ patients_count }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-calendar-check fa-2x text-warning"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">{{ t('clinic.dashboard.today_appointments') }}</h6>
+                            <h3 class="fw-bold mb-0">{{ today_appointments }}</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 col-md-6">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
+                            <i class="fas fa-money-bill-wave fa-2x text-info"></i>
+                        </div>
+                        <div>
+                            <h6 class="text-muted mb-1">{{ t('clinic.dashboard.revenue') }}</h6>
+                            <h3 class="fw-bold mb-0">{{ revenue }} ₸</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-4 pb-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-calendar-day text-primary me-2"></i>{{ t('clinic.dashboard.today_schedule') }}
+                        </h5>
+                        <a href="{{ url_for('clinic.appointments') }}" class="btn btn-sm btn-outline-primary">
+                            {{ t('clinic.dashboard.all_appointments') }}
+                        </a>
+                    </div>
+                </div>
+                <div class="card-body p-0">
+                    {% if today_list %}
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th class="ps-4">{{ t('clinic.dashboard.time') }}</th>
+                                    <th>{{ t('clinic.dashboard.patient') }}</th>
+                                    <th>{{ t('clinic.dashboard.doctor') }}</th>
+                                    <th>{{ t('clinic.dashboard.status') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in today_list %}
+                                <tr>
+                                    <td class="ps-4">
+                                        <i class="far fa-clock text-muted me-1"></i>
+                                        {{ appointment.time_slot.strftime('%H:%M') if appointment.time_slot else '--:--' }}
+                                    </td>
+                                    <td>
+                                        <div class="d-flex align-items-center">
+                                            <div class="rounded-circle bg-light p-2 me-2">
+                                                <i class="fas fa-user text-muted"></i>
+                                            </div>
+                                            {{ appointment.patient.full_name }}
+                                        </div>
+                                    </td>
+                                    <td>{{ appointment.doctor.full_name }}</td>
+                                    <td>
+                                        {% if appointment.status == 'confirmed' %}
+                                            <span class="badge bg-success bg-opacity-10 text-success">{{ t('status.confirmed') }}</span>
+                                        {% elif appointment.status == 'pending' %}
+                                            <span class="badge bg-warning bg-opacity-10 text-warning">{{ t('status.pending') }}</span>
+                                        {% elif appointment.status == 'completed' %}
+                                            <span class="badge bg-info bg-opacity-10 text-info">{{ t('status.completed') }}</span>
+                                        {% elif appointment.status == 'cancelled' %}
+                                            <span class="badge bg-danger bg-opacity-10 text-danger">{{ t('status.cancelled') }}</span>
+                                        {% else %}
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary">{{ appointment.status }}</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    {% else %}
+                    <div class="text-center py-5 text-muted">
+                        <i class="fas fa-calendar-times fa-3x mb-3 d-block"></i>
+                        <p class="mb-0">{{ t('clinic.dashboard.no_today_appointments') }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-4 pb-3">
+                    <h5 class="fw-bold mb-0">
+                        <i class="fas fa-bolt text-warning me-2"></i>{{ t('clinic.dashboard.quick_actions') }}
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-grid gap-3">
+                        <a href="{{ url_for('clinic.add_doctor') }}" class="btn btn-primary btn-lg text-start">
+                            <i class="fas fa-user-plus me-2"></i> {{ t('clinic.dashboard.add_doctor') }}
+                        </a>
+                        <a href="{{ url_for('clinic.appointments') }}" class="btn btn-outline-primary btn-lg text-start">
+                            <i class="fas fa-calendar-alt me-2"></i> {{ t('clinic.dashboard.all_appointments') }}
+                        </a>
+                        <a href="{{ url_for('clinic.settings') }}" class="btn btn-outline-secondary btn-lg text-start">
+                            <i class="fas fa-cog me-2"></i> {{ t('clinic.dashboard.settings') }}
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

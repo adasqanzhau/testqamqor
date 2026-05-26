@@ -1,0 +1,114 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t('clinic.profile_page.title') }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-user-edit me-2"></i>{{ t('clinic.profile_page.title') }}</h2>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-edit me-2"></i>{{ t('clinic.profile_page.edit_profile') }}</h5>
+                </div>
+                <div class="card-body">
+                    <form method="POST" action="{{ url_for('clinic.profile') }}" enctype="multipart/form-data">
+                        {{ form.hidden_tag() }}
+
+                        <div class="text-center mb-4">
+                            {% if current_user.avatar %}
+                                  <img src="{{ url_for('static', filename='uploads/avatars/' + current_user.avatar) }}"
+                                      alt="{{ t('clinic.profile_page.avatar_alt') }}" class="rounded-circle mb-3" style="width: 120px; height: 120px; object-fit: cover;">
+                            {% else %}
+                                <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center mb-3"
+                                     style="width: 120px; height: 120px;">
+                                    <i class="fas fa-user-shield fa-3x text-primary"></i>
+                                </div>
+                            {% endif %}
+                            <div>
+                                <label for="avatar" class="form-label fw-semibold">{{ t('clinic.profile_page.avatar_label') }}</label>
+                                {{ form.avatar(class="form-control", accept="image/*") }}
+                                {% for error in form.avatar.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="first_name" class="form-label fw-semibold">{{ t('common.first_name') }}</label>
+                                {{ form.first_name(class="form-control", placeholder=t('clinic.profile_page.first_name_placeholder')) }}
+                                {% for error in form.first_name.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="last_name" class="form-label fw-semibold">{{ t('common.last_name') }}</label>
+                                {{ form.last_name(class="form-control", placeholder=t('clinic.profile_page.last_name_placeholder')) }}
+                                {% for error in form.last_name.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label fw-semibold">{{ t('common.phone') }}</label>
+                                {{ form.phone(class="form-control", placeholder=t('clinic.profile_page.phone_placeholder')) }}
+                                {% for error in form.phone.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>{{ t('buttons.save') }}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-building me-2"></i>{{ t('clinic.profile_page.info') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-muted">{{ t('auth.email') }}</label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-envelope me-1 text-primary"></i>
+                            {{ current_user.email }}
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-muted">{{ t('common.role') }}</label>
+                        <div class="form-control-plaintext">
+                            <span class="badge bg-info bg-opacity-10 text-info px-3 py-2">
+                                <i class="fas fa-user-shield me-1"></i>{{ t('roles.clinic_admin') }}
+                            </span>
+                        </div>
+                    </div>
+                    {% if current_user.clinic %}
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold text-muted">{{ t('clinic.dashboard.title') }}</label>
+                        <div class="form-control-plaintext">
+                            <i class="fas fa-hospital me-1 text-success"></i>
+                            {{ current_user.clinic.name }}
+                        </div>
+                    </div>
+                    {% endif %}
+                    <hr>
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle me-1"></i>
+                        {{ t('clinic.profile_page.registered_on') }}: {{ current_user.created_at.strftime('%d.%m.%Y') if current_user.created_at else 'N/A' }}
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

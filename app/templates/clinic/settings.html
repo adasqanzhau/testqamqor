@@ -1,0 +1,208 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t('clinic.settings_page.title') }} - Qamqor{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="mb-4">
+                <h2 class="fw-bold mb-1">
+                    <i class="fas fa-cog text-primary me-2"></i>{{ t('clinic.settings_page.title') }}
+                </h2>
+                <p class="text-muted mb-0">{{ t('clinic.settings_page.subtitle') }}</p>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0 pt-4 pb-2">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-hospital text-muted me-2"></i>{{ t('clinic.settings_page.basic_info') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="name" class="form-label fw-semibold">{{ t('clinic.settings_page.name_label') }} <span class="text-danger">*</span></label>
+                                {{ form.name(class="form-control", placeholder=t('clinic.settings_page.name_placeholder')) }}
+                                {% if form.name.errors %}
+                                    {% for error in form.name.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label for="description" class="form-label fw-semibold">{{ t('clinic.settings_page.description_label') }}</label>
+                                {{ form.description(class="form-control", rows="4", placeholder=t('clinic.settings_page.description_placeholder')) }}
+                                {% if form.description.errors %}
+                                    {% for error in form.description.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label for="address" class="form-label fw-semibold">{{ t('clinic.settings_page.address_label') }}</label>
+                                {{ form.address(class="form-control", placeholder=t('clinic.settings_page.address_placeholder')) }}
+                                {% if form.address.errors %}
+                                    {% for error in form.address.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0 pt-4 pb-2">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-address-book text-muted me-2"></i>{{ t('clinic.settings_page.contact_info') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="phone" class="form-label fw-semibold">{{ t('common.phone') }}</label>
+                                {{ form.phone(class="form-control", placeholder=t('clinic.settings_page.phone_placeholder')) }}
+                                {% if form.phone.errors %}
+                                    {% for error in form.phone.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-semibold">{{ t('auth.email') }}</label>
+                                {{ form.email(class="form-control", placeholder=t('clinic.settings_page.email_placeholder')) }}
+                                {% if form.email.errors %}
+                                    {% for error in form.email.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-12">
+                                <label for="website" class="form-label fw-semibold">{{ t('clinic.settings_page.website_label') }}</label>
+                                {{ form.website(class="form-control", placeholder=t('clinic.settings_page.website_placeholder')) }}
+                                {% if form.website.errors %}
+                                    {% for error in form.website.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0 pt-4 pb-2">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-image text-muted me-2"></i>{{ t('clinic.settings_page.logo') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        {% if clinic and clinic.logo %}
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">{{ t('clinic.settings_page.current_logo') }}</label>
+                            <div class="p-3 bg-light rounded text-center">
+                                <img src="{{ url_for('static', filename='uploads/clinics/' + clinic.logo) }}"
+                                      alt="{{ t('clinic.settings_page.logo_alt') }}"
+                                     class="img-fluid rounded"
+                                     style="max-height: 120px;">
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div>
+                            <label for="logo" class="form-label fw-semibold">
+                                {{ t('clinic.settings_page.change_logo') if clinic and clinic.logo else t('clinic.settings_page.upload_logo') }}
+                            </label>
+                            {{ form.logo(class="form-control", accept="image/*") }}
+                            {% if form.logo.errors %}
+                                {% for error in form.logo.errors %}
+                                <div class="text-danger small mt-1">{{ error }}</div>
+                                {% endfor %}
+                            {% endif %}
+                            <div class="form-text">{{ t('clinic.settings_page.logo_hint') }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0 pt-4 pb-2">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-palette text-muted me-2"></i>{{ t('clinic.settings_page.appearance') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="primary_color" class="form-label fw-semibold">{{ t('clinic.settings_page.primary_color_label') }}</label>
+                                <div class="input-group">
+                                    {{ form.primary_color(class="form-control form-control-color", type="color") }}
+                                    <span class="input-group-text bg-white flex-grow-1">{{ t('clinic.settings_page.primary_color_label') }}</span>
+                                </div>
+                                {% if form.primary_color.errors %}
+                                    {% for error in form.primary_color.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="secondary_color" class="form-label fw-semibold">{{ t('clinic.settings_page.secondary_color_label') }}</label>
+                                <div class="input-group">
+                                    {{ form.secondary_color(class="form-control form-control-color", type="color") }}
+                                    <span class="input-group-text bg-white flex-grow-1">{{ t('clinic.settings_page.secondary_color_label') }}</span>
+                                </div>
+                                {% if form.secondary_color.errors %}
+                                    {% for error in form.secondary_color.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card border-0 shadow-sm mb-4">
+                    <div class="card-header bg-white border-0 pt-4 pb-2">
+                        <h5 class="fw-bold mb-0">
+                            <i class="fas fa-clock text-muted me-2"></i>{{ t('clinic.settings_page.working_hours') }}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="working_hours_start" class="form-label fw-semibold">{{ t('clinic.settings_page.working_start') }}</label>
+                                {{ form.working_hours_start(class="form-control", type="time") }}
+                                {% if form.working_hours_start.errors %}
+                                    {% for error in form.working_hours_start.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                            <div class="col-md-6">
+                                <label for="working_hours_end" class="form-label fw-semibold">{{ t('clinic.settings_page.working_end') }}</label>
+                                {{ form.working_hours_end(class="form-control", type="time") }}
+                                {% if form.working_hours_end.errors %}
+                                    {% for error in form.working_hours_end.errors %}
+                                    <div class="text-danger small mt-1">{{ error }}</div>
+                                    {% endfor %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-end gap-2 mb-4">
+                    <a href="{{ url_for('clinic.dashboard') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-1"></i> {{ t('buttons.cancel') }}
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> {{ t('clinic.settings_page.save') }}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

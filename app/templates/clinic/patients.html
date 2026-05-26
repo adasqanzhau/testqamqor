@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t('clinic.dashboard.patients') }} - Qamqor{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="fas fa-users text-primary me-2"></i>{{ t('clinic.dashboard.patients') }}
+            </h2>
+            <p class="text-muted mb-0">{{ t('clinic.patients_page.subtitle') }}</p>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm mb-4">
+        <div class="card-body">
+            <form method="GET" action="{{ url_for('clinic.patients') }}">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0">
+                        <i class="fas fa-search text-muted"></i>
+                    </span>
+                    <input type="text" name="search" class="form-control border-start-0 ps-0"
+                           placeholder="{{ t('clinic.patients_page.search_placeholder') }}"
+                           value="{{ request.args.get('search', '') }}">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search me-1"></i> {{ t('buttons.search') }}
+                    </button>
+                    {% if request.args.get('search') %}
+                    <a href="{{ url_for('clinic.patients') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-times me-1"></i> {{ t('buttons.reset') }}
+                    </a>
+                    {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            {% if patients %}
+            <div class="table-responsive">
+                <table class="table table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">{{ t('clinic.dashboard.patient') }}</th>
+                            <th>{{ t('auth.email') }}</th>
+                            <th>{{ t('common.phone') }}</th>
+                            <th>{{ t('common.birth_date') }}</th>
+                            <th class="text-center">{{ t('clinic.dashboard.all_appointments') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for patient in patients %}
+                        <tr>
+                            <td class="ps-4">
+                                <div class="d-flex align-items-center">
+                                    <div class="rounded-circle bg-success bg-opacity-10 d-flex align-items-center justify-content-center me-3"
+                                         style="width: 40px; height: 40px;">
+                                        <i class="fas fa-user text-success"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-semibold">{{ patient.full_name }}</h6>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="mailto:{{ patient.email }}" class="text-decoration-none">
+                                    {{ patient.email }}
+                                </a>
+                            </td>
+                            <td>{{ patient.phone or t('doctor.profile.not_specified') }}</td>
+                            <td>
+                                {% if patient.birth_date %}
+                                    {{ patient.birth_date.strftime('%d.%m.%Y') }}
+                                {% else %}
+                                    <span class="text-muted">{{ t('doctor.profile.not_specified') }}</span>
+                                {% endif %}
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-primary bg-opacity-10 text-primary">
+                                    {{ patient.appointments_count|default(0) }}
+                                </span>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+                {% else %}
+            <div class="text-center py-5 text-muted">
+                <i class="fas fa-users fa-4x mb-3 d-block"></i>
+                {% if request.args.get('search') %}
+                <h5>{{ t('clinic.patients_page.not_found_title') }}</h5>
+                <p class="mb-0">{{ t('clinic.patients_page.not_found_desc') }}</p>
+                {% else %}
+                <h5>{{ t('clinic.patients_page.empty_title') }}</h5>
+                <p class="mb-0">{{ t('clinic.patients_page.empty_desc') }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

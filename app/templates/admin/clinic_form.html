@@ -1,0 +1,226 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if clinic %}{{ t('admin.clinic_form.edit_title') }}{% else %}{{ t('admin.clinic_form.create_title') }}{% endif %}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="fas fa-{% if clinic %}edit{% else %}plus-circle{% endif %} me-2"></i>
+                    {% if clinic %}{{ t('admin.clinic_form.edit_title') }}{% else %}{{ t('admin.clinic_form.create_title') }}{% endif %}
+                </h2>
+                <a href="{{ url_for('admin.clinics') }}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-1"></i>{{ t('buttons.back') }}
+                </a>
+            </div>
+
+            {% if form.errors %}
+            <div class="alert alert-danger">
+                <h6 class="alert-heading"><i class="fas fa-exclamation-triangle me-1"></i>{{ t('messages.error') }}:</h6>
+                <ul class="mb-0">
+                    {% for field, errors in form.errors.items() %}
+                        {% for error in errors %}
+                            <li>{{ form[field].label.text }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            <form method="POST" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                {% set clinic_labels = {
+                    'name': t('admin.clinic_form.name_label', form.name.label.text),
+                    'description': t('admin.clinic_form.description_label', form.description.label.text),
+                    'address': t('admin.clinic_form.address_label', form.address.label.text),
+                    'phone': t('admin.clinic_form.phone_label', form.phone.label.text),
+                    'email': t('admin.clinic_form.email_label', form.email.label.text),
+                    'website': t('admin.clinic_form.website_label', form.website.label.text),
+                    'primary_color': t('admin.clinic_form.primary_color_label', form.primary_color.label.text),
+                    'secondary_color': t('admin.clinic_form.secondary_color_label', form.secondary_color.label.text),
+                    'working_hours_start': t('admin.clinic_form.working_hours_start_label', form.working_hours_start.label.text),
+                    'working_hours_end': t('admin.clinic_form.working_hours_end_label', form.working_hours_end.label.text),
+                    'logo': t('admin.clinic_form.logo_label', form.logo.label.text),
+                    'admin_email': t('admin.clinic_form.admin_email_label', form.admin_email.label.text),
+                    'admin_password': t('admin.clinic_form.admin_password_label', form.admin_password.label.text),
+                    'admin_first_name': t('admin.clinic_form.admin_first_name_label', form.admin_first_name.label.text),
+                    'admin_last_name': t('admin.clinic_form.admin_last_name_label', form.admin_last_name.label.text),
+                } %}
+
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>{{ t('admin.clinic_form.info_title') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-12">
+                                <label for="{{ form.name.id }}" class="form-label">{{ clinic_labels.name }} <span class="text-danger">*</span></label>
+                                {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else ""), placeholder=t('admin.clinic_form.name_placeholder')) }}
+                                {% for error in form.name.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="{{ form.description.id }}" class="form-label">{{ clinic_labels.description }}</label>
+                                {{ form.description(class="form-control" + (" is-invalid" if form.description.errors else ""), rows=3, placeholder=t('admin.clinic_form.description_placeholder')) }}
+                                {% for error in form.description.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="{{ form.address.id }}" class="form-label">{{ clinic_labels.address }}</label>
+                                {{ form.address(class="form-control" + (" is-invalid" if form.address.errors else ""), placeholder=t('admin.clinic_form.address_placeholder')) }}
+                                {% for error in form.address.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.phone.id }}" class="form-label">{{ clinic_labels.phone }}</label>
+                                {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else ""), placeholder=t('admin.clinic_form.phone_placeholder', '+7 (XXX) XXX-XX-XX')) }}
+                                {% for error in form.phone.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.email.id }}" class="form-label">{{ clinic_labels.email }}</label>
+                                {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else ""), placeholder=t('admin.clinic_form.email_placeholder', 'clinic@example.com')) }}
+                                {% for error in form.email.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="{{ form.website.id }}" class="form-label">{{ clinic_labels.website }}</label>
+                                {{ form.website(class="form-control" + (" is-invalid" if form.website.errors else ""), placeholder=t('admin.clinic_form.website_placeholder', 'https://example.com')) }}
+                                {% for error in form.website.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Branding & Schedule -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="fas fa-palette me-2"></i>{{ t('admin.clinic_form.branding_title') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.primary_color.id }}" class="form-label">{{ clinic_labels.primary_color }}</label>
+                                <div class="input-group">
+                                    {{ form.primary_color(class="form-control form-control-color", type="color") }}
+                                    <span class="input-group-text flex-grow-1">{{ t('admin.clinic_form.primary_color') }}</span>
+                                </div>
+                                {% for error in form.primary_color.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.secondary_color.id }}" class="form-label">{{ clinic_labels.secondary_color }}</label>
+                                <div class="input-group">
+                                    {{ form.secondary_color(class="form-control form-control-color", type="color") }}
+                                    <span class="input-group-text flex-grow-1">{{ t('admin.clinic_form.secondary_color') }}</span>
+                                </div>
+                                {% for error in form.secondary_color.errors %}
+                                    <div class="text-danger small">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.working_hours_start.id }}" class="form-label">{{ clinic_labels.working_hours_start }}</label>
+                                {{ form.working_hours_start(class="form-control" + (" is-invalid" if form.working_hours_start.errors else ""), type="time") }}
+                                {% for error in form.working_hours_start.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.working_hours_end.id }}" class="form-label">{{ clinic_labels.working_hours_end }}</label>
+                                {{ form.working_hours_end(class="form-control" + (" is-invalid" if form.working_hours_end.errors else ""), type="time") }}
+                                {% for error in form.working_hours_end.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-12">
+                                <label for="{{ form.logo.id }}" class="form-label">{{ clinic_labels.logo }}</label>
+                                {{ form.logo(class="form-control" + (" is-invalid" if form.logo.errors else ""), accept="image/*") }}
+                                {% for error in form.logo.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                                {% if clinic and clinic.logo %}
+                                    <div class="mt-2">
+                                        <small class="text-muted">{{ t('admin.clinic_form.current_logo') }}</small><br>
+                                        <img src="{{ url_for('static', filename='uploads/clinics/' + clinic.logo) }}" alt="{{ t('admin.clinic_form.logo_alt') }}" class="rounded mt-1" style="max-height: 80px;">
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if not clinic %}
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>{{ t('admin.clinic_form.admin_title') }}</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted small mb-3">{{ t('admin.clinic_form.admin_desc') }}</p>
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label for="{{ form.admin_email.id }}" class="form-label">{{ clinic_labels.admin_email }} <span class="text-danger">*</span></label>
+                                {{ form.admin_email(class="form-control" + (" is-invalid" if form.admin_email.errors else ""), placeholder=t('admin.clinic_form.admin_email_placeholder')) }}
+                                {% for error in form.admin_email.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.admin_password.id }}" class="form-label">{{ clinic_labels.admin_password }} <span class="text-danger">*</span></label>
+                                {{ form.admin_password(class="form-control" + (" is-invalid" if form.admin_password.errors else ""), placeholder=t('admin.clinic_form.admin_password_placeholder')) }}
+                                {% for error in form.admin_password.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.admin_first_name.id }}" class="form-label">{{ clinic_labels.admin_first_name }} <span class="text-danger">*</span></label>
+                                {{ form.admin_first_name(class="form-control" + (" is-invalid" if form.admin_first_name.errors else ""), placeholder=t('common.first_name')) }}
+                                {% for error in form.admin_first_name.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="{{ form.admin_last_name.id }}" class="form-label">{{ clinic_labels.admin_last_name }} <span class="text-danger">*</span></label>
+                                {{ form.admin_last_name(class="form-control" + (" is-invalid" if form.admin_last_name.errors else ""), placeholder=t('common.last_name')) }}
+                                {% for error in form.admin_last_name.errors %}
+                                    <div class="invalid-feedback">{{ error }}</div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-end gap-2">
+                    <a href="{{ url_for('admin.clinics') }}" class="btn btn-outline-secondary">{{ t('buttons.cancel') }}</a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i>
+                        {% if clinic %}{{ t('buttons.save') }}{% else %}{{ t('admin.clinic_form.create_button') }}{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t('videocall.title') }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="mb-4">
+                {% if current_user.role == 'patient' %}
+                <a href="{{ url_for('patient.appointments') }}" class="text-decoration-none text-muted small">
+                    <i class="fas fa-arrow-left me-1"></i>{{ t('videocall.back_to_my_appointments') }}
+                </a>
+                {% elif current_user.role == 'doctor' %}
+                <a href="{{ url_for('doctor.appointments') }}" class="text-decoration-none text-muted small">
+                    <i class="fas fa-arrow-left me-1"></i>{{ t('videocall.back_to_appointments') }}
+                </a>
+                {% endif %}
+                <h2 class="mt-2 mb-1">
+                    <i class="fas fa-file-medical-alt text-primary me-2"></i>{{ t('videocall.title') }}
+                </h2>
+                <p class="text-muted mb-0">
+                    {{ appointment.scheduled_time.strftime('%d.%m.%Y %H:%M') if appointment.scheduled_time else '' }}
+                    {% if current_user.role == 'patient' %}
+                    {{ t('videocall.with_doctor') % {'name': appointment.doctor.full_name} }}
+                    {% else %}
+                    {{ t('videocall.with_patient') % {'name': appointment.patient.full_name} }}
+                    {% endif %}
+                </p>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-video me-2 text-primary"></i>{{ t('videocall.call_info') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <div class="text-muted small">{{ t('videocall.status') }}</div>
+                            <div><span class="badge bg-secondary">{{ t('videocall.completed') }}</span></div>
+                        </div>
+                        {% if videocall.started_at %}
+                        <div class="col-md-4">
+                            <div class="text-muted small">{{ t('videocall.started') }}</div>
+                            <div class="fw-semibold">{{ videocall.started_at.strftime('%H:%M') }}</div>
+                        </div>
+                        {% endif %}
+                        {% if videocall.duration_seconds %}
+                        <div class="col-md-4">
+                            <div class="text-muted small">{{ t('videocall.duration') }}</div>
+                            <div class="fw-semibold">{{ (videocall.duration_seconds // 60) }} {{ t('common.minutes_short') }} {{ videocall.duration_seconds % 60 }} {{ t('videocall.seconds') }}</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            {% if videocall.summary %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-brain me-2 text-success"></i>{{ t('videocall.ai_summary') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div style="white-space: pre-wrap; line-height: 1.7;">{{ localize_field(videocall, 'summary') }}</div>
+                </div>
+            </div>
+            {% endif %}
+
+            {% if videocall.transcription %}
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-closed-captioning me-2 text-info"></i>{{ t('videocall.transcription') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div style="white-space: pre-wrap; line-height: 1.7; max-height: 400px; overflow-y: auto;">{{ localize_field(videocall, 'transcription') }}</div>
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

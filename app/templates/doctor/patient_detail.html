@@ -1,0 +1,307 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ t('doctor.patient_detail.page_title', 'Пациент - ') }}{{ patient.first_name }} {{ patient.last_name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="fas fa-user me-2"></i>{{ t('doctor.patient_detail.patient_card', 'Карта пациента') }}</h2>
+        <div>
+            <a href="{{ url_for('doctor.create_medical_record', patient_id=patient.id) }}" class="btn btn-primary me-2">
+                <i class="fas fa-plus me-1"></i>{{ t('doctor.patient_detail.add_med_record', 'Добавить мед. запись') }}
+            </a>
+            <a href="{{ url_for('doctor.appointments') }}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left me-1"></i>{{ t('doctor.patient_detail.back', 'Назад') }}
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0"><i class="fas fa-id-card me-2"></i>{{ t('doctor.patient_detail.patient_info', 'Информация о пациенте') }}</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <table class="table table-borderless mb-0">
+                        <tr>
+                            <td class="fw-semibold text-muted" style="width: 40%;">{{ t('doctor.patient_detail.full_name', 'ФИО') }}</td>
+                            <td>{{ patient.first_name }} {{ patient.last_name }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">Email</td>
+                            <td>{{ patient.email }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">{{ t('doctor.patient_detail.phone', 'Телефон') }}</td>
+                            <td>{{ patient.phone or t('doctor.patient_detail.not_specified', 'Не указан') }}</td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="col-md-6">
+                    <table class="table table-borderless mb-0">
+                        <tr>
+                            <td class="fw-semibold text-muted" style="width: 40%;">{{ t('doctor.patient_detail.birth_date', 'Дата рождения') }}</td>
+                            <td>{{ patient.birth_date.strftime('%d.%m.%Y') if patient.birth_date else t('doctor.patient_detail.not_specified_female', 'Не указана') }}</td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">{{ t('doctor.patient_detail.gender', 'Пол') }}</td>
+                            <td>
+                                {% if patient.gender == 'male' %}{{ t('doctor.patient_detail.gender_male', 'Мужской') }}
+                                {% elif patient.gender == 'female' %}{{ t('doctor.patient_detail.gender_female', 'Женский') }}
+                                {% else %}{{ t('doctor.patient_detail.not_specified', 'Не указан') }}{% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="fw-semibold text-muted">{{ t('doctor.patient_detail.address', 'Адрес') }}</td>
+                            <td>{{ patient.address or t('doctor.patient_detail.not_specified', 'Не указан') }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>{{ t('doctor.patient_detail.appointment_history', 'История приемов') }}</h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>{{ t('doctor.patient_detail.date', 'Дата') }}</th>
+                            <th>{{ t('doctor.patient_detail.status', 'Статус') }}</th>
+                            <th>{{ t('doctor.patient_detail.symptoms', 'Симптомы') }}</th>
+                            <th>{{ t('doctor.patient_detail.diagnosis', 'Диагноз') }}</th>
+                            <th>{{ t('doctor.patient_detail.actions', 'Действия') }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for appointment in appointment_history %}
+                        <tr>
+                            <td>
+                                <div class="fw-semibold">{{ appointment.scheduled_time.strftime('%d.%m.%Y') }}</div>
+                                <small class="text-muted">{{ appointment.scheduled_time.strftime('%H:%M') }}</small>
+                            </td>
+                            <td>
+                                {% if appointment.status == 'scheduled' %}
+                                    <span class="badge bg-primary">{{ t('status.scheduled') }}</span>
+                                {% elif appointment.status == 'in_progress' %}
+                                    <span class="badge bg-warning text-dark">{{ t('status.in_progress') }}</span>
+                                {% elif appointment.status == 'awaiting_report' %}
+                                    <span class="badge text-white" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
+                                {% elif appointment.status == 'completed' %}
+                                    <span class="badge bg-success">{{ t('status.completed') }}</span>
+                                {% elif appointment.status == 'cancelled' %}
+                                    <span class="badge bg-danger">{{ t('status.cancelled') }}</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if appointment.symptoms %}
+                                    {{ appointment.symptoms[:60] }}{% if appointment.symptoms|length > 60 %}...{% endif %}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if appointment.prescription %}
+                                    {{ appointment.prescription.diagnosis[:50] if appointment.prescription.diagnosis else '-' }}
+                                {% else %}
+                                    <span class="text-muted">-</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    {% if appointment.status in ['in_progress', 'awaiting_report', 'completed'] %}
+                                        <a href="{{ url_for('doctor.create_prescription', appointment_id=appointment.id) }}" class="btn btn-outline-primary" title="{{ t('doctor.patient_detail.prescription', 'Рецепт') }}">
+                                            <i class="fas fa-prescription"></i>
+                                        </a>
+                                    {% endif %}
+                                    {% if appointment.status == 'awaiting_report' %}
+                                        <form method="POST" action="{{ url_for('doctor.update_appointment_status', appointment_id=appointment.id) }}" class="d-inline">
+                                            <input type="hidden" name="status" value="completed">
+                                            <button type="submit" class="btn btn-success" title="{{ t('doctor.patient_detail.finish_appointment', 'Завершить приём') }}">
+                                                <i class="fas fa-check"></i>
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center text-muted py-4">
+                                <i class="fas fa-calendar-times fa-2x mb-2 d-block"></i>
+                                {{ t('doctor.patient_detail.no_appointments', 'Записей нет') }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <div class="col-lg-7">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-file-medical me-2"></i>{{ t('doctor.patient_detail.medical_records', 'Медицинские записи') }}</h5>
+                    <a href="{{ url_for('doctor.create_medical_record', patient_id=patient.id) }}" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-plus me-1"></i>{{ t('doctor.patient_detail.add', 'Добавить') }}
+                    </a>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>{{ t('doctor.patient_detail.type', 'Тип') }}</th>
+                                    <th>{{ t('doctor.patient_detail.name', 'Название') }}</th>
+                                    <th>{{ t('doctor.patient_detail.date', 'Дата') }}</th>
+                                    <th>{{ t('doctor.patient_detail.content', 'Содержание') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for record in medical_records %}
+                                <tr>
+                                    <td><span class="badge bg-info">{{ t('record_type.' ~ record.record_type, record.record_type) }}</span></td>
+                                    <td>{{ record.title }}</td>
+                                    <td>{{ record.created_at.strftime('%d.%m.%Y') }}</td>
+                                    <td>
+                                        {% if record.content %}
+                                            {{ record.content[:80] }}{% if record.content|length > 80 %}...{% endif %}
+                                        {% else %}
+                                            <span class="text-muted">-</span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="4" class="text-center text-muted py-4">
+                                        <i class="fas fa-folder-open fa-2x mb-2 d-block"></i>
+                                        {{ t('doctor.patient_detail.no_medical_records', 'Медицинские записи отсутствуют') }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% set transcripts = [] %}
+        {% for a in appointment_history %}
+            {% if a.videocall and a.videocall.transcription %}
+                {% set _ = transcripts.append(a) %}
+            {% endif %}
+        {% endfor %}
+        {% if transcripts %}
+        <div class="col-12">
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-closed-captioning me-2 text-primary"></i>{{ t('doctor.patient_detail.video_transcriptions', 'Транскрипции видеоконсультаций') }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="accordion" id="transcriptAccordion">
+                        {% for appointment in appointment_history %}
+                            {% if appointment.videocall and appointment.videocall.transcription %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header">
+                                    <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse"
+                                            data-bs-target="#transcript{{ appointment.id }}">
+                                        <i class="far fa-calendar me-2 text-muted"></i>
+                                        <span class="fw-semibold">
+                                            {{ appointment.scheduled_time.strftime('%d.%m.%Y %H:%M') }}
+                                        </span>
+                                        {% if appointment.videocall.duration_seconds %}
+                                        <span class="ms-3 text-muted small">
+                                            <i class="far fa-clock me-1"></i>
+                                            {{ (appointment.videocall.duration_seconds // 60) }} мин
+                                        </span>
+                                        {% endif %}
+                                    </button>
+                                </h2>
+                                <div id="transcript{{ appointment.id }}" class="accordion-collapse collapse"
+                                     data-bs-parent="#transcriptAccordion">
+                                    <div class="accordion-body">
+                                        {% if appointment.videocall.summary %}
+                                        <div class="mb-3">
+                                            <div class="fw-semibold text-primary mb-1">
+                                                <i class="fas fa-magic me-1"></i>{{ t('doctor.patient_detail.ai_summary', 'AI-резюме') }}
+                                            </div>
+                                            <div class="p-2 bg-light rounded small" style="white-space: pre-wrap;">{{ localize_field(appointment.videocall, 'summary') }}</div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="fw-semibold text-muted mb-1">
+                                            <i class="fas fa-file-alt me-1"></i>{{ t('doctor.patient_detail.full_transcription', 'Полная транскрипция') }}
+                                        </div>
+                                        <div class="p-2 border rounded small" style="white-space: pre-wrap; max-height: 400px; overflow-y: auto;">{{ localize_field(appointment.videocall, 'transcription') }}</div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <div class="col-lg-5">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="fas fa-prescription me-2"></i>{{ t('doctor.patient_detail.prescriptions_title', 'Назначения') }}</h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="table-responsive">
+                        <table class="table table-hover mb-0">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>{{ t('doctor.patient_detail.appointment_date', 'Дата приема') }}</th>
+                                    <th>{{ t('doctor.patient_detail.diagnosis', 'Диагноз') }}</th>
+                                    <th>{{ t('doctor.patient_detail.medications', 'Препараты') }}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for appointment in appointment_history %}
+                                    {% if appointment.prescription %}
+                                    <tr>
+                                        <td>{{ appointment.scheduled_time.strftime('%d.%m.%Y') }}</td>
+                                        <td>
+                                            {% if appointment.prescription.diagnosis %}
+                                                {{ appointment.prescription.diagnosis[:50] }}{% if appointment.prescription.diagnosis|length > 50 %}...{% endif %}
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if appointment.prescription.medications %}
+                                                {{ appointment.prescription.medications[:50] }}{% if appointment.prescription.medications|length > 50 %}...{% endif %}
+                                            {% else %}
+                                                <span class="text-muted">-</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="3" class="text-center text-muted py-4">
+                                        <i class="fas fa-prescription-bottle fa-2x mb-2 d-block"></i>
+                                        {{ t('doctor.patient_detail.no_prescriptions', 'Назначения отсутствуют') }}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
