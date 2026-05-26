@@ -36,6 +36,47 @@ document.addEventListener('DOMContentLoaded', function () {
 
     translateDom();
 
+    // Theme toggle (light/dark). Applies CSS variables via `:root[data-theme="dark"]`.
+    var themeToggleBtn = document.getElementById('themeToggle');
+    var themeToggleIcon = document.getElementById('themeToggleIcon');
+
+    function applyTheme(theme) {
+        document.documentElement.dataset.theme = theme;
+        try {
+            localStorage.setItem('qamqorTheme', theme);
+        } catch (e) { /* ignore */ }
+
+        if (themeToggleIcon) {
+            if (theme === 'dark') {
+                themeToggleIcon.classList.remove('fa-sun');
+                themeToggleIcon.classList.add('fa-moon');
+            } else {
+                themeToggleIcon.classList.remove('fa-moon');
+                themeToggleIcon.classList.add('fa-sun');
+            }
+        }
+    }
+
+    function getPreferredTheme() {
+        try {
+            var stored = localStorage.getItem('qamqorTheme');
+            if (stored === 'light' || stored === 'dark') return stored;
+        } catch (e) { /* ignore */ }
+
+        return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches)
+            ? 'dark'
+            : 'light';
+    }
+
+    applyTheme(getPreferredTheme());
+
+    if (themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', function () {
+            var current = document.documentElement.dataset.theme || 'light';
+            applyTheme(current === 'dark' ? 'light' : 'dark');
+        });
+    }
+
     const notificationBadge = document.getElementById('notificationCount');
     const notificationList = document.getElementById('notificationList');
     const markAllReadBtn = document.getElementById('markAllRead');

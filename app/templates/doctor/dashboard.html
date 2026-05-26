@@ -15,7 +15,7 @@
 
     <div class="row g-4 mb-4">
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-primary border-4 shadow-sm h-100">
+            <div class="card border-start border-primary border-4 shadow-sm med-widget h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-info border-4 shadow-sm h-100">
+            <div class="card border-start border-info border-4 shadow-sm med-widget h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-success border-4 shadow-sm h-100">
+            <div class="card border-start border-success border-4 shadow-sm med-widget h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-warning border-4 shadow-sm h-100">
+            <div class="card border-start border-warning border-4 shadow-sm med-widget h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -78,8 +78,8 @@
 
     <div class="row g-4">
         <div class="col-lg-7">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div class="card shadow-sm med-widget">
+                <div class="card-header med-widget-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-clock me-2"></i>{{ t('doctor.dashboard.today_schedule') }}</h5>
                     <span class="badge bg-primary rounded-pill">{{ today_appointments|length }}</span>
                 </div>
@@ -109,17 +109,17 @@
                                     </td>
                                     <td>
                                         {% if appointment.status == 'scheduled' %}
-                                            <span class="badge bg-primary">{{ t('status.scheduled') }}</span>
+                                        <span class="badge bg-primary med-status-pill">{{ t('status.scheduled') }}</span>
                                         {% elif appointment.status == 'in_progress' %}
-                                            <span class="badge bg-warning text-dark">{{ t('status.in_progress') }}</span>
+                                            <span class="badge bg-warning text-dark med-status-pill">{{ t('status.in_progress') }}</span>
                                         {% elif appointment.status == 'awaiting_report' %}
-                                            <span class="badge bg-orange text-white" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
+                                            <span class="badge bg-orange text-white med-status-pill" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
                                         {% elif appointment.status == 'completed' %}
-                                            <span class="badge bg-success">{{ t('status.completed') }}</span>
+                                            <span class="badge bg-success med-status-pill">{{ t('status.completed') }}</span>
                                         {% elif appointment.status == 'cancelled' %}
-                                            <span class="badge bg-danger">{{ t('status.cancelled') }}</span>
+                                            <span class="badge bg-danger med-status-pill">{{ t('status.cancelled') }}</span>
                                         {% else %}
-                                            <span class="badge bg-secondary">{{ appointment.status }}</span>
+                                            <span class="badge bg-secondary med-status-pill">{{ appointment.status }}</span>
                                         {% endif %}
                                     </td>
                                     <td>
@@ -171,15 +171,15 @@
         </div>
 
         <div class="col-lg-5">
-            <div class="card shadow-sm">
-                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+            <div class="card shadow-sm med-widget">
+                <div class="card-header med-widget-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>{{ t('doctor.dashboard.upcoming_appointments') }}</h5>
                     <a href="{{ url_for('doctor.appointments') }}" class="btn btn-sm btn-outline-primary">{{ t('doctor.dashboard.all') }}</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         {% for appointment in upcoming_appointments %}
-                        <div class="list-group-item">
+                        <div class="list-group-item med-list-item">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
                                     <h6 class="mb-1">{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</h6>
@@ -190,23 +190,23 @@
                                 </div>
                                 <div>
                                     {% if appointment.status == 'scheduled' %}
-                                        <span class="badge bg-primary">{{ t('status.scheduled') }}</span>
+                                        <span class="badge bg-primary med-status-pill">{{ t('status.scheduled') }}</span>
                                     {% elif appointment.status == 'in_progress' %}
-                                        <span class="badge bg-warning text-dark">{{ t('status.in_progress') }}</span>
+                                        <span class="badge bg-warning text-dark med-status-pill">{{ t('status.in_progress') }}</span>
                                     {% elif appointment.status == 'awaiting_report' %}
-                                        <span class="badge text-white" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
+                                        <span class="badge text-white med-status-pill" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
                                     {% elif appointment.status == 'completed' %}
-                                        <span class="badge bg-success">{{ t('status.completed') }}</span>
+                                        <span class="badge bg-success med-status-pill">{{ t('status.completed') }}</span>
                                     {% elif appointment.status == 'cancelled' %}
-                                        <span class="badge bg-danger">{{ t('status.cancelled') }}</span>
+                                        <span class="badge bg-danger med-status-pill">{{ t('status.cancelled') }}</span>
                                     {% else %}
-                                        <span class="badge bg-secondary">{{ appointment.status }}</span>
+                                        <span class="badge bg-secondary med-status-pill">{{ appointment.status }}</span>
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
                         {% else %}
-                        <div class="list-group-item text-center text-muted py-4">
+                        <div class="list-group-item med-list-item text-center text-muted py-4">
                             <i class="fas fa-calendar-check fa-2x mb-2 d-block"></i>
                             {{ t('doctor.dashboard.no_upcoming_appointments') }}
                         </div>

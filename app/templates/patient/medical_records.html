@@ -40,7 +40,7 @@
         </div>
     </div>
 
-    <div class="card shadow-sm mb-4">
+    <div class="card med-widget mb-4">
         <div class="card-body py-2">
             <div class="d-flex flex-wrap gap-2">
                 <a href="{{ url_for('patient.medical_records') }}"
@@ -75,13 +75,13 @@
         </div>
     </div>
 
-    <div class="card shadow-sm">
+    <div class="card med-widget">
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
                 {% for record in records %}
-                <div class="list-group-item record-item py-3 px-4">
+                <div class="list-group-item record-item med-list-item py-3 px-4">
                     <div class="d-flex align-items-start">
-                        <div class="record-icon {{ record.record_type or 'default' }} me-3 flex-shrink-0">
+                        <div class="record-icon med-icon-tile {{ record.record_type or 'default' }} me-3 flex-shrink-0">
                             {% if record.record_type == 'examination' %}
                                 <i class="fas fa-stethoscope"></i>
                             {% elif record.record_type == 'prescription' %}
@@ -125,7 +125,7 @@
                     </div>
                 </div>
                 {% else %}
-                <div class="list-group-item text-center py-5">
+                <div class="list-group-item med-list-item text-center py-5">
                     <i class="fas fa-folder-open fa-4x text-muted mb-3 d-block opacity-50"></i>
                     <h5 class="text-muted">{{ t('patient.medical_records.none_found_title') }}</h5>
                     <p class="text-muted">{{ t('patient.medical_records.none_found_subtitle') }}</p>

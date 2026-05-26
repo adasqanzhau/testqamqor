@@ -1,4 +1,73 @@
 /* CSS Custom */
+
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1d4ed8;
+    --primary-light: #3b82f6;
+    --primary-bg: #eff6ff;
+    --secondary: #10b981;
+    --secondary-dark: #059669;
+    --secondary-light: #34d399;
+    --accent: #8b5cf6;
+    --accent-dark: #7c3aed;
+    --bg: #f0f4f8;
+    --card-bg: #ffffff;
+    --text: #1e293b;
+    --text-light: #64748b;
+    --text-muted: #94a3b8;
+    --border: #e2e8f0;
+    --border-light: #f1f5f9;
+    --danger: #ef4444;
+    --warning: #f59e0b;
+    --info: #06b6d4;
+    --success: #10b981;
+    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 16px;
+    --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    --sidebar-width: 260px;
+    --navbar-height: 64px;
+
+    /* Theme surfaces (light defaults) */
+    --sidebar-bg-top: #1e293b;
+    --sidebar-bg-bottom: #0f172a;
+    --chat-bg: #f8fafc;
+    --video-room-bg: #0f172a;
+    --video-container-bg: #1e293b;
+    --video-controls-bg: rgba(15, 23, 42, 0.95);
+    --spinner-overlay-bg: rgba(255, 255, 255, 0.85);
+    --footer-bg: #1e293b;
+    --table-row-hover-bg: #f8fafc;
+}
+
+:root[data-theme="dark"] {
+    /* Surfaces */
+    --bg: #0b1220;
+    --card-bg: #0f172a;
+    --text: #e5e7eb;
+    --text-light: #a7b0c0;
+    --text-muted: #6b7280;
+    --border: rgba(148, 163, 184, 0.25);
+    --border-light: rgba(148, 163, 184, 0.15);
+
+    /* Icon backgrounds / small fills */
+    --primary-bg: rgba(59, 130, 246, 0.18);
+
+    /* Theme surfaces */
+    --sidebar-bg-top: #0f172a;
+    --sidebar-bg-bottom: #0b1220;
+    --chat-bg: #0f172a;
+    --video-room-bg: #0f172a;
+    --video-container-bg: #0b1220;
+    --video-controls-bg: rgba(2, 6, 23, 0.75);
+    --spinner-overlay-bg: rgba(0, 0, 0, 0.55);
+    --footer-bg: #0f172a;
+    --table-row-hover-bg: rgba(148, 163, 184, 0.12);
+}
 :root {
     --primary: #2563eb;
     --primary-dark: #1d4ed8;
@@ -119,12 +188,12 @@ a:hover {
 .navbar-brand i {
     color: var(--secondary-light);
     font-size: 1.5rem;
-    animation: pulse-heart 2s ease-in-out infinite;
+    animation: pulse-heart 4s ease-in-out infinite;
 }
 
 @keyframes pulse-heart {
     0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.15); }
+    50% { transform: scale(1.05); }
 }
 
 .navbar .nav-link {
@@ -279,7 +348,7 @@ a:hover {
     box-shadow: var(--shadow-md);
     font-size: 0.9rem;
     font-weight: 500;
-    animation: slideInRight 0.4s ease;
+    animation: slideInRight 0.25s ease;
 }
 
 @keyframes slideInRight {
@@ -288,7 +357,7 @@ a:hover {
 }
 
 .flash-alert.fade-out {
-    animation: slideOutRight 0.4s ease forwards;
+    animation: slideOutRight 0.25s ease forwards;
 }
 
 @keyframes slideOutRight {
@@ -311,7 +380,7 @@ a:hover {
 
 .sidebar {
     width: var(--sidebar-width);
-    background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%);
+    background: linear-gradient(180deg, var(--sidebar-bg-top) 0%, var(--sidebar-bg-bottom) 100%);
     position: fixed;
     top: var(--navbar-height);
     left: 0;
@@ -409,8 +478,8 @@ a:hover {
 }
 
 .card:hover {
-    box-shadow: var(--shadow);
-    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm);
+    transform: none;
 }
 
 .card-header {
@@ -423,6 +492,56 @@ a:hover {
 
 .card-body {
     padding: 20px;
+}
+
+/* Medical widget primitives (minimal/clinical) */
+.med-widget {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    box-shadow: none;
+    transition: var(--transition);
+}
+
+.med-widget:hover {
+    box-shadow: var(--shadow-sm);
+    transform: none;
+}
+
+.med-widget-header {
+    background: transparent;
+    border-bottom: 1px solid var(--border);
+    padding: 14px 16px;
+    font-weight: 700;
+}
+
+.med-icon-tile {
+    width: 44px;
+    height: 44px;
+    border-radius: 14px;
+    background: var(--primary-bg);
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.badge.med-status-pill {
+    border-radius: 999px;
+    padding: 0.45rem 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    line-height: 1;
+}
+
+.med-list-item {
+    border-bottom: 1px solid var(--border-light);
+    padding: 14px 16px;
+}
+
+.med-list-item:last-child {
+    border-bottom: none;
 }
 
 /*  Stats Cards  */
@@ -438,8 +557,8 @@ a:hover {
 }
 
 .stat-card:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-3px);
+    box-shadow: var(--shadow-sm);
+    transform: none;
 }
 
 .stat-card.primary { border-left-color: var(--primary); }
@@ -527,7 +646,7 @@ a:hover {
 }
 
 .table tbody tr:hover {
-    background: #f8fafc;
+    background: var(--table-row-hover-bg);
 }
 
 .table tbody tr:last-child td {
@@ -539,7 +658,7 @@ a:hover {
     font-weight: 600;
     font-size: 0.75rem;
     padding: 5px 10px;
-    border-radius: 6px;
+    border-radius: 999px;
     letter-spacing: 0.2px;
 }
 
@@ -615,12 +734,12 @@ textarea.form-control {
     font-weight: 600;
     font-size: 0.9rem;
     padding: 10px 20px;
-    border-radius: var(--radius-sm);
+    border-radius: 999px;
     transition: var(--transition);
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    border: none;
+    border: 1px solid transparent;
 }
 
 .btn-primary {
@@ -630,8 +749,8 @@ textarea.form-control {
 
 .btn-primary:hover {
     background: var(--primary-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
+    transform: none;
+    box-shadow: 0 3px 10px rgba(37, 99, 235, 0.18);
 }
 
 .btn-success {
@@ -641,8 +760,8 @@ textarea.form-control {
 
 .btn-success:hover {
     background: var(--secondary-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.35);
+    transform: none;
+    box-shadow: 0 3px 10px rgba(16, 185, 129, 0.18);
 }
 
 .btn-accent {
@@ -652,8 +771,8 @@ textarea.form-control {
 
 .btn-accent:hover {
     background: var(--accent-dark);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.35);
+    transform: none;
+    box-shadow: 0 3px 10px rgba(139, 92, 246, 0.18);
 }
 
 .btn-outline-primary {
@@ -682,7 +801,7 @@ textarea.form-control {
     height: calc(100vh - var(--navbar-height));
     display: flex;
     flex-direction: column;
-    background: #0f172a;
+    background: var(--video-room-bg);
     padding: 0;
 }
 
@@ -700,7 +819,7 @@ textarea.form-control {
 
 .video-container {
     position: relative;
-    background: #1e293b;
+    background: var(--video-container-bg);
     border-radius: var(--radius);
     overflow: hidden;
     display: flex;
@@ -747,7 +866,7 @@ textarea.form-control {
     justify-content: center;
     gap: 12px;
     padding: 16px;
-    background: rgba(15, 23, 42, 0.95);
+    background: var(--video-controls-bg);
     backdrop-filter: blur(12px);
 }
 
@@ -836,7 +955,7 @@ textarea.form-control {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    background: #f8fafc;
+    background: var(--chat-bg);
 }
 
 .message-bubble {
@@ -846,11 +965,11 @@ textarea.form-control {
     font-size: 0.9rem;
     line-height: 1.5;
     position: relative;
-    animation: messageIn 0.3s ease;
+    animation: messageIn 0.15s ease;
 }
 
 @keyframes messageIn {
-    from { transform: translateY(10px); opacity: 0; }
+    from { transform: translateY(6px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
@@ -1027,7 +1146,7 @@ textarea.form-control {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(255, 255, 255, 0.85);
+    background: var(--spinner-overlay-bg);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1158,7 +1277,7 @@ textarea.form-control {
 
 /*  Footer  */
 .app-footer {
-    background: #1e293b;
+    background: var(--footer-bg);
     color: rgba(255, 255, 255, 0.6);
     padding: 20px 0;
     font-size: 0.85rem;
