@@ -8,7 +8,7 @@
         <h2><i class="fas fa-calendar-check me-2"></i>{{ t('doctor.appointments.title') }}</h2>
     </div>
 
-    <div class="card shadow-sm med-widget mb-4">
+    <div class="card shadow-sm mb-4">
         <div class="card-body">
             <form method="GET" action="{{ url_for('doctor.appointments') }}" class="row g-3 align-items-end">
                 <div class="col-md-4">
@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <div class="card shadow-sm med-widget">
+    <div class="card shadow-sm">
         <div class="card-body p-0">
             <div class="table-responsive">
                 <table class="table table-hover mb-0">
@@ -68,17 +68,17 @@
                             </td>
                             <td>
                                 {% if appointment.status == 'scheduled' %}
-                                    <span class="badge bg-primary med-status-pill">{{ t('status.scheduled') }}</span>
+                                    <span class="badge bg-primary">{{ t('status.scheduled') }}</span>
                                 {% elif appointment.status == 'in_progress' %}
-                                    <span class="badge bg-warning text-dark med-status-pill">{{ t('status.in_progress') }}</span>
+                                    <span class="badge bg-warning text-dark">{{ t('status.in_progress') }}</span>
                                 {% elif appointment.status == 'awaiting_report' %}
-                                    <span class="badge text-white med-status-pill" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
+                                    <span class="badge text-white" style="background-color: #f97316;">{{ t('status.awaiting_report') }}</span>
                                 {% elif appointment.status == 'completed' %}
-                                    <span class="badge bg-success med-status-pill">{{ t('status.completed') }}</span>
+                                    <span class="badge bg-success">{{ t('status.completed') }}</span>
                                 {% elif appointment.status == 'cancelled' %}
-                                    <span class="badge bg-danger med-status-pill">{{ t('status.cancelled') }}</span>
+                                    <span class="badge bg-danger">{{ t('status.cancelled') }}</span>
                                 {% else %}
-                                    <span class="badge bg-secondary med-status-pill">{{ appointment.status }}</span>
+                                    <span class="badge bg-secondary">{{ appointment.status }}</span>
                                 {% endif %}
                             </td>
                             <td>

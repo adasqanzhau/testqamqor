@@ -22,7 +22,7 @@
 
     <div class="row g-4 mb-4">
         <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm med-widget h-100">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
@@ -37,7 +37,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm med-widget h-100">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm med-widget h-100">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
@@ -67,7 +67,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm med-widget h-100">
+            <div class="card border-0 shadow-sm h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
@@ -85,8 +85,8 @@
 
     <div class="row g-4">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm med-widget">
-                <div class="card-header med-widget-header border-0 pt-4 pb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-4 pb-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <h5 class="fw-bold mb-0">
                             <i class="fas fa-calendar-day text-primary me-2"></i>{{ t('clinic.dashboard.today_schedule') }}
@@ -126,15 +126,15 @@
                                     <td>{{ appointment.doctor.full_name }}</td>
                                     <td>
                                         {% if appointment.status == 'confirmed' %}
-                                            <span class="badge bg-success bg-opacity-10 text-success med-status-pill">{{ t('status.confirmed') }}</span>
+                                            <span class="badge bg-success bg-opacity-10 text-success">{{ t('status.confirmed') }}</span>
                                         {% elif appointment.status == 'pending' %}
-                                            <span class="badge bg-warning bg-opacity-10 text-warning med-status-pill">{{ t('status.pending') }}</span>
+                                            <span class="badge bg-warning bg-opacity-10 text-warning">{{ t('status.pending') }}</span>
                                         {% elif appointment.status == 'completed' %}
-                                            <span class="badge bg-info bg-opacity-10 text-info med-status-pill">{{ t('status.completed') }}</span>
+                                            <span class="badge bg-info bg-opacity-10 text-info">{{ t('status.completed') }}</span>
                                         {% elif appointment.status == 'cancelled' %}
-                                            <span class="badge bg-danger bg-opacity-10 text-danger med-status-pill">{{ t('status.cancelled') }}</span>
+                                            <span class="badge bg-danger bg-opacity-10 text-danger">{{ t('status.cancelled') }}</span>
                                         {% else %}
-                                            <span class="badge bg-secondary bg-opacity-10 text-secondary med-status-pill">{{ appointment.status }}</span>
+                                            <span class="badge bg-secondary bg-opacity-10 text-secondary">{{ appointment.status }}</span>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -153,8 +153,8 @@
         </div>
 
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm med-widget">
-                <div class="card-header med-widget-header border-0 pt-4 pb-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-header bg-white border-0 pt-4 pb-3">
                     <h5 class="fw-bold mb-0">
                         <i class="fas fa-bolt text-warning me-2"></i>{{ t('clinic.dashboard.quick_actions') }}
                     </h5>
