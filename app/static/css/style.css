@@ -1334,3 +1334,425 @@ textarea.form-control {
         font-size: 1.4rem;
     }
 }
+
+:root {
+    --primary: #0f766e;
+    --primary-dark: #115e59;
+    --primary-light: #14b8a6;
+    --primary-bg: #ecfdf5;
+    --secondary: #0f766e;
+    --secondary-dark: #115e59;
+    --secondary-light: #5eead4;
+    --accent: #0ea5e9;
+    --accent-dark: #0284c7;
+    --bg: #f8fafc;
+    --card-bg: #ffffff;
+    --text: #0f172a;
+    --text-light: #64748b;
+    --text-muted: #94a3b8;
+    --border: #e5e7eb;
+    --border-light: #f1f5f9;
+    --danger: #dc2626;
+    --warning: #d97706;
+    --info: #0284c7;
+    --success: #059669;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow: 0 12px 30px rgba(15, 23, 42, 0.06);
+    --shadow-md: 0 18px 45px rgba(15, 23, 42, 0.08);
+    --shadow-lg: 0 26px 70px rgba(15, 23, 42, 0.12);
+    --radius: 18px;
+    --radius-sm: 12px;
+    --radius-lg: 26px;
+    --transition: all 0.18s ease;
+    --navbar-height: 72px;
+}
+
+body {
+    background:
+        radial-gradient(circle at 8% 0%, rgba(20, 184, 166, 0.08), transparent 28rem),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 42%, #ffffff 100%);
+    color: var(--text);
+    letter-spacing: -0.01em;
+}
+
+.navbar {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(22px);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.9);
+    box-shadow: none;
+}
+
+.navbar .container-fluid {
+    max-width: 1440px;
+}
+
+.navbar-brand {
+    color: var(--text) !important;
+    gap: 0.35rem;
+}
+
+.navbar-brand i {
+    width: 38px;
+    height: 38px;
+    border-radius: 14px;
+    background: var(--primary-bg);
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    animation: none;
+}
+
+.navbar .nav-link {
+    color: var(--text-light) !important;
+    font-size: 0.88rem;
+    border-radius: 999px;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link.active,
+.navbar .dropdown.show > .nav-link {
+    color: var(--text) !important;
+    background: #f1f5f9;
+}
+
+.navbar .nav-link i {
+    color: var(--primary);
+}
+
+.navbar .btn-outline-light {
+    border: 1px solid var(--border);
+    background: #fff;
+    color: var(--text) !important;
+}
+
+.navbar .btn-light {
+    background: var(--primary);
+    color: #fff;
+}
+
+.navbar-toggler {
+    filter: invert(1);
+}
+
+.user-avatar {
+    background: var(--primary-bg);
+    color: var(--primary);
+}
+
+.dropdown-menu {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-md);
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    border-radius: 10px;
+    font-weight: 500;
+    padding: 0.55rem 0.8rem;
+}
+
+.dropdown-item:hover,
+.dropdown-item.active {
+    background: var(--primary-bg);
+    color: var(--primary);
+}
+
+.main-content {
+    padding: 32px 0;
+}
+
+.dashboard-content {
+    padding: 34px;
+}
+
+.page-header {
+    margin-bottom: 24px;
+}
+
+.page-header h1 {
+    font-size: clamp(1.65rem, 2vw, 2.2rem);
+    font-weight: 760;
+    letter-spacing: -0.045em;
+}
+
+.page-header p {
+    max-width: 680px;
+}
+
+.card,
+.stat-card,
+.table-container,
+.doctor-card,
+.appointment-card,
+.health-metric-card,
+.chat-container {
+    border-color: rgba(226, 232, 240, 0.95);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.card:hover,
+.stat-card:hover,
+.doctor-card:hover,
+.health-metric-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+}
+
+.card-header {
+    background: #fff;
+    padding: 18px 22px;
+}
+
+.card-body {
+    padding: 22px;
+}
+
+.stat-card {
+    border-left: 0;
+    padding: 22px;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary), rgba(14, 165, 233, 0.55));
+}
+
+.stat-card .stat-icon,
+.health-metric-card .metric-icon,
+.doctor-card .doctor-avatar,
+.appointment-card .appt-date,
+.avatar {
+    border-radius: 18px;
+    background: var(--primary-bg);
+    color: var(--primary);
+}
+
+.stat-card .stat-value,
+.health-metric-card .metric-value {
+    font-weight: 760;
+    letter-spacing: -0.04em;
+}
+
+.table {
+    --bs-table-bg: #fff;
+}
+
+.table thead th {
+    background: #f8fafc;
+    border-bottom: 1px solid var(--border);
+    color: #475569;
+    font-size: 0.74rem;
+}
+
+.table tbody td {
+    padding: 16px;
+}
+
+.table tbody tr:hover {
+    background: #fbfdff;
+}
+
+.form-control,
+.form-select {
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    min-height: 44px;
+    background: #fff;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12);
+}
+
+.form-label {
+    color: #334155;
+}
+
+.btn {
+    border-radius: 999px;
+    box-shadow: none !important;
+}
+
+.btn-primary,
+.btn-success,
+.btn-accent {
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.btn-primary:hover,
+.btn-success:hover,
+.btn-accent:hover {
+    background: var(--primary-dark);
+    border-color: var(--primary-dark);
+    transform: translateY(-1px);
+}
+
+.btn-outline-primary {
+    border: 1px solid var(--border);
+    color: var(--primary);
+    background: #fff;
+}
+
+.btn-outline-primary:hover {
+    border-color: var(--primary);
+    background: var(--primary-bg);
+    color: var(--primary-dark);
+}
+
+.badge {
+    border-radius: 999px;
+    font-weight: 650;
+}
+
+.badge.bg-confirmed,
+.badge.bg-active,
+.badge.bg-completed,
+.badge.bg-pending,
+.badge.bg-inactive {
+    background: #f1f5f9 !important;
+    color: #334155;
+}
+
+.badge.bg-completed,
+.badge.bg-active {
+    background: var(--primary-bg) !important;
+    color: var(--primary-dark);
+}
+
+.sidebar {
+    background: #ffffff;
+    border-right: 1px solid var(--border);
+    box-shadow: none;
+}
+
+.sidebar-nav .nav-section {
+    color: var(--text-muted);
+}
+
+.sidebar-nav .nav-item a {
+    color: var(--text-light);
+    border-left: 0;
+    margin: 2px 12px;
+    border-radius: 14px;
+    padding: 11px 14px;
+}
+
+.sidebar-nav .nav-item a:hover,
+.sidebar-nav .nav-item a.active {
+    color: var(--primary-dark);
+    background: var(--primary-bg);
+    border-left-color: transparent;
+}
+
+.notification-dropdown {
+    border-radius: var(--radius-lg);
+}
+
+.notification-header,
+.notification-footer,
+.chat-messages {
+    background: #f8fafc;
+}
+
+.notification-item:hover,
+.notification-item.unread {
+    background: var(--primary-bg);
+}
+
+.chat-container {
+    overflow: hidden;
+}
+
+.message-bubble.sent {
+    background: var(--primary);
+}
+
+.message-bubble.ai-message {
+    background: var(--primary-bg);
+    border-color: rgba(20, 184, 166, 0.24);
+}
+
+.video-container,
+.video-room,
+.video-controls {
+    background: #0b1220;
+}
+
+.app-footer {
+    background: #ffffff;
+    color: var(--text-light);
+    border-top: 1px solid var(--border);
+}
+
+.app-footer a {
+    color: var(--text-light) !important;
+}
+
+.app-footer a:hover {
+    color: var(--primary) !important;
+}
+
+.empty-state i {
+    width: 76px;
+    height: 76px;
+    border-radius: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-bg);
+    color: var(--primary);
+    font-size: 2rem;
+}
+
+.auth-wrapper {
+    background:
+        radial-gradient(circle at 20% 15%, rgba(20, 184, 166, 0.12), transparent 26rem),
+        linear-gradient(180deg, #ffffff 0%, #f8fafc 100%) !important;
+}
+
+.auth-card {
+    border: 1px solid var(--border) !important;
+    border-radius: 28px !important;
+    box-shadow: var(--shadow-md) !important;
+}
+
+.auth-icon {
+    background: var(--primary-bg) !important;
+    color: var(--primary) !important;
+    box-shadow: none !important;
+}
+
+.auth-icon i {
+    color: var(--primary) !important;
+}
+
+.btn-gradient {
+    background: var(--primary) !important;
+    border-radius: 999px !important;
+    box-shadow: none !important;
+}
+
+.auth-language-switcher select {
+    background: #fff !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+@media (max-width: 991.98px) {
+    .navbar .navbar-collapse {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow);
+    }
+}
