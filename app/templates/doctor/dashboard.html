@@ -3,8 +3,8 @@
 {% block title %}{{ t('doctor.dashboard.title') }}{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="app-shell dashboard-page py-4">
+    <div class="page-header page-header-card d-flex justify-content-between align-items-center mb-4">
         <h2><i class="fas fa-user-md me-2"></i>{{ t('doctor.dashboard.welcome_name').replace('%(name)s', current_user.first_name ~ ' ' ~ current_user.last_name) }}</h2>
         <div>
             <a href="{{ url_for('doctor.appointments') }}" class="btn btn-outline-primary">
@@ -13,9 +13,9 @@
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
+    <div class="row dashboard-stats g-3 mb-4">
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-primary border-4 shadow-sm h-100">
+            <div class="card metric-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-info border-4 shadow-sm h-100">
+            <div class="card metric-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-success border-4 shadow-sm h-100">
+            <div class="card metric-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -60,7 +60,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-warning border-4 shadow-sm h-100">
+            <div class="card metric-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -76,9 +76,9 @@
         </div>
     </div>
 
-    <div class="row g-4">
+    <div class="row dashboard-grid g-4">
         <div class="col-lg-7">
-            <div class="card shadow-sm">
+            <div class="card panel-card">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-clock me-2"></i>{{ t('doctor.dashboard.today_schedule') }}</h5>
                     <span class="badge bg-primary rounded-pill">{{ today_appointments|length }}</span>
@@ -171,7 +171,7 @@
         </div>
 
         <div class="col-lg-5">
-            <div class="card shadow-sm">
+            <div class="card panel-card">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>{{ t('doctor.dashboard.upcoming_appointments') }}</h5>
                     <a href="{{ url_for('doctor.appointments') }}" class="btn btn-sm btn-outline-primary">{{ t('doctor.dashboard.all') }}</a>
@@ -179,7 +179,7 @@
                 <div class="card-body p-0">
                     <div class="list-group list-group-flush">
                         {% for appointment in upcoming_appointments %}
-                        <div class="list-group-item">
+                        <div class="list-group-item widget-list-item">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
                                     <h6 class="mb-1">{{ appointment.patient.first_name }} {{ appointment.patient.last_name }}</h6>

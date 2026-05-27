@@ -3,8 +3,8 @@
 {% block title %}{{ t('admin.dashboard.title') }}{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<div class="app-shell dashboard-page py-4">
+    <div class="page-header page-header-card d-flex justify-content-between align-items-center mb-4">
         <h2><i class="fas fa-tachometer-alt me-2"></i>{{ t('admin.dashboard.welcome_name') % {'name': current_user.first_name} }}</h2>
         <div>
             <a href="{{ url_for('admin.create_clinic') }}" class="btn btn-primary me-2">
@@ -16,9 +16,9 @@
         </div>
     </div>
 
-    <div class="row g-4 mb-4">
+    <div class="row dashboard-stats g-3 mb-4">
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-primary border-4 shadow-sm h-100">
+            <div class="card metric-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-success border-4 shadow-sm h-100">
+            <div class="card metric-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -48,7 +48,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-info border-4 shadow-sm h-100">
+            <div class="card metric-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -63,7 +63,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-start border-warning border-4 shadow-sm h-100">
+            <div class="card metric-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -79,9 +79,9 @@
         </div>
     </div>
 
-    <div class="row g-4">
+    <div class="row dashboard-grid g-4">
         <div class="col-lg-6">
-            <div class="card shadow-sm">
+            <div class="card panel-card">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-hospital me-2"></i>{{ t('admin.dashboard.recent_clinics') }}</h5>
                     <a href="{{ url_for('admin.clinics') }}" class="btn btn-sm btn-outline-primary">{{ t('admin.dashboard.all') }}</a>
@@ -124,7 +124,7 @@
         </div>
 
         <div class="col-lg-6">
-            <div class="card shadow-sm">
+            <div class="card panel-card">
                 <div class="card-header bg-white d-flex justify-content-between align-items-center">
                     <h5 class="mb-0"><i class="fas fa-calendar-alt me-2"></i>{{ t('admin.dashboard.recent_appointments') }}</h5>
                 </div>
