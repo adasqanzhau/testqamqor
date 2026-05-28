@@ -26,7 +26,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
+<div class="app-shell dashboard-page">
     <div class="mb-4">
         <h2 class="mb-1"><i class="fas fa-star me-2 text-warning"></i>{{ t('patient.reviews.title') }}</h2>
         <p class="text-muted mb-0">{{ t('patient.reviews.subtitle') }}</p>
@@ -41,8 +41,8 @@
                 <div class="pending-review-card p-3">
                     <div class="d-flex justify-content-between align-items-center">
                         <div class="d-flex align-items-center">
-                            <div class="bg-warning bg-opacity-10 rounded-circle p-2 me-3 text-center" style="width: 42px; height: 42px;">
-                                <i class="fas fa-user-md text-warning mt-1"></i>
+                            <div class="rounded-circle p-2 me-3 text-center" style="width: 42px; height: 42px; background: #f0f4f8;">
+                                <i class="fas fa-user-md text-primary mt-1"></i>
                             </div>
                             <div>
                                 <h6 class="mb-0 fw-semibold">{{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }}</h6>
@@ -68,11 +68,11 @@
     <div class="row g-4">
         {% for review in my_reviews %}
         <div class="col-lg-6">
-            <div class="card review-card shadow-sm h-100">
+            <div class="panel-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-start mb-3">
                         <div class="d-flex align-items-center">
-                            <div class="bg-primary bg-opacity-10 rounded-circle p-2 me-3 text-center" style="width: 42px; height: 42px;">
+                            <div class="rounded-circle p-2 me-3 text-center" style="width: 42px; height: 42px; background: #f0f4f8;">
                                 <i class="fas fa-user-md text-primary mt-1"></i>
                             </div>
                             <div>
@@ -104,7 +104,7 @@
         {% else %}
         {% if not pending_reviews %}
         <div class="col-12">
-            <div class="card shadow-sm">
+            <div class="panel-card">
                 <div class="card-body text-center py-5">
                     <i class="fas fa-star fa-4x text-muted mb-3 d-block opacity-50"></i>
                     <h5 class="text-muted">{{ t('patient.reviews.none_found_title') }}</h5>

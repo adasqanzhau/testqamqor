@@ -3,7 +3,7 @@
 {% block title %}{{ t('clinic.dashboard.patients') }} - Qamqor{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
+<div class="app-shell dashboard-page">
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
+    <div class="panel-card">
         <div class="card-body p-0">
             {% if patients %}
             <div class="table-responsive">

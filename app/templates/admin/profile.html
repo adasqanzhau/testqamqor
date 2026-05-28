@@ -3,7 +3,7 @@
 {% block title %}{{ t('admin.profile.title') }}{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
+<div class="app-shell dashboard-page">
     <div class="row justify-content-center">
         <div class="col-lg-6">
             <h2 class="mb-4"><i class="fas fa-user-cog me-2"></i>{{ t('admin.profile.title') }}</h2>
@@ -21,7 +21,7 @@
             </div>
             {% endif %}
 
-            <div class="card shadow-sm">
+            <div class="panel-card">
                 <div class="card-body">
                     <div class="text-center mb-4">
                         {% if current_user.avatar %}

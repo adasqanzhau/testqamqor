@@ -13,7 +13,8 @@
         align-items: center;
         gap: 1rem;
         padding: 1rem;
-        background: linear-gradient(135deg, #f8f9ff 0%, #eef1ff 100%);
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
         border-radius: 12px;
         margin-bottom: 1.5rem;
     }
@@ -21,13 +22,14 @@
         width: 64px;
         height: 64px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #667eea, #764ba2);
+        background: #eef2ff;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: white;
+        color: #4f46e5;
         font-size: 1.6rem;
         flex-shrink: 0;
+        border: 2px solid #e2e8f0;
     }
     .star-picker {
         display: flex;
@@ -62,7 +64,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container py-4">
+<div class="app-shell">
     <div class="row justify-content-center">
         <div class="col-lg-7">
             <div class="mb-4">
@@ -73,7 +75,7 @@
                 <p class="text-muted mb-0">{{ t('patient.reviews.leave_subtitle') }}</p>
             </div>
 
-            <div class="card review-form-card shadow-sm">
+            <div class="panel-card">
                 <div class="card-body p-4">
                     <!-- Doctor info -->
                     <div class="doctor-info-row">

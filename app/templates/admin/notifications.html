@@ -3,7 +3,7 @@
 {% block title %}{{ t('admin.notifications.title') }}{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
+<div class="app-shell dashboard-page">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <h2 class="mb-4"><i class="fas fa-bell me-2"></i>{{ t('admin.notifications.title') }}</h2>
@@ -64,7 +64,7 @@
             {% endif %}
 
             {% else %}
-            <div class="card shadow-sm">
+            <div class="panel-card">
                 <div class="card-body text-center text-muted py-5">
                     <i class="fas fa-bell-slash fa-3x mb-3 d-block"></i>
                     <p class="mb-0">{{ t('admin.notifications.none_found') }}</p>

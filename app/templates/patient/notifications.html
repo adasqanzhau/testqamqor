@@ -36,7 +36,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
+<div class="app-shell dashboard-page">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="mb-1"><i class="fas fa-bell me-2 text-primary"></i>{{ t('patient.notifications.title') }}</h2>
@@ -50,7 +50,7 @@
         </form>
     </div>
 
-    <div class="card shadow-sm">
+    <div class="panel-card">
         <div class="card-body p-0">
             <div class="list-group list-group-flush">
                 {% for notification in notifications %}

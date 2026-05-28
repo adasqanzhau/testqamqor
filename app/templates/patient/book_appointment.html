@@ -7,73 +7,89 @@
     .step-indicator {
         display: flex;
         justify-content: center;
+        align-items: center;
         margin-bottom: 2rem;
+        gap: 0;
     }
     .step {
         display: flex;
         align-items: center;
-        color: #adb5bd;
+        color: var(--color-text-muted, #94a3b8);
+        font-weight: 500;
+        font-size: 0.875rem;
     }
-    .step.active {
-        color: #0d6efd;
-    }
-    .step.completed {
-        color: #198754;
-    }
+    .step.active { color: var(--color-primary, #0d6efd); }
+    .step.completed { color: #16a34a; }
     .step-number {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
-        font-weight: bold;
+        font-weight: 700;
+        font-size: 0.85rem;
         border: 2px solid currentColor;
         margin-right: 0.5rem;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
     }
     .step.active .step-number {
-        background: #0d6efd;
-        color: white;
-        border-color: #0d6efd;
+        background: var(--color-primary, #0d6efd);
+        color: #fff;
+        border-color: var(--color-primary, #0d6efd);
+        box-shadow: 0 0 0 4px rgba(13,110,253,.12);
     }
     .step.completed .step-number {
-        background: #198754;
-        color: white;
-        border-color: #198754;
+        background: #16a34a;
+        color: #fff;
+        border-color: #16a34a;
     }
     .step-line {
-        width: 50px;
+        width: 48px;
         height: 2px;
-        background: #dee2e6;
-        margin: 0 0.75rem;
+        background: #e2e8f0;
+        margin: 0 0.5rem;
+        flex-shrink: 0;
     }
+    .step.completed + .step-line { background: #16a34a; }
     .time-slot-btn {
-        border: 2px solid #dee2e6;
+        border: 1.5px solid #e2e8f0;
         border-radius: 8px;
-        padding: 0.5rem 1rem;
-        background: white;
+        padding: 0.45rem 0.9rem;
+        background: #fff;
         cursor: pointer;
-        transition: all 0.2s ease;
-        color: #333;
+        transition: all 0.15s ease;
+        color: #374151;
+        font-size: 0.875rem;
+        font-weight: 500;
     }
     .time-slot-btn:hover {
-        border-color: #0d6efd;
-        color: #0d6efd;
+        border-color: var(--color-primary, #0d6efd);
+        color: var(--color-primary, #0d6efd);
+        background: #f0f7ff;
     }
     .time-slot-btn.selected {
-        background: #0d6efd;
-        border-color: #0d6efd;
-        color: white;
+        background: var(--color-primary, #0d6efd);
+        border-color: var(--color-primary, #0d6efd);
+        color: #fff;
+        box-shadow: 0 2px 8px rgba(13,110,253,.2);
     }
     .time-slot-btn:disabled {
-        opacity: 0.4;
+        opacity: 0.38;
         cursor: not-allowed;
+    }
+    .booking-step-title {
+        font-size: 1rem;
+        font-weight: 600;
+        color: #1e293b;
+        margin-bottom: 1.25rem;
     }
 </style>
 {% endblock %}
 
 {% block content %}
-<div class="container py-4">
+<div class="app-shell">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <!-- Heading -->
@@ -99,13 +115,13 @@
                 </div>
             </div>
 
-            <div class="card shadow-sm">
+            <div class="panel-card">
                 <div class="card-body p-4">
                     <form method="POST" action="{{ url_for('patient.book_appointment') }}" id="bookingForm">
                         {{ form.hidden_tag() }}
 
                         <div class="step-content" id="step1">
-                            <h5 class="mb-3"><i class="fas fa-user-md me-2"></i>{{ t('patient.booking.select_doctor_title', 'Выберите врача') }}</h5>
+                            <p class="booking-step-title"><i class="fas fa-user-md me-2 text-primary"></i>{{ t('patient.booking.select_doctor_title', 'Выберите врача') }}</p>
                             <div class="row g-2 mb-3">
                                 <div class="col-md-7">
                                      <input type="text" id="doctorSearch" class="form-control"
@@ -147,7 +163,7 @@
                         </div>
 
                         <div class="step-content d-none" id="step2">
-                            <h5 class="mb-3"><i class="fas fa-calendar me-2"></i>{{ t('patient.booking.select_datetime_title', 'Выберите дату и время') }}</h5>
+                            <p class="booking-step-title"><i class="fas fa-calendar me-2 text-primary"></i>{{ t('patient.booking.select_datetime_title', 'Выберите дату и время') }}</p>
                             <div class="mb-3">
                                 <label for="appointment_date" class="form-label fw-semibold">{{ t('patient.booking.date_label', 'Дата приема') }}</label>
                                 <input type="date" name="scheduled_date" id="appointment_date"
@@ -188,7 +204,7 @@
                         </div>
 
                         <div class="step-content d-none" id="step3">
-                            <h5 class="mb-3"><i class="fas fa-notes-medical me-2"></i>{{ t('patient.booking.symptoms_title', 'Опишите симптомы') }}</h5>
+                            <p class="booking-step-title"><i class="fas fa-notes-medical me-2 text-primary"></i>{{ t('patient.booking.symptoms_title', 'Опишите симптомы') }}</p>
                             <div class="mb-4">
                                 <label for="symptoms" class="form-label fw-semibold">{{ t('patient.booking.symptoms_label', 'Что вас беспокоит?') }}</label>
                                 <textarea name="symptoms" id="symptoms" class="form-control"

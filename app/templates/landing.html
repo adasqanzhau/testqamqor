@@ -117,6 +117,8 @@
             padding: 0.42rem 0.85rem;
             font-weight: 600;
             outline: none;
+            cursor: pointer;
+            font-size: 0.9rem;
         }
 
         .navbar-landing.scrolled .lang-switcher {
@@ -899,7 +901,7 @@
                     {% endfor %}
                 </select>
             </div>
-            <button class="btn d-md-none" style="color: #fff; font-size: 1.25rem;" onclick="document.getElementById('mobileMenu').classList.toggle('d-none')">
+            <button class="btn d-md-none" style="color: var(--dark, #0f172a); font-size: 1.25rem;" onclick="document.getElementById('mobileMenu').classList.toggle('d-none')">
                 <i class="fas fa-bars"></i>
             </button>
         </div>

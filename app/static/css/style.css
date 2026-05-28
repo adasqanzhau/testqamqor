@@ -2087,3 +2087,239 @@ body {
         border-radius: 24px !important;
     }
 }
+
+.app-page {
+    width: min(100% - 48px, 1320px);
+    margin-inline: auto;
+}
+
+.app-grid {
+    align-items: stretch;
+}
+
+.metric-card,
+.stat-card.metric-card,
+.app-grid .metric-card,
+.dashboard-stats .metric-card {
+    background: #ffffff !important;
+    border: 1px solid #111827 !important;
+    box-shadow: 0 18px 44px rgba(15, 23, 42, 0.08) !important;
+}
+
+.metric-card::after {
+    background: #111827 !important;
+    opacity: 0.12;
+}
+
+.metric-card .fa-2x,
+.metric-card .rounded-circle,
+.panel-card .rounded-circle.bg-primary,
+.panel-card .rounded-circle.bg-success,
+.panel-card .rounded-circle.bg-warning,
+.panel-card .rounded-circle.bg-info,
+.panel-card .rounded-circle.bg-light,
+.bg-primary.bg-opacity-10,
+.bg-success.bg-opacity-10,
+.bg-warning.bg-opacity-10,
+.bg-info.bg-opacity-10 {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #111827 !important;
+}
+
+.metric-card .text-primary,
+.metric-card .text-success,
+.metric-card .text-warning,
+.metric-card .text-info,
+.panel-card .text-primary,
+.panel-card .text-success,
+.panel-card .text-warning,
+.panel-card .text-info {
+    color: #111827 !important;
+}
+
+.widget-list-item,
+.notification-item,
+.appointment-item,
+.medication-item,
+.pending-review-card,
+.doctor-info-row {
+    background: #ffffff !important;
+    border-color: var(--border) !important;
+}
+
+.widget-list-item:hover,
+.notification-item:hover,
+.appointment-item:hover,
+.pending-review-card:hover {
+    background: #fafafa !important;
+    box-shadow: inset 3px 0 0 #111827;
+}
+
+.appointment-card.widget-list-item::before {
+    background: #111827 !important;
+}
+
+.card.panel-card,
+.review-card.panel-card,
+.prescription-card.panel-card,
+.doctor-card.panel-card,
+.review-form-card.panel-card {
+    border-color: rgba(17, 24, 39, 0.16) !important;
+}
+
+.badge.bg-primary,
+.badge.bg-success,
+.badge.bg-info,
+.badge.bg-warning,
+.badge.bg-danger,
+.badge.bg-secondary {
+    border: 1px solid rgba(17, 24, 39, 0.12);
+}
+
+.lang-switcher {
+    appearance: none;
+    -webkit-appearance: none;
+    min-width: 142px !important;
+    height: 42px;
+    padding: 0 42px 0 16px !important;
+    border-radius: 999px !important;
+    border: 1px solid rgba(17, 24, 39, 0.14) !important;
+    background-color: rgba(255, 255, 255, 0.92) !important;
+    background-image: linear-gradient(45deg, transparent 50%, #111827 50%), linear-gradient(135deg, #111827 50%, transparent 50%);
+    background-position: calc(100% - 20px) 18px, calc(100% - 14px) 18px;
+    background-size: 6px 6px, 6px 6px;
+    background-repeat: no-repeat;
+    color: #111827 !important;
+    font-weight: 700;
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.08);
+}
+
+.lang-switcher:hover,
+.lang-switcher:focus {
+    border-color: #111827 !important;
+    box-shadow: 0 0 0 4px rgba(17, 24, 39, 0.08), 0 16px 34px rgba(15, 23, 42, 0.12);
+}
+
+.lang-switcher option {
+    color: #111827;
+    background: #ffffff;
+    font-weight: 600;
+}
+
+#bookingForm .step-content h5,
+.review-form-card .card-body > h5 {
+    font-weight: 780;
+    letter-spacing: -0.035em;
+}
+
+.step-indicator {
+    background: #ffffff;
+    border: 1px solid rgba(17, 24, 39, 0.14);
+    border-radius: 28px;
+    padding: 16px 20px;
+    box-shadow: 0 20px 50px rgba(15, 23, 42, 0.08);
+}
+
+.step {
+    color: var(--text-muted) !important;
+    font-weight: 700;
+}
+
+.step.active,
+.step.completed {
+    color: #111827 !important;
+}
+
+.step-number {
+    width: 42px !important;
+    height: 42px !important;
+    border-radius: 14px !important;
+    border: 1px solid #111827 !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    box-shadow: none !important;
+}
+
+.step.active .step-number,
+.step.completed .step-number {
+    background: #111827 !important;
+    color: #ffffff !important;
+    border-color: #111827 !important;
+}
+
+.step-line {
+    width: 72px !important;
+    height: 1px !important;
+    background: rgba(17, 24, 39, 0.18) !important;
+}
+
+#bookingForm .panel-card,
+#bookingForm .form-control,
+#bookingForm .form-select {
+    border-color: rgba(17, 24, 39, 0.16);
+}
+
+#bookingForm select[size] {
+    min-height: 260px;
+    border-radius: 22px;
+    padding: 10px;
+    background: #fafafa;
+}
+
+#bookingForm select[size] option {
+    padding: 12px 14px;
+    border-radius: 14px;
+    margin-bottom: 6px;
+    color: #111827;
+}
+
+#bookingForm select[size] option:checked {
+    background: #111827 linear-gradient(#111827, #111827) !important;
+    color: #ffffff !important;
+}
+
+.time-slot-btn {
+    min-width: 92px;
+    border: 1px solid #111827 !important;
+    border-radius: 16px !important;
+    padding: 0.75rem 1rem !important;
+    background: #ffffff !important;
+    color: #111827 !important;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+}
+
+.time-slot-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 16px 32px rgba(15, 23, 42, 0.12);
+}
+
+.time-slot-btn.selected {
+    background: #111827 !important;
+    border-color: #111827 !important;
+    color: #ffffff !important;
+}
+
+#timeSlotsContainer {
+    border: 1px dashed rgba(17, 24, 39, 0.18);
+    border-radius: 24px;
+    padding: 18px;
+    background: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .app-page {
+        width: min(100% - 24px, 1320px);
+    }
+
+    .step-indicator {
+        overflow-x: auto;
+        justify-content: flex-start;
+    }
+
+    .step-line {
+        width: 36px !important;
+        flex: 0 0 auto;
+    }
+}

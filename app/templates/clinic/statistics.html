@@ -49,7 +49,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
+<div class="app-shell dashboard-page">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold mb-1">
@@ -64,7 +64,7 @@
 
     <div class="row g-4 mb-4">
         <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="panel-card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
@@ -79,7 +79,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="panel-card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
@@ -94,7 +94,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="panel-card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
@@ -109,7 +109,7 @@
             </div>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="panel-card h-100">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
@@ -127,7 +127,7 @@
 
     <div class="row g-4 mb-4">
         <div class="col-lg-4">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="panel-card h-100">
                 <div class="card-header bg-white border-0 pt-4 pb-2">
                     <h5 class="fw-bold mb-0">
                         <i class="fas fa-star text-warning me-2"></i>{{ t('clinic.statistics_page.average_rating') }}
@@ -155,7 +155,7 @@
         </div>
 
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm h-100">
+            <div class="panel-card h-100">
                 <div class="card-header bg-white border-0 pt-4 pb-2">
                     <h5 class="fw-bold mb-0">
                         <i class="fas fa-chart-line text-primary me-2"></i>{{ t('clinic.statistics_page.monthly_revenue') }}
@@ -186,7 +186,7 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm mb-4">
+    <div class="panel-card mb-3">
         <div class="card-header bg-white border-0 pt-4 pb-2">
             <h5 class="fw-bold mb-0">
                 <i class="fas fa-trophy text-warning me-2"></i>{{ t('clinic.statistics_page.top_doctors') }}
@@ -261,7 +261,7 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
+    <div class="panel-card">
         <div class="card-header bg-white border-0 pt-4 pb-2">
             <h5 class="fw-bold mb-0">
                 <i class="fas fa-comments text-info me-2"></i>{{ t('clinic.statistics_page.latest_reviews') }}

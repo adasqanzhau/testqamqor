@@ -3,7 +3,7 @@
 {% block title %}{{ t('clinic.appointments_page.title') }} - Qamqor{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
+<div class="app-shell dashboard-page">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <div>
             <h2 class="fw-bold mb-1">
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm mb-4">
+    <div class="panel-card mb-3">
         <div class="card-body">
             <form method="GET" action="{{ url_for('clinic.appointments') }}" class="row g-3 align-items-end">
                 <div class="col-md-4">
@@ -46,7 +46,7 @@
         </div>
     </div>
 
-    <div class="card border-0 shadow-sm">
+    <div class="panel-card">
         <div class="card-body p-0">
             {% if appointments.items %}
             <div class="table-responsive">
