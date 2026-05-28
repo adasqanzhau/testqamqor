@@ -143,6 +143,14 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto align-items-center">
+                    <!-- Back to Landing -->
+                    <li class="nav-item me-2 d-none d-md-block">
+                        <a class="nav-link back-to-landing" href="{{ url_for('landing') }}" title="{{ t('nav.back_to_landing', 'На главную') }}">
+                            <i class="fas fa-house me-1"></i>
+                            <span class="d-none d-lg-inline">{{ t('nav.back_to_landing', 'На главную') }}</span>
+                        </a>
+                    </li>
+
                     <!-- Language Selector -->
                     <li class="nav-item dropdown me-3">
                         <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">

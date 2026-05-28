@@ -3,7 +3,7 @@
 {% block title %}{% if clinic %}{{ t('admin.clinic_form.edit_title') }}{% else %}{{ t('admin.clinic_form.create_title') }}{% endif %}{% endblock %}
 
 {% block content %}
-<div class="container-fluid py-4">
+<div class="app-shell">
     <div class="row justify-content-center">
         <div class="col-lg-8">
             <div class="d-flex justify-content-between align-items-center mb-4">
@@ -49,8 +49,8 @@
                     'admin_last_name': t('admin.clinic_form.admin_last_name_label', form.admin_last_name.label.text),
                 } %}
 
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white">
+                <div class="panel-card mb-3">
+                    <div class="card-header bg-white border-0">
                         <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>{{ t('admin.clinic_form.info_title') }}</h5>
                     </div>
                     <div class="card-body">
@@ -107,8 +107,8 @@
                 </div>
 
                 <!-- Branding & Schedule -->
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white">
+                <div class="panel-card mb-3">
+                    <div class="card-header bg-white border-0">
                         <h5 class="mb-0"><i class="fas fa-palette me-2"></i>{{ t('admin.clinic_form.branding_title') }}</h5>
                     </div>
                     <div class="card-body">
@@ -169,8 +169,8 @@
                 </div>
 
                 {% if not clinic %}
-                <div class="card shadow-sm mb-4">
-                    <div class="card-header bg-white">
+                <div class="panel-card mb-3">
+                    <div class="card-header bg-white border-0">
                         <h5 class="mb-0"><i class="fas fa-user-shield me-2"></i>{{ t('admin.clinic_form.admin_title') }}</h5>
                     </div>
                     <div class="card-body">

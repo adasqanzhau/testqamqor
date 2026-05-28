@@ -367,7 +367,49 @@ def medical_records():
 
     records = query.order_by(MedicalRecord.created_at.desc()).all()
 
-    return render_template('patient/medical_records.html', records=records, record_type=record_type)
+    # For consultation records, attach the related VideoCall (if any) so the patient
+    # can open the full transcription summary directly from medical records.
+    record_videocalls = {}
+    consultation_doctor_ids = {
+        r.doctor_id for r in records
+        if r.record_type == 'consultation' and r.doctor_id
+    }
+    if consultation_doctor_ids:
+        videocalls = (
+            VideoCall.query
+            .join(Appointment, VideoCall.appointment_id == Appointment.id)
+            .filter(
+                Appointment.patient_id == current_user.id,
+                Appointment.doctor_id.in_(consultation_doctor_ids),
+                VideoCall.transcription.isnot(None),
+            )
+            .all()
+        )
+        for record in records:
+            if record.record_type != 'consultation' or not record.doctor_id:
+                continue
+            best = None
+            best_delta = None
+            for vc in videocalls:
+                if vc.appointment.doctor_id != record.doctor_id:
+                    continue
+                vc_time = vc.ended_at or vc.started_at
+                if not vc_time:
+                    continue
+                delta = abs((vc_time - record.created_at).total_seconds())
+                if best is None or delta < best_delta:
+                    best = vc
+                    best_delta = delta
+            # Only link if the videocall happened within 1 day of record creation.
+            if best and best_delta is not None and best_delta < 86400:
+                record_videocalls[record.id] = best
+
+    return render_template(
+        'patient/medical_records.html',
+        records=records,
+        record_type=record_type,
+        record_videocalls=record_videocalls,
+    )
 
 
 @patient_bp.route('/prescriptions')

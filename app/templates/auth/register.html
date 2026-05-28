@@ -90,7 +90,7 @@
 
 <div class="auth-wrapper">
     <div class="auth-language-switcher">
-        <select onchange="window.location.href=this.value">
+        <select class="lang-switcher" onchange="window.location.href=this.value">
             {% for lang_code, lang_name in languages.items() %}
             <option value="{{ url_for('set_language', language=lang_code) }}" {% if current_language == lang_code %}selected{% endif %}>{{ lang_name }}</option>
             {% endfor %}

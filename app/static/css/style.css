@@ -2323,3 +2323,401 @@ body {
         flex: 0 0 auto;
     }
 }
+
+/* ============================================================
+   FINAL UNIFIED DESIGN OVERRIDES — fixes color, shadows, icons
+   ============================================================ */
+
+/* Unify Bootstrap primary/success/info/warning to the teal theme */
+:root {
+    --bs-primary: #0f766e;
+    --bs-primary-rgb: 15, 118, 110;
+    --bs-link-color: #0f766e;
+    --bs-link-hover-color: #115e59;
+}
+
+/* All blue text-primary -> teal */
+.text-primary,
+.text-info,
+a.text-primary,
+.btn-link {
+    color: #0f766e !important;
+}
+
+/* Bootstrap bg-primary / btn-primary -> teal */
+.bg-primary {
+    background-color: #0f766e !important;
+}
+.btn-primary {
+    background-color: #0f766e !important;
+    border-color: #0f766e !important;
+    color: #fff !important;
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+    background-color: #115e59 !important;
+    border-color: #115e59 !important;
+}
+
+.btn-info {
+    background-color: #0f766e !important;
+    border-color: #0f766e !important;
+    color: #fff !important;
+}
+.btn-info:hover {
+    background-color: #115e59 !important;
+    border-color: #115e59 !important;
+}
+
+.btn-outline-primary,
+.btn-outline-info {
+    color: #0f766e !important;
+    border-color: rgba(15, 118, 110, 0.4) !important;
+    background: #fff !important;
+}
+.btn-outline-primary:hover,
+.btn-outline-info:hover {
+    background: #ecfdf5 !important;
+    border-color: #0f766e !important;
+    color: #115e59 !important;
+}
+
+/* Soft-tinted icon containers — replace colored bg-opacity-10 with neutral.
+   Keep .text-* colors intact via overrides below. */
+.bg-primary.bg-opacity-10,
+.bg-success.bg-opacity-10,
+.bg-warning.bg-opacity-10,
+.bg-info.bg-opacity-10,
+.bg-danger.bg-opacity-10,
+.bg-secondary.bg-opacity-10 {
+    background: #f0fdfa !important;
+    border: none !important;
+    color: #0f766e !important;
+}
+
+/* Remove dark black border + bottom stripe from metric cards (clinic dashboard fix) */
+.metric-card,
+.stat-card.metric-card,
+.app-grid .metric-card,
+.dashboard-stats .metric-card {
+    background: #ffffff !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06) !important;
+}
+
+.metric-card::after {
+    display: none !important;
+}
+
+.metric-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 32px rgba(15, 23, 42, 0.10) !important;
+}
+
+/* Metric card icon: clean tinted circle, no dark border, fixed aspect */
+.metric-card .fa-2x,
+.metric-card .rounded-circle,
+.panel-card .rounded-circle.bg-primary,
+.panel-card .rounded-circle.bg-success,
+.panel-card .rounded-circle.bg-warning,
+.panel-card .rounded-circle.bg-info,
+.panel-card .rounded-circle.bg-light {
+    background: #ecfdf5 !important;
+    color: #0f766e !important;
+    border: none !important;
+    border-radius: 50% !important;
+    width: 56px !important;
+    height: 56px !important;
+    min-width: 56px;
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0 !important;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    opacity: 1 !important;
+}
+
+/* Panel-card .text-success/.text-warning/.text-info — keep some semantic tone but soften */
+.metric-card .text-primary,
+.metric-card .text-success,
+.metric-card .text-warning,
+.metric-card .text-info {
+    color: #0f766e !important;
+}
+
+/* Card body and panel-card: softer border, real elevation */
+.card.panel-card,
+.review-card.panel-card,
+.prescription-card.panel-card,
+.doctor-card.panel-card,
+.review-form-card.panel-card {
+    border-color: var(--border) !important;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05) !important;
+    border-radius: 24px !important;
+}
+
+.card.panel-card:hover,
+.review-card.panel-card:hover {
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08) !important;
+}
+
+/* All circular avatar/icon placeholders: enforce square aspect, no horizontal squish */
+.rounded-circle {
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+}
+
+/* Buttons: subtle shadow + smooth lift on hover */
+.btn {
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease !important;
+}
+.btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(15, 23, 42, 0.10), 0 2px 4px rgba(15, 23, 42, 0.06) !important;
+}
+.btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.10) !important;
+}
+.btn-primary,
+.btn-success,
+.btn-info {
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.18) !important;
+}
+.btn-primary:hover,
+.btn-success:hover,
+.btn-info:hover {
+    box-shadow: 0 6px 18px rgba(15, 118, 110, 0.28) !important;
+}
+.btn-danger {
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.18) !important;
+}
+.btn-warning {
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.18) !important;
+}
+
+/* Remove the underline / bottom stripe from widget rows on hover */
+.widget-list-item:hover,
+.notification-item:hover,
+.appointment-item:hover,
+.pending-review-card:hover {
+    background: #f8fafc !important;
+    box-shadow: none !important;
+}
+
+/* Hover marker uses brand teal instead of black */
+.appointment-card.widget-list-item::before {
+    background: #0f766e !important;
+}
+
+/* Dropdown menu unified design (notifications, language, user, etc.) */
+.dropdown-menu {
+    border: 1px solid var(--border) !important;
+    border-radius: 16px !important;
+    padding: 8px !important;
+    box-shadow: 0 16px 40px rgba(15, 23, 42, 0.12) !important;
+    background: #ffffff;
+    min-width: 220px;
+    animation: dropdown-fade-in 0.15s ease;
+}
+
+@keyframes dropdown-fade-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.dropdown-item {
+    border-radius: 10px !important;
+    padding: 9px 12px !important;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.dropdown-item:hover,
+.dropdown-item:focus,
+.dropdown-item.active {
+    background: #ecfdf5 !important;
+    color: #0f766e !important;
+}
+.dropdown-item i {
+    width: 18px;
+    text-align: center;
+    color: #0f766e;
+}
+.dropdown-divider {
+    margin: 6px 0 !important;
+    border-color: var(--border-light);
+}
+
+/* Modal unified design */
+.modal-content {
+    border: none;
+    border-radius: 22px;
+    box-shadow: 0 24px 70px rgba(15, 23, 42, 0.18);
+}
+.modal-header {
+    border-bottom: 1px solid var(--border-light);
+    padding: 20px 24px;
+}
+.modal-body { padding: 22px 24px; }
+.modal-footer {
+    border-top: 1px solid var(--border-light);
+    padding: 16px 24px;
+}
+
+/* Filter button group polish (used on appointments/reviews/medical_records) */
+.btn-sm.rounded-pill {
+    padding: 0.4rem 0.95rem !important;
+    font-weight: 600;
+    font-size: 0.82rem;
+}
+.btn-outline-secondary {
+    color: var(--text-light) !important;
+    border-color: var(--border) !important;
+    background: #fff !important;
+}
+.btn-outline-secondary:hover {
+    background: var(--border-light) !important;
+    color: var(--text) !important;
+    border-color: var(--border) !important;
+}
+
+/* Notification dropdown specifically — nicer width and look */
+.notification-dropdown {
+    width: 380px;
+    padding: 0 !important;
+    border-radius: 18px !important;
+    overflow: hidden;
+}
+.notification-header,
+.notification-footer {
+    background: #f8fafc !important;
+    border-radius: 0 !important;
+}
+
+/* Step indicator soft theme (book_appointment) */
+.step-number {
+    border-color: var(--border) !important;
+    color: var(--text-light) !important;
+}
+.step.active .step-number,
+.step.completed .step-number {
+    background: #0f766e !important;
+    color: #fff !important;
+    border-color: #0f766e !important;
+    box-shadow: 0 4px 12px rgba(15, 118, 110, 0.25) !important;
+}
+.step-line {
+    background: var(--border) !important;
+}
+
+/* Time slots use teal */
+.time-slot-btn {
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    background: #fff !important;
+    font-weight: 600;
+}
+.time-slot-btn:hover {
+    border-color: #0f766e !important;
+    color: #0f766e !important;
+}
+.time-slot-btn.selected {
+    background: #0f766e !important;
+    border-color: #0f766e !important;
+    color: #fff !important;
+}
+
+/* Booking form selected option teal */
+#bookingForm select[size] option:checked {
+    background: #0f766e linear-gradient(#0f766e, #0f766e) !important;
+    color: #fff !important;
+}
+
+/* Lang switcher uses teal accent on focus */
+.lang-switcher:hover,
+.lang-switcher:focus {
+    border-color: #0f766e !important;
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1), 0 8px 22px rgba(15, 23, 42, 0.10) !important;
+}
+
+/* page-header-card: icon teal not blue */
+.page-header-card h1 i,
+.page-header-card h2 i {
+    background: #ecfdf5 !important;
+    color: #0f766e !important;
+}
+
+/* Generic FA icons inside h2/h5 in panel-card headers — teal */
+.panel-card > .card-header h5 i {
+    background: #ecfdf5 !important;
+    color: #0f766e !important;
+}
+
+/* Avatar placeholder (used on doctor cards): use teal not indigo */
+.doctor-avatar-placeholder,
+.clinic-avatar-placeholder,
+.avatar-placeholder,
+.doctor-avatar-circle {
+    background: #ecfdf5 !important;
+    color: #0f766e !important;
+    border-color: var(--border) !important;
+}
+
+/* Remove blue glow from form focus, use teal */
+.form-control:focus,
+.form-select:focus {
+    border-color: #14b8a6 !important;
+    box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12) !important;
+}
+
+/* Remove blue link colors in body of cards */
+a {
+    color: #0f766e;
+}
+a:hover {
+    color: #115e59;
+}
+
+/* Patient/clinic profile circular avatars: ensure square */
+.user-avatar,
+.navbar-brand i {
+    aspect-ratio: 1 / 1;
+    flex-shrink: 0;
+}
+
+/* Inline icon next to header text (text-primary me-2) — keep teal not blue */
+h1 i.text-primary,
+h2 i.text-primary,
+h3 i.text-primary,
+h4 i.text-primary,
+h5 i.text-primary,
+h6 i.text-primary,
+p i.text-primary,
+.text-primary i {
+    color: #0f766e !important;
+}
+
+/* Review card ratings retain warning yellow, override .text-warning to original */
+.star-rating .fas.fa-star,
+.star-rating .fas.fa-star-half-alt,
+i.text-warning.fa-star,
+.text-warning.fa-star {
+    color: #f59e0b !important;
+}
+
+/* Back-to-landing link in dashboard navbar */
+.nav-link.back-to-landing {
+    color: var(--text-light) !important;
+    border-radius: 999px;
+}
+.nav-link.back-to-landing:hover {
+    background: var(--primary-bg) !important;
+    color: var(--primary) !important;
+}
