@@ -3049,3 +3049,142 @@ input.flatpickr-input.form-control {
     background-position: right 0.85rem center;
     background-size: 18px 18px;
 }
+
+/* ─── PREMIUM LANGUAGE DROPDOWN ─────────────────────────────────────── */
+.lang-dropdown { position: relative; }
+
+.lang-dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1.5px solid rgba(255, 255, 255, 0.25);
+    border-radius: 999px;
+    padding: 0.35rem 0.85rem;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+    white-space: nowrap;
+    letter-spacing: 0.02em;
+}
+
+.lang-dropdown-toggle:hover,
+.lang-dropdown-toggle:focus {
+    background: rgba(255, 255, 255, 0.22);
+    border-color: rgba(255, 255, 255, 0.45);
+    outline: none;
+}
+
+/* On light backgrounds (auth pages, landing) */
+.auth-language-switcher .lang-dropdown-toggle,
+.navbar-landing .lang-dropdown-toggle {
+    background: rgba(15, 118, 110, 0.1);
+    border-color: rgba(15, 118, 110, 0.35);
+    color: #0f766e;
+}
+
+.auth-language-switcher .lang-dropdown-toggle:hover,
+.navbar-landing .lang-dropdown-toggle:hover {
+    background: rgba(15, 118, 110, 0.18);
+    border-color: rgba(15, 118, 110, 0.55);
+}
+
+.lang-code { font-weight: 700; letter-spacing: 0.04em; font-size: 0.82rem; }
+.lang-caret { font-size: 0.65rem; opacity: 0.75; transition: transform 0.2s; }
+.lang-dropdown.show .lang-caret { transform: rotate(180deg); }
+
+.lang-dropdown-menu {
+    min-width: 160px;
+    padding: 0.4rem;
+    border-radius: 14px;
+    border: 1px solid rgba(15, 118, 110, 0.15);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.13);
+    background: #fff;
+    margin-top: 0.35rem !important;
+}
+
+.lang-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.5rem 0.65rem;
+    border-radius: 9px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #1e293b;
+    transition: background 0.15s;
+    text-decoration: none;
+}
+
+.lang-dropdown-item:hover { background: #f0f9f8; color: #0f766e; }
+.lang-dropdown-item.active { background: #e6f7f5; color: #0f766e; font-weight: 700; }
+
+.lang-chip {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 22px;
+    border-radius: 5px;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    flex-shrink: 0;
+    color: #fff;
+}
+
+.lang-chip-ru { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+.lang-chip-en { background: linear-gradient(135deg, #047857, #10b981); }
+.lang-chip-kz { background: linear-gradient(135deg, #b45309, #f59e0b); }
+
+.lang-name { flex: 1; }
+.lang-check { font-size: 0.75rem; color: #0f766e; }
+
+/* ─── TOM SELECT OVERRIDES ───────────────────────────────────────────── */
+.ts-wrapper.single .ts-control,
+.ts-wrapper .ts-control {
+    border-radius: var(--radius-sm, 8px) !important;
+    border: 1.5px solid var(--border, #e2e8f0) !important;
+    background: #fff !important;
+    box-shadow: none !important;
+    padding: 0.45rem 0.75rem !important;
+    font-size: 0.9rem;
+    color: var(--text, #1e293b);
+    transition: border-color 0.18s, box-shadow 0.18s;
+    min-height: 2.5rem;
+}
+
+.ts-wrapper.single.focus .ts-control,
+.ts-wrapper .ts-control:focus-within {
+    border-color: var(--primary, #2563eb) !important;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1) !important;
+}
+
+.ts-wrapper .ts-dropdown {
+    border-radius: var(--radius-sm, 8px) !important;
+    border: 1.5px solid var(--border, #e2e8f0) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1) !important;
+    overflow: hidden;
+    margin-top: 3px;
+}
+
+.ts-wrapper .ts-dropdown .option {
+    padding: 0.5rem 0.85rem;
+    font-size: 0.875rem;
+    color: var(--text, #1e293b);
+    transition: background 0.12s;
+}
+
+.ts-wrapper .ts-dropdown .option:hover,
+.ts-wrapper .ts-dropdown .option.active {
+    background: #eff6ff !important;
+    color: var(--primary, #2563eb) !important;
+}
+
+.ts-wrapper .ts-dropdown .option.selected {
+    background: #eff6ff !important;
+    color: var(--primary, #2563eb) !important;
+    font-weight: 600;
+}

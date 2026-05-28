@@ -323,4 +323,40 @@ document.addEventListener('DOMContentLoaded', function () {
         return div.innerHTML;
     }
 
+    if (typeof TomSelect !== 'undefined') {
+        document.querySelectorAll('select:not([data-no-ts]):not([multiple][size])').forEach(function(el) {
+            if (el.closest('.ts-wrapper') || el.dataset.tsInitialized) return;
+            var opts = {
+                create: false,
+                allowEmptyOption: true,
+                sortField: false,
+            };
+            if (el.multiple) {
+                opts.plugins = ['remove_button'];
+            }
+            try {
+                new TomSelect(el, opts);
+                el.dataset.tsInitialized = '1';
+            } catch(e) {}
+        });
+    }
+
+    if (typeof flatpickr !== 'undefined') {
+        var langMap = { ru: 'ru', kz: 'kz', en: 'default' };
+        var userLang = (window.QAMQOR_CURRENT_LANGUAGE || 'ru').toLowerCase();
+        var fpLocale = langMap[userLang] || 'default';
+
+        document.querySelectorAll('input[type="date"]:not([data-no-fp])').forEach(function(el) {
+            if (el._flatpickr) return;
+            flatpickr(el, {
+                dateFormat: 'Y-m-d',
+                minDate: el.getAttribute('min') || null,
+                maxDate: el.getAttribute('max') || null,
+                disableMobile: true,
+                locale: fpLocale,
+                allowInput: false,
+            });
+        });
+    }
+
 });

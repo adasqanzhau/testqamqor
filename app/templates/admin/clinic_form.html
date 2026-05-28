@@ -137,17 +137,23 @@
 
                             <div class="col-md-6">
                                 <label for="{{ form.working_hours_start.id }}" class="form-label">{{ clinic_labels.working_hours_start }}</label>
-                                {{ form.working_hours_start(class="form-control" + (" is-invalid" if form.working_hours_start.errors else ""), type="time") }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                    {{ form.working_hours_start(class="form-control timepicker" + (" is-invalid" if form.working_hours_start.errors else ""), type="text", placeholder="09:00", autocomplete="off") }}
+                                </div>
                                 {% for error in form.working_hours_start.errors %}
-                                    <div class="invalid-feedback">{{ error }}</div>
+                                    <div class="text-danger small mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
 
                             <div class="col-md-6">
                                 <label for="{{ form.working_hours_end.id }}" class="form-label">{{ clinic_labels.working_hours_end }}</label>
-                                {{ form.working_hours_end(class="form-control" + (" is-invalid" if form.working_hours_end.errors else ""), type="time") }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                    {{ form.working_hours_end(class="form-control timepicker" + (" is-invalid" if form.working_hours_end.errors else ""), type="text", placeholder="18:00", autocomplete="off") }}
+                                </div>
                                 {% for error in form.working_hours_end.errors %}
-                                    <div class="invalid-feedback">{{ error }}</div>
+                                    <div class="text-danger small mt-1">{{ error }}</div>
                                 {% endfor %}
                             </div>
 
@@ -223,4 +229,22 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    document.querySelectorAll('.timepicker').forEach(function(el) {
+        if (typeof flatpickr === 'undefined') return;
+        flatpickr(el, {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: 'H:i',
+            time_24hr: true,
+            minuteIncrement: 30,
+            disableMobile: true,
+        });
+    });
+})();
+</script>
 {% endblock %}

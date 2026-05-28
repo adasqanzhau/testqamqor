@@ -135,7 +135,7 @@
                                     <div class="col-md-5">
                                         <div class="input-group">
                                             <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
-                                            <select id="doctorSpecFilter" class="form-select">
+                                            <select id="doctorSpecFilter" class="form-select" data-no-ts>
                                                 <option value="">{{ t('patient.booking.all_specializations', 'Все специализации') }}</option>
                                                 {% set seen_specs = [] %}
                                                 {% for doctor in doctors %}
@@ -150,7 +150,7 @@
                                 </div>
                             </div>
                             <div class="mb-3">
-                                    <select name="doctor_id" id="doctor_id" class="form-select form-select-lg" size="6" required>
+                                    <select name="doctor_id" id="doctor_id" class="form-select form-select-lg" size="6" required data-no-ts>
                                     <option value="">{{ t('patient.booking.choose_doctor_placeholder', '-- Выберите врача --') }}</option>
                                     {% for doctor in doctors %}
                                     <option value="{{ doctor.id }}"
@@ -177,7 +177,7 @@
                                 <label for="appointment_date" class="form-label fw-semibold">{{ t('patient.booking.date_label', 'Дата приема') }}</label>
                                 <input type="date" name="scheduled_date" id="appointment_date"
                                        class="form-control form-control-lg"
-                                       min="{{ today }}" required>
+                                       min="{{ today }}" required data-no-fp>
                             </div>
 
                             <div class="mb-3">

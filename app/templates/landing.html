@@ -893,11 +893,7 @@
                 <a href="#features" class="nav-link">{{ t('landing.features', 'Возможности') }}</a>
                 <a href="#how-it-works" class="nav-link">{{ t('landing.how_it_works', 'Как это работает') }}</a>
                 <a href="#clinics" class="nav-link">{{ t('landing.for_clinics', 'Для клиник') }}</a>
-                <select class="lang-switcher" onchange="window.location.href=this.value">
-                    {% for lang_code, lang_name in languages.items() %}
-                    <option value="{{ url_for('set_language', language=lang_code) }}" {% if current_language == lang_code %}selected{% endif %}>{{ lang_name }}</option>
-                    {% endfor %}
-                </select>
+                {% include 'partials/_lang_dropdown.html' %}
             </div>
             <button class="btn d-md-none" style="color: var(--dark, #0f172a); font-size: 1.25rem;" onclick="document.getElementById('mobileMenu').classList.toggle('d-none')">
                 <i class="fas fa-bars"></i>
@@ -908,11 +904,7 @@
             <a href="#how-it-works" class="nav-link d-block py-2">{{ t('landing.how_it_works', 'Как это работает') }}</a>
             <a href="#clinics" class="nav-link d-block py-2">{{ t('landing.for_clinics', 'Для клиник') }}</a>
             <div class="mt-2 mb-2">
-                <select class="lang-switcher w-100" onchange="window.location.href=this.value">
-                    {% for lang_code, lang_name in languages.items() %}
-                    <option value="{{ url_for('set_language', language=lang_code) }}" {% if current_language == lang_code %}selected{% endif %}>{{ lang_name }}</option>
-                    {% endfor %}
-                </select>
+                {% include 'partials/_lang_dropdown.html' %}
             </div>
         </div>
     </div>
@@ -931,12 +923,19 @@
                     {{ t('landing.hero_subtitle', 'Консультации с лучшими врачами онлайн, запись на прием, электронные рецепты и AI-помощник — все в одной платформе.') }}
                 </p>
                 <div class="d-flex flex-wrap gap-3 mt-2">
-                    <a href="{{ url_for('auth.register', force_auth=1) }}" class="btn-hero-primary">
+                    {% if current_user.is_authenticated %}
+                    {% set dash_routes = {'superadmin': 'admin.dashboard', 'clinic_admin': 'clinic.dashboard', 'doctor': 'doctor.dashboard', 'patient': 'patient.index'} %}
+                    <a href="{{ url_for(dash_routes.get(current_user.role, 'patient.index')) }}" class="btn-hero-primary">
+                        <i class="fas fa-th-large me-2"></i>{{ t('nav.to_dashboard', 'В личный кабинет') }}
+                    </a>
+                    {% else %}
+                    <a href="{{ url_for('auth.register') }}" class="btn-hero-primary">
                         <i class="fas fa-user-plus me-2"></i>{{ t('auth.register') }}
                     </a>
-                    <a href="{{ url_for('auth.login', force_auth=1) }}" class="btn-hero-secondary">
+                    <a href="{{ url_for('auth.login') }}" class="btn-hero-secondary">
                         <i class="fas fa-sign-in-alt me-2"></i>{{ t('auth.login') }}
                     </a>
+                    {% endif %}
                 </div>
             </div>
             <div class="col-lg-5 offset-lg-1 hero-illustration">

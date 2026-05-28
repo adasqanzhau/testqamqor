@@ -110,4 +110,4 @@ def register():
 def logout():
     logout_user()
     flash(t('auth.logged_out', session.get('language', 'ru'), 'Вы вышли из системы.'), 'success')
-    return redirect(url_for('auth.login'))
+    return redirect(url_for('landing'))

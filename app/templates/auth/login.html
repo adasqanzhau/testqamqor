@@ -72,39 +72,11 @@
         right: 1rem;
         z-index: 10;
     }
-    .auth-language-switcher select {
-        min-width: 118px;
-        border-radius: 999px;
-        border: 1px solid rgba(255, 255, 255, 0.35);
-        background: rgba(255, 255, 255, 0.18);
-        color: #fff;
-        padding: 0.42rem 0.85rem;
-        font-weight: 600;
-        outline: none;
-    }
 </style>
 
 <div class="auth-wrapper">
     <div class="auth-language-switcher">
-        <div class="nav-item dropdown lang-dropdown me-3">
-            <a class="nav-link lang-dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <i class="fas fa-globe"></i>
-                <span class="lang-code">{{ current_language.upper() }}</span>
-                <i class="fas fa-chevron-down lang-caret"></i>
-            </a>
-            <ul class="dropdown-menu dropdown-menu-end lang-dropdown-menu" aria-labelledby="languageDropdown">
-                {% for lang_code, lang_name in languages.items() %}
-                <li>
-                    <a class="dropdown-item lang-dropdown-item {% if current_language == lang_code %}active{% endif %}" href="{{ url_for('set_language', language=lang_code) }}">
-                        <span class="lang-flag">{% if lang_code == 'ru' %}🇷🇺{% elif lang_code == 'en' %}🇺🇸{% elif lang_code == 'kz' %}🇰🇿{% else %}🌐{% endif %}</span>
-                        <span class="lang-name">{{ lang_name }}</span>
-                        <span class="lang-badge">{{ lang_code.upper() }}</span>
-                        {% if current_language == lang_code %}<i class="fas fa-check lang-check"></i>{% endif %}
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+        {% include 'partials/_lang_dropdown.html' %}
     </div>
     <div class="card auth-card">
         <div class="card-body">

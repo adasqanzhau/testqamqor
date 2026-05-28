@@ -1,0 +1,19 @@
+<div class="dropdown lang-dropdown">
+    <button type="button" class="lang-dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="fas fa-globe"></i>
+        <span class="lang-code">{{ current_language.upper() }}</span>
+        <i class="fas fa-chevron-down lang-caret"></i>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end lang-dropdown-menu">
+        {% for lang_code, lang_name in languages.items() %}
+        <li>
+            <a class="dropdown-item lang-dropdown-item {% if current_language == lang_code %}active{% endif %}"
+               href="{{ url_for('set_language', language=lang_code) }}">
+                <span class="lang-chip lang-chip-{{ lang_code }}">{{ lang_code.upper() }}</span>
+                <span class="lang-name">{{ lang_name }}</span>
+                {% if current_language == lang_code %}<i class="fas fa-check lang-check ms-auto"></i>{% endif %}
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
