@@ -24,7 +24,9 @@
                 </div>
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">{{ t('common.date') }}</label>
-                    <input type="date" name="date" class="form-control" value="{{ request.args.get('date', '') }}">
+                    <input type="date" name="scheduled_date" id="appointment_date"
+                                       class="form-control form-control-lg"
+                                       min="{{ today }}" required>
                 </div>
                 <div class="col-md-4">
                     <button type="submit" class="btn btn-primary me-2">
