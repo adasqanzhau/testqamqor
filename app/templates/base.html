@@ -25,7 +25,7 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
         <div class="container-fluid px-4">
-            <a class="navbar-brand d-flex align-items-center" href="{% if current_user.is_authenticated %}{% if current_user.role == 'superadmin' %}{{ url_for('admin.dashboard') }}{% elif current_user.role == 'clinic_admin' %}{{ url_for('clinic.dashboard') }}{% elif current_user.role == 'doctor' %}{{ url_for('doctor.dashboard') }}{% elif current_user.role == 'patient' %}{{ url_for('patient.index') }}{% else %}{{ url_for('landing') }}{% endif %}{% else %}{{ url_for('landing') }}{% endif %}">
+            <a class="navbar-brand d-flex align-items-center" href="{{ url_for('landing') }}" title="{{ t('nav.go_to_landing', 'На главную') }}">
                 <i class="fas fa-heartbeat me-2"></i>
                 <span class="fw-bold">Qamqor</span>
             </a>
@@ -143,25 +143,21 @@
                 </ul>
 
                 <ul class="navbar-nav ms-auto align-items-center">
-                    <!-- Back to Landing -->
-                    <li class="nav-item me-2 d-none d-md-block">
-                        <a class="nav-link back-to-landing" href="{{ url_for('landing') }}" title="{{ t('nav.back_to_landing', 'На главную') }}">
-                            <i class="fas fa-house me-1"></i>
-                            <span class="d-none d-lg-inline">{{ t('nav.back_to_landing', 'На главную') }}</span>
-                        </a>
-                    </li>
-
                     <!-- Language Selector -->
-                    <li class="nav-item dropdown me-3">
-                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
-                            <i class="fas fa-globe me-1"></i>
-                            <span class="d-none d-md-inline">{{ current_language.upper() }}</span>
+                    <li class="nav-item dropdown lang-dropdown me-3">
+                        <a class="nav-link lang-dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-globe"></i>
+                            <span class="lang-code">{{ current_language.upper() }}</span>
+                            <i class="fas fa-chevron-down lang-caret"></i>
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end lang-dropdown-menu" aria-labelledby="languageDropdown">
                             {% for lang_code, lang_name in languages.items() %}
                             <li>
-                                <a class="dropdown-item {% if current_language == lang_code %}active{% endif %}" href="{{ url_for('set_language', language=lang_code) }}">
-                                    {{ lang_name }}
+                                <a class="dropdown-item lang-dropdown-item {% if current_language == lang_code %}active{% endif %}" href="{{ url_for('set_language', language=lang_code) }}">
+                                    <span class="lang-flag">{% if lang_code == 'ru' %}🇷🇺{% elif lang_code == 'en' %}🇬🇧{% elif lang_code == 'kz' %}🇰🇿{% else %}🌐{% endif %}</span>
+                                    <span class="lang-name">{{ lang_name }}</span>
+                                    <span class="lang-badge">{{ lang_code.upper() }}</span>
+                                    {% if current_language == lang_code %}<i class="fas fa-check lang-check"></i>{% endif %}
                                 </a>
                             </li>
                             {% endfor %}

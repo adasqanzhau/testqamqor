@@ -2712,12 +2712,340 @@ i.text-warning.fa-star,
     color: #f59e0b !important;
 }
 
-/* Back-to-landing link in dashboard navbar */
-.nav-link.back-to-landing {
-    color: var(--text-light) !important;
-    border-radius: 999px;
+/* ============================================================
+   PREMIUM LANGUAGE DROPDOWN (navbar)
+   ============================================================ */
+.navbar .lang-dropdown {
+    position: relative;
 }
-.nav-link.back-to-landing:hover {
-    background: var(--primary-bg) !important;
-    color: var(--primary) !important;
+
+.navbar .lang-dropdown-toggle {
+    display: inline-flex !important;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 14px 7px 12px !important;
+    border-radius: 999px !important;
+    background: rgba(15, 118, 110, 0.06) !important;
+    border: 1px solid rgba(15, 118, 110, 0.15) !important;
+    color: #115e59 !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    line-height: 1;
+    transition: all 0.18s ease;
+}
+
+.navbar .lang-dropdown-toggle:hover,
+.navbar .lang-dropdown.show .lang-dropdown-toggle {
+    background: #0f766e !important;
+    border-color: #0f766e !important;
+    color: #fff !important;
+    box-shadow: 0 6px 18px rgba(15, 118, 110, 0.28);
+}
+
+.navbar .lang-dropdown-toggle::after {
+    display: none !important;
+}
+
+.navbar .lang-dropdown-toggle .fa-globe {
+    font-size: 0.95rem;
+}
+
+.navbar .lang-dropdown-toggle .lang-code {
+    letter-spacing: 0.05em;
+}
+
+.navbar .lang-dropdown-toggle .lang-caret {
+    font-size: 0.65rem;
+    opacity: 0.85;
+    transition: transform 0.18s ease;
+}
+
+.navbar .lang-dropdown.show .lang-caret {
+    transform: rotate(180deg);
+}
+
+.lang-dropdown-menu {
+    min-width: 240px !important;
+    padding: 8px !important;
+    border-radius: 18px !important;
+    border: 1px solid var(--border) !important;
+    box-shadow: 0 20px 48px rgba(15, 23, 42, 0.16) !important;
+    margin-top: 10px !important;
+    background: #ffffff;
+}
+
+.lang-dropdown-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 10px 12px !important;
+    border-radius: 12px !important;
+    font-weight: 600 !important;
+    color: var(--text) !important;
+    transition: all 0.15s ease;
+}
+
+.lang-dropdown-item .lang-flag {
+    font-size: 1.25rem;
+    line-height: 1;
+    width: 24px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.lang-dropdown-item .lang-name {
+    flex: 1;
+    font-size: 0.92rem;
+}
+
+.lang-dropdown-item .lang-badge {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 999px;
+    background: var(--border-light);
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    transition: all 0.15s ease;
+}
+
+.lang-dropdown-item .lang-check {
+    color: #0f766e;
+    font-size: 0.8rem;
+}
+
+.lang-dropdown-item:hover,
+.lang-dropdown-item:focus {
+    background: #ecfdf5 !important;
+    color: #0f766e !important;
+    transform: translateX(2px);
+}
+
+.lang-dropdown-item:hover .lang-badge {
+    background: rgba(15, 118, 110, 0.12);
+    color: #0f766e;
+}
+
+.lang-dropdown-item.active {
+    background: linear-gradient(135deg, #0f766e, #14b8a6) !important;
+    color: #ffffff !important;
+}
+
+.lang-dropdown-item.active .lang-badge {
+    background: rgba(255, 255, 255, 0.22);
+    color: #ffffff;
+}
+
+.lang-dropdown-item.active .lang-check {
+    color: #ffffff;
+}
+
+/* ============================================================
+   BOOKING FILTERS (doctor search + specialization)
+   ============================================================ */
+.booking-filters {
+    background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
+    border: 1px solid rgba(15, 118, 110, 0.12);
+    border-radius: 20px;
+    padding: 14px;
+    margin-bottom: 18px;
+}
+
+.booking-filters .input-group-text {
+    background: #ffffff;
+    border-color: var(--border);
+    color: #0f766e;
+}
+
+.booking-filters .form-control,
+.booking-filters .form-select {
+    border-color: var(--border) !important;
+    background: #ffffff;
+    font-weight: 500;
+}
+
+.booking-filters .form-control:focus,
+.booking-filters .form-select:focus {
+    border-color: #0f766e !important;
+    box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1) !important;
+}
+
+/* Doctor selection list (large select) */
+#bookingForm #doctor_id.form-select[size] {
+    min-height: 260px !important;
+    border-radius: 18px !important;
+    padding: 8px !important;
+    background: #ffffff !important;
+    border: 1px solid var(--border) !important;
+}
+
+#bookingForm #doctor_id.form-select[size] option {
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+    margin-bottom: 4px !important;
+    color: var(--text) !important;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+#bookingForm #doctor_id.form-select[size] option:hover {
+    background: #ecfdf5 !important;
+}
+
+#bookingForm #doctor_id.form-select[size] option:checked {
+    background: linear-gradient(135deg, #0f766e, #14b8a6) !important;
+    color: #fff !important;
+    font-weight: 600;
+}
+
+/* ============================================================
+   FLATPICKR CALENDAR THEMING
+   ============================================================ */
+.flatpickr-input.form-control {
+    background-color: #ffffff !important;
+    cursor: pointer;
+}
+
+.flatpickr-calendar {
+    border-radius: 20px !important;
+    box-shadow: 0 24px 60px rgba(15, 23, 42, 0.18) !important;
+    border: 1px solid var(--border) !important;
+    padding: 8px !important;
+    background: #ffffff !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+.flatpickr-calendar.arrowTop::before,
+.flatpickr-calendar.arrowTop::after {
+    border-bottom-color: #ffffff !important;
+}
+
+.flatpickr-months {
+    padding: 10px 4px 4px 4px;
+    align-items: center;
+}
+
+.flatpickr-month {
+    color: var(--text) !important;
+    background: transparent !important;
+    height: 44px;
+}
+
+.flatpickr-monthDropdown-months,
+.flatpickr-current-month input.cur-year {
+    color: var(--text) !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+}
+
+.flatpickr-monthDropdown-months {
+    appearance: none;
+    background: transparent !important;
+    border: none !important;
+    padding: 4px 8px !important;
+    border-radius: 8px;
+    transition: background 0.15s ease;
+}
+
+.flatpickr-monthDropdown-months:hover {
+    background: #ecfdf5 !important;
+}
+
+.flatpickr-prev-month,
+.flatpickr-next-month {
+    color: #0f766e !important;
+    fill: #0f766e !important;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s ease;
+}
+
+.flatpickr-prev-month:hover,
+.flatpickr-next-month:hover {
+    background: #ecfdf5 !important;
+    color: #115e59 !important;
+    fill: #115e59 !important;
+}
+
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg {
+    fill: currentColor !important;
+}
+
+.flatpickr-weekdays {
+    background: transparent !important;
+    margin-top: 4px;
+}
+
+span.flatpickr-weekday {
+    color: var(--text-light) !important;
+    font-weight: 600 !important;
+    font-size: 0.78rem !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: transparent !important;
+}
+
+.dayContainer {
+    padding: 4px !important;
+}
+
+.flatpickr-day {
+    border-radius: 10px !important;
+    color: var(--text) !important;
+    font-weight: 500 !important;
+    border: none !important;
+    margin: 1px;
+    height: 38px;
+    line-height: 38px;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.flatpickr-day:hover {
+    background: #ecfdf5 !important;
+    color: #0f766e !important;
+}
+
+.flatpickr-day.today {
+    border: 1.5px solid #0f766e !important;
+    color: #0f766e !important;
+    background: transparent !important;
+    font-weight: 700 !important;
+}
+
+.flatpickr-day.selected,
+.flatpickr-day.selected:hover {
+    background: linear-gradient(135deg, #0f766e, #14b8a6) !important;
+    color: #ffffff !important;
+    box-shadow: 0 6px 16px rgba(15, 118, 110, 0.32);
+    transform: scale(1.04);
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+    color: rgba(148, 163, 184, 0.5) !important;
+    background: transparent !important;
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+.flatpickr-day.prevMonthDay,
+.flatpickr-day.nextMonthDay {
+    color: var(--text-muted) !important;
+    opacity: 0.5;
+}
+
+/* date input visually as flatpickr (when JS active) */
+input[type="date"].form-control,
+input.flatpickr-input.form-control {
+    padding-right: 2.5rem;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f766e' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='4' width='18' height='18' rx='2' ry='2'/%3E%3Cline x1='16' y1='2' x2='16' y2='6'/%3E%3Cline x1='8' y1='2' x2='8' y2='6'/%3E%3Cline x1='3' y1='10' x2='21' y2='10'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.85rem center;
+    background-size: 18px 18px;
 }

@@ -3,6 +3,7 @@
 {% block title %}{{ t('patient.booking.title', 'Запись на прием') }}{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css">
 <style>
     .step-indicator {
         display: flex;
@@ -122,22 +123,30 @@
 
                         <div class="step-content" id="step1">
                             <p class="booking-step-title"><i class="fas fa-user-md me-2 text-primary"></i>{{ t('patient.booking.select_doctor_title', 'Выберите врача') }}</p>
-                            <div class="row g-2 mb-3">
-                                <div class="col-md-7">
-                                     <input type="text" id="doctorSearch" class="form-control"
-                                         placeholder="{{ t('patient.booking.search_placeholder', 'Поиск по имени или специализации...') }}">
-                                </div>
-                                <div class="col-md-5">
-                                    <select id="doctorSpecFilter" class="form-select">
-                                        <option value="">{{ t('patient.booking.all_specializations', 'Все специализации') }}</option>
-                                        {% set seen_specs = [] %}
-                                        {% for doctor in doctors %}
-                                            {% if doctor.specialization and doctor.specialization not in seen_specs %}
-                                                {% set _ = seen_specs.append(doctor.specialization) %}
-                                                <option value="{{ doctor.specialization }}">{{ doctor.specialization }}</option>
-                                            {% endif %}
-                                        {% endfor %}
-                                    </select>
+                            <div class="booking-filters">
+                                <div class="row g-2">
+                                    <div class="col-md-7">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-search"></i></span>
+                                            <input type="text" id="doctorSearch" class="form-control"
+                                                placeholder="{{ t('patient.booking.search_placeholder', 'Поиск по имени или специализации...') }}">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="input-group">
+                                            <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
+                                            <select id="doctorSpecFilter" class="form-select">
+                                                <option value="">{{ t('patient.booking.all_specializations', 'Все специализации') }}</option>
+                                                {% set seen_specs = [] %}
+                                                {% for doctor in doctors %}
+                                                    {% if doctor.specialization and doctor.specialization not in seen_specs %}
+                                                        {% set _ = seen_specs.append(doctor.specialization) %}
+                                                        <option value="{{ doctor.specialization }}">{{ doctor.specialization }}</option>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="mb-3">
@@ -230,7 +239,26 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/ru.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/l10n/kz.js"></script>
 <script>
+    (function initDatePicker() {
+        const input = document.getElementById('appointment_date');
+        if (!input || typeof flatpickr === 'undefined') return;
+        const langMap = { ru: 'ru', kz: 'kz', en: 'default' };
+        const userLang = (window.QAMQOR_CURRENT_LANGUAGE || 'ru').toLowerCase();
+        const locale = langMap[userLang] || 'default';
+        flatpickr(input, {
+            dateFormat: 'Y-m-d',
+            minDate: input.getAttribute('min') || 'today',
+            disableMobile: true,
+            locale: locale,
+            allowInput: false,
+            position: 'auto',
+        });
+    })();
+
     function nextStep(step) {
         if (step === 2) {
             const doctorId = document.getElementById('doctor_id').value;
