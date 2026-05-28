@@ -154,7 +154,7 @@
                             {% for lang_code, lang_name in languages.items() %}
                             <li>
                                 <a class="dropdown-item lang-dropdown-item {% if current_language == lang_code %}active{% endif %}" href="{{ url_for('set_language', language=lang_code) }}">
-                                    <span class="lang-flag">{% if lang_code == 'ru' %}ru{% elif lang_code == 'en' %}en{% elif lang_code == 'kz' %}kz{% else %}🌐{% endif %}</span>
+                                    <span class="lang-flag">{% if lang_code == 'ru' %}🇷🇺{% elif lang_code == 'en' %}🇺🇸{% elif lang_code == 'kz' %}🇰🇿{% else %}🌐{% endif %}</span>
                                     <span class="lang-name">{{ lang_name }}</span>
                                     <span class="lang-badge">{{ lang_code.upper() }}</span>
                                     {% if current_language == lang_code %}<i class="fas fa-check lang-check"></i>{% endif %}
