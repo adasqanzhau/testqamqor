@@ -23,8 +23,8 @@
                     </select>
                 </div>
                 <div class="col-md-4">
-                    <label class="form-label fw-semibold">{{ t('common.date') }}</label>
-                    <input type="date" name="scheduled_date" id="appointment_date"
+                    <label for="appointment_date" class="form-label fw-semibold">{{ t('patient.booking.date_label', 'Дата') }}</label>
+                                <input type="date" name="scheduled_date" id="appointment_date"
                                        class="form-control form-control-lg"
                                        min="{{ today }}" required>
                 </div>
