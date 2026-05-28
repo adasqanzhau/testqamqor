@@ -893,11 +893,25 @@
                 <a href="#features" class="nav-link">{{ t('landing.features', 'Возможности') }}</a>
                 <a href="#how-it-works" class="nav-link">{{ t('landing.how_it_works', 'Как это работает') }}</a>
                 <a href="#clinics" class="nav-link">{{ t('landing.for_clinics', 'Для клиник') }}</a>
-                <select class="lang-switcher" onchange="window.location.href=this.value">
+                <li class="nav-item dropdown lang-dropdown me-3">
+                    <a class="nav-link lang-dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="fas fa-globe"></i>
+                        <span class="lang-code">{{ current_language.upper() }}</span>
+                        <i class="fas fa-chevron-down lang-caret"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end lang-dropdown-menu" aria-labelledby="languageDropdown">
                     {% for lang_code, lang_name in languages.items() %}
-                    <option value="{{ url_for('set_language', language=lang_code) }}" {% if current_language == lang_code %}selected{% endif %}>{{ lang_name }}</option>
-                    {% endfor %}
-                </select>
+                        <li>
+                            <a class="dropdown-item lang-dropdown-item {% if current_language == lang_code %}active{% endif %}" href="{{ url_for('set_language', language=lang_code) }}">
+                                <span class="lang-flag">{% if lang_code == 'ru' %}🇷🇺{% elif lang_code == 'en' %}🇺🇸{% elif lang_code == 'kz' %}🇰🇿{% else %}🌐{% endif %}</span>
+                                <span class="lang-name">{{ lang_name }}</span>
+                                <span class="lang-badge">{{ lang_code.upper() }}</span>
+                                {% if current_language == lang_code %}<i class="fas fa-check lang-check"></i>{% endif %}
+                            </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </li>
             </div>
             <button class="btn d-md-none" style="color: var(--dark, #0f172a); font-size: 1.25rem;" onclick="document.getElementById('mobileMenu').classList.toggle('d-none')">
                 <i class="fas fa-bars"></i>
