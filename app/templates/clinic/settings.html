@@ -173,7 +173,10 @@
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label for="working_hours_start" class="form-label fw-semibold">{{ t('clinic.settings_page.working_start') }}</label>
-                                {{ form.working_hours_start(class="form-control", type="time") }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                    {{ form.working_hours_start(class="form-control timepicker", type="text", placeholder="09:00", autocomplete="off") }}
+                                </div>
                                 {% if form.working_hours_start.errors %}
                                     {% for error in form.working_hours_start.errors %}
                                     <div class="text-danger small mt-1">{{ error }}</div>
@@ -182,7 +185,10 @@
                             </div>
                             <div class="col-md-6">
                                 <label for="working_hours_end" class="form-label fw-semibold">{{ t('clinic.settings_page.working_end') }}</label>
-                                {{ form.working_hours_end(class="form-control", type="time") }}
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-clock"></i></span>
+                                    {{ form.working_hours_end(class="form-control timepicker", type="text", placeholder="18:00", autocomplete="off") }}
+                                </div>
                                 {% if form.working_hours_end.errors %}
                                     {% for error in form.working_hours_end.errors %}
                                     <div class="text-danger small mt-1">{{ error }}</div>
@@ -205,4 +211,22 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+(function() {
+    document.querySelectorAll('.timepicker').forEach(function(el) {
+        if (typeof flatpickr === 'undefined') return;
+        flatpickr(el, {
+            enableTime: true,
+            noCalendar: true,
+            dateFormat: 'H:i',
+            time_24hr: true,
+            minuteIncrement: 30,
+            disableMobile: true,
+        });
+    });
+})();
+</script>
 {% endblock %}

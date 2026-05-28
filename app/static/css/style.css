@@ -3142,6 +3142,21 @@ input.flatpickr-input.form-control {
 .lang-name { flex: 1; }
 .lang-check { font-size: 0.75rem; color: #0f766e; }
 
+/* ─── OVERFLOW FIX for dropdowns inside cards ───────────────────────── */
+/* Tom Select and Bootstrap dropdowns render absolutely — parents must not clip them */
+.panel-card,
+.panel-card .card-body,
+.panel-card .card-header,
+.card.shadow-sm,
+.card.shadow-sm .card-body {
+    overflow: visible !important;
+}
+/* But keep table overflow for horizontal scrolling */
+.panel-card .table-responsive,
+.card.shadow-sm .table-responsive {
+    overflow-x: auto !important;
+}
+
 /* ─── TOM SELECT OVERRIDES ───────────────────────────────────────────── */
 .ts-wrapper.single .ts-control,
 .ts-wrapper .ts-control {

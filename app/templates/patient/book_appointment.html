@@ -133,19 +133,16 @@
                                         </div>
                                     </div>
                                     <div class="col-md-5">
-                                        <div class="input-group">
-                                            <span class="input-group-text"><i class="fas fa-stethoscope"></i></span>
-                                            <select id="doctorSpecFilter" class="form-select" data-no-ts>
-                                                <option value="">{{ t('patient.booking.all_specializations', 'Все специализации') }}</option>
-                                                {% set seen_specs = [] %}
-                                                {% for doctor in doctors %}
-                                                    {% if doctor.specialization and doctor.specialization not in seen_specs %}
-                                                        {% set _ = seen_specs.append(doctor.specialization) %}
-                                                        <option value="{{ doctor.specialization }}">{{ doctor.specialization }}</option>
-                                                    {% endif %}
-                                                {% endfor %}
-                                            </select>
-                                        </div>
+                                        <select id="doctorSpecFilter" class="form-select">
+                                            <option value="">{{ t('patient.booking.all_specializations', 'Все специализации') }}</option>
+                                            {% set seen_specs = [] %}
+                                            {% for doctor in doctors %}
+                                                {% if doctor.specialization and doctor.specialization not in seen_specs %}
+                                                    {% set _ = seen_specs.append(doctor.specialization) %}
+                                                    <option value="{{ doctor.specialization }}">{{ doctor.specialization }}</option>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </select>
                                     </div>
                                 </div>
                             </div>
