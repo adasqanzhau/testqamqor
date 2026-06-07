@@ -30,7 +30,7 @@
                 <div class="col-md-4">
                     <label class="form-label fw-semibold">{{ t('common.date') }}</label>
                     <input type="date" name="date" class="form-control"
-                           value="{{ request.args.get('date', '') }}">
+                           value="{{ request.args.get('date', today) }}">
                 </div>
                 <div class="col-md-4">
                     <div class="d-flex gap-2">

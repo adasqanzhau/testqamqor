@@ -143,11 +143,14 @@ def appointments():
         Appointment.scheduled_time.desc()
     ).paginate(page=page, per_page=20, error_out=False)
 
+    today = date.today().strftime('%Y-%m-%d')
+
     return render_template(
         'doctor/appointments.html',
         appointments=appointments,
         status_filter=status_filter,
         date_filter=date_filter,
+        today=today,
     )
 
 

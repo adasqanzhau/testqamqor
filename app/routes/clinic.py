@@ -301,7 +301,10 @@ def appointments():
     appointments_list = query.order_by(
         Appointment.scheduled_time.desc()
     ).paginate(page=page, per_page=20, error_out=False)
-    return render_template('clinic/appointments.html', appointments=appointments_list)
+
+    from datetime import date
+    today = date.today().strftime('%Y-%m-%d')
+    return render_template('clinic/appointments.html', appointments=appointments_list, today=today)
 
 
 # ---------------------------------------------------------------------------
