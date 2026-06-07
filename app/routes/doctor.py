@@ -47,7 +47,7 @@ def _save_avatar(file_storage):
     if not filename or '.' not in filename:
         return None
     ext = filename.rsplit('.', 1)[-1].lower()
-    if ext not in ('jpg', 'jpeg', 'png', 'heic', 'heif'):
+    if ext not in ('jpg', 'jpeg', 'png'):
         return None
     unique_name = f"{uuid.uuid4().hex}.{ext}"
     upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], 'avatars')

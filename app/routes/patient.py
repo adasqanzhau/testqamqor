@@ -448,8 +448,8 @@ def profile():
             filename = secure_filename(form.avatar.data.filename)
             if filename:
                 ext = filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
-                if ext not in ('jpg', 'jpeg', 'png', 'heic', 'heif'):
-                    flash('Допустимы только изображения (jpg, png, heic).', 'danger')
+                if ext not in ('jpg', 'jpeg', 'png'):
+                    flash('Допустимы только изображения (jpg, png).', 'danger')
                     return redirect(url_for('patient.profile'))
                 try:
                     unique_name = f'{uuid.uuid4().hex}.{ext}'

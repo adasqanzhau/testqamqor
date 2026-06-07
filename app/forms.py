@@ -91,8 +91,8 @@ class DoctorForm(FlaskForm):
 
     def validate_avatar(self, field):
         ext = _uploaded_extension(field.data)
-        if ext and ext not in ('jpg', 'jpeg', 'png', 'heic', 'heif'):
-            raise ValidationError('Допустимы только изображения (jpg, png, heic).')
+        if ext and ext not in ('jpg', 'jpeg', 'png'):
+            raise ValidationError('Допустимы только изображения (jpg, png).')
 
 
 class ClinicForm(FlaskForm):
@@ -180,8 +180,8 @@ class ProfileForm(FlaskForm):
 
     def validate_avatar(self, field):
         ext = _uploaded_extension(field.data)
-        if ext and ext not in ('jpg', 'jpeg', 'png', 'heic', 'heif'):
-            raise ValidationError('Допустимы только изображения (jpg, png, heic).')
+        if ext and ext not in ('jpg', 'jpeg', 'png'):
+            raise ValidationError('Допустимы только изображения (jpg, png).')
 
 
 class ReviewForm(FlaskForm):

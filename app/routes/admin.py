@@ -16,7 +16,7 @@ from app.forms import ClinicForm, ProfileForm
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 
-ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'}
+ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg'}
 
 
 def superadmin_required(f):

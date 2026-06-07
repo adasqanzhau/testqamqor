@@ -25,8 +25,8 @@ def clinic_admin_required(f):
     return decorated_function
 
 
-ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'heic', 'heif'}
-ALLOWED_LOGO_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'}
+ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+ALLOWED_LOGO_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg'}
 
 
 def _save_image(file, subdir, allowed):
