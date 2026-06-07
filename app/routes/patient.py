@@ -448,18 +448,30 @@ def profile():
             filename = secure_filename(form.avatar.data.filename)
             if filename:
                 ext = filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
-                if ext not in ('jpg', 'jpeg', 'png'):
-                    flash('Допустимы только изображения (jpg, png).', 'danger')
+                if ext not in ('jpg', 'jpeg', 'png', 'heic', 'heif'):
+                    flash('Допустимы только изображения (jpg, png, heic).', 'danger')
                     return redirect(url_for('patient.profile'))
-                unique_name = f'{uuid.uuid4().hex}.{ext}'
-                upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], 'avatars')
-                os.makedirs(upload_dir, exist_ok=True)
-                filepath = os.path.join(upload_dir, unique_name)
-                form.avatar.data.save(filepath)
-                current_user.avatar = unique_name
+                try:
+                    unique_name = f'{uuid.uuid4().hex}.{ext}'
+                    upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], 'avatars')
+                    os.makedirs(upload_dir, exist_ok=True)
+                    filepath = os.path.join(upload_dir, unique_name)
+                    form.avatar.data.save(filepath)
+                    current_user.avatar = unique_name
+                except Exception as e:
+                    current_app.logger.error(f"Error saving patient avatar: {e}")
+                    flash('Ошибка при сохранении фото. Проверьте формат файла.', 'danger')
+                    return redirect(url_for('patient.profile'))
 
-        db.session.commit()
-        flash('Профиль успешно обновлён.', 'success')
+        try:
+            db.session.commit()
+            flash('Профиль успешно обновлён.', 'success')
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error updating patient profile: {e}")
+            flash('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
+            return redirect(url_for('patient.profile'))
+
         return redirect(url_for('patient.profile'))
 
     return render_template('patient/profile.html', form=form)

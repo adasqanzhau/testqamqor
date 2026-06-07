@@ -16,7 +16,7 @@ from app.forms import ClinicForm, ProfileForm
 admin = Blueprint('admin', __name__, url_prefix='/admin')
 
 
-ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg'}
+ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'}
 
 
 def superadmin_required(f):
@@ -491,18 +491,29 @@ def profile():
             if '.' in original:
                 ext = original.rsplit('.', 1)[-1].lower()
                 if ext in ALLOWED_IMAGE_EXTENSIONS:
-                    avatar_filename = f"{uuid.uuid4().hex}.{ext}"
-                    upload_dir = os.path.join(
-                        current_app.config.get('UPLOAD_FOLDER')
-                        or os.path.join(current_app.root_path, 'static', 'uploads'),
-                        'avatars',
-                    )
-                    os.makedirs(upload_dir, exist_ok=True)
-                    form.avatar.data.save(os.path.join(upload_dir, avatar_filename))
-                    current_user.avatar = avatar_filename
+                    try:
+                        avatar_filename = f"{uuid.uuid4().hex}.{ext}"
+                        upload_dir = os.path.join(
+                            current_app.config.get('UPLOAD_FOLDER')
+                            or os.path.join(current_app.root_path, 'static', 'uploads'),
+                            'avatars',
+                        )
+                        os.makedirs(upload_dir, exist_ok=True)
+                        form.avatar.data.save(os.path.join(upload_dir, avatar_filename))
+                        current_user.avatar = avatar_filename
+                    except Exception as e:
+                        current_app.logger.error(f"Error saving admin avatar: {e}")
+                        flash('Ошибка при сохранении фото. Проверьте формат файла.', 'danger')
 
-        db.session.commit()
-        flash('Профиль обновлен.', 'success')
+        try:
+            db.session.commit()
+            flash('Профиль обновлен.', 'success')
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error updating admin profile: {e}")
+            flash('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
+            return render_template('admin/profile.html', form=form)
+
         return redirect(url_for('admin.profile'))
 
     return render_template('admin/profile.html', form=form)

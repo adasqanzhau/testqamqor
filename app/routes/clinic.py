@@ -25,8 +25,8 @@ def clinic_admin_required(f):
     return decorated_function
 
 
-ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png'}
-ALLOWED_LOGO_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg'}
+ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'heic', 'heif'}
+ALLOWED_LOGO_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg', 'heic', 'heif'}
 
 
 def _save_image(file, subdir, allowed):
@@ -175,10 +175,16 @@ def add_doctor():
             if saved:
                 doctor.avatar = saved
 
-        db.session.add(doctor)
-        db.session.commit()
-        flash('Врач успешно добавлен.', 'success')
-        return redirect(url_for('clinic.doctors'))
+        try:
+            db.session.add(doctor)
+            db.session.commit()
+            flash('Врач успешно добавлен.', 'success')
+            return redirect(url_for('clinic.doctors'))
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error adding doctor: {e}")
+            flash('Ошибка при добавлении врача. Попробуйте снова.', 'danger')
+            return render_template('clinic/doctor_form.html', form=form, title='Добавить врача')
 
     return render_template('clinic/doctor_form.html', form=form, title='Добавить врача')
 
@@ -218,9 +224,16 @@ def edit_doctor(doctor_id):
             if saved:
                 doctor.avatar = saved
 
-        db.session.commit()
-        flash('Данные врача обновлены.', 'success')
-        return redirect(url_for('clinic.doctors'))
+        try:
+            db.session.commit()
+            flash('Данные врача обновлены.', 'success')
+            return redirect(url_for('clinic.doctors'))
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error updating doctor: {e}")
+            flash('Ошибка при обновлении врача. Попробуйте снова.', 'danger')
+            return render_template('clinic/doctor_form.html', form=form,
+                           title='Редактировать врача', doctor=doctor)
 
     return render_template('clinic/doctor_form.html', form=form,
                            title='Редактировать врача', doctor=doctor)
@@ -495,9 +508,15 @@ def profile():
             if saved:
                 current_user.avatar = saved
 
-        db.session.commit()
-        flash('Профиль обновлён.', 'success')
-        return redirect(url_for('clinic.profile'))
+        try:
+            db.session.commit()
+            flash('Профиль обновлён.', 'success')
+            return redirect(url_for('clinic.profile'))
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error updating clinic admin profile: {e}")
+            flash('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
+            return render_template('clinic/profile.html', form=form)
 
     return render_template('clinic/profile.html', form=form)
 

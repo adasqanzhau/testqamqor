@@ -47,13 +47,17 @@ def _save_avatar(file_storage):
     if not filename or '.' not in filename:
         return None
     ext = filename.rsplit('.', 1)[-1].lower()
-    if ext not in ('jpg', 'jpeg', 'png'):
+    if ext not in ('jpg', 'jpeg', 'png', 'heic', 'heif'):
         return None
     unique_name = f"{uuid.uuid4().hex}.{ext}"
     upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], 'avatars')
-    os.makedirs(upload_dir, exist_ok=True)
-    file_storage.save(os.path.join(upload_dir, unique_name))
-    return unique_name
+    try:
+        os.makedirs(upload_dir, exist_ok=True)
+        file_storage.save(os.path.join(upload_dir, unique_name))
+        return unique_name
+    except Exception as e:
+        current_app.logger.error(f"Error saving avatar: {e}")
+        return None
 
 
 def _current_language():
@@ -383,9 +387,18 @@ def profile():
             saved = _save_avatar(form.avatar.data)
             if saved:
                 current_user.avatar = saved
+            else:
+                flash('Ошибка при сохранении фото. Проверьте формат файла (jpg, png, heic).', 'danger')
 
-        db.session.commit()
-        _flash_translated('profile_updated', 'success')
+        try:
+            db.session.commit()
+            _flash_translated('profile_updated', 'success')
+        except Exception as e:
+            db.session.rollback()
+            current_app.logger.error(f"Error updating profile: {e}")
+            flash('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
+            return render_template('doctor/profile.html', form=form)
+
         return redirect(url_for('doctor.profile'))
 
     return render_template('doctor/profile.html', form=form)

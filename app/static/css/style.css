@@ -2914,6 +2914,8 @@ i.text-warning.fa-star,
     padding: 8px !important;
     background: #ffffff !important;
     font-family: 'Inter', sans-serif !important;
+    max-width: 320px !important;
+    width: auto !important;
 }
 
 .flatpickr-calendar.arrowTop::before,
