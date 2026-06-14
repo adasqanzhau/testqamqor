@@ -794,6 +794,8 @@
     });
 
     btnEndCall.addEventListener('click', function() {
+        if (btnEndCall.disabled) return;
+        btnEndCall.disabled = true;
         endCall();
     });
 

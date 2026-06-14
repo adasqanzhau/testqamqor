@@ -168,6 +168,19 @@ def transcribe(room_id):
     raw_text = (data.get('transcription') or '').strip()
     transcription_text = raw_text[:50000]  # limit length
 
+    from sqlalchemy import update as _sa_update
+
+    claim = db.session.execute(
+        _sa_update(VideoCall)
+        .where(VideoCall.id == videocall.id, VideoCall.transcription.is_(None))
+        .values(transcription='{}')
+    )
+    db.session.commit()
+
+    if claim.rowcount == 0:
+        db.session.refresh(videocall)
+        return jsonify({'status': 'already_saved', 'summary': videocall.summary})
+
     patient_name = appointment.patient.full_name if appointment.patient else 'Пациент'
     doctor_name = appointment.doctor.full_name if appointment.doctor else 'Врач'
     appointment_date = (
