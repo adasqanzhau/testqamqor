@@ -1,6 +1,10 @@
 """Tests for videocall routes — room access, start, end, transcribe."""
+import json
 import uuid
+from unittest.mock import patch
+
 from app import db
+from app.localized_text import pick_localized
 from app.models import Appointment, VideoCall, Notification
 from tests.conftest import login
 
@@ -121,7 +125,10 @@ class TestVideoCallTranscribe:
 
         with app.app_context():
             vc = VideoCall.query.filter_by(room_id=room_id).first()
-            assert vc.transcription == 'Пациент жалуется на боль'
+            assert pick_localized(vc.transcription, 'ru') == 'Пациент жалуется на боль'
+            stored = json.loads(vc.transcription)
+            assert 'ru' in stored
+            assert json.loads(vc.summary)
             # Notifications should be created for doctor and patient
             notifs = Notification.query.filter(
                 Notification.title == 'Транскрипция консультации готова'

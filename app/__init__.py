@@ -76,6 +76,9 @@ def create_app(config_class=Config):
     # Ensure upload folder exists
     os.makedirs(app.config.get('UPLOAD_FOLDER', 'app/static/uploads'), exist_ok=True)
 
+    from app.avatar_utils import avatar_url
+    app.add_template_global(avatar_url, 'avatar_url')
+
     from app.routes.auth import auth_bp
     from app.routes.admin import admin as admin_bp
     from app.routes.clinic import clinic as clinic_bp
@@ -132,56 +135,21 @@ def create_app(config_class=Config):
         elif current_user.is_authenticated and current_user.language:
             current_lang = current_user.language
         
-        from app.i18n import translate_text_from_ru, t as i18n_t
+        from app.i18n import translate_text_from_ru, resolve_notification_field, t as i18n_t
 
         def render_notification_field(notification, field):
-            # Try structured multilingual payload first
-            try:
-                payload = getattr(notification, f"{field}_i18n", None)
-            except Exception:
-                payload = None
-            if isinstance(payload, dict):
-                # prefer exact language
-                if current_lang in payload and payload[current_lang]:
-                    return payload[current_lang]
-                # fallback to ru/en order
-                for fav in ('ru', 'en', 'kz'):
-                    if fav in payload and payload[fav]:
-                        return payload[fav]
-            # Fallback: try to translate legacy Russian text
-            try:
-                orig = getattr(notification, field, '')
-            except Exception:
-                orig = ''
-            return translate_text_from_ru(orig, current_lang)
+            return resolve_notification_field(notification, field, current_lang)
 
-        import json
+        from app.avatar_utils import avatar_url
+        from app.localized_text import pick_localized, strip_embedded_transcription
+
         def localize_field(obj, field_name):
-            """Return a localized variant for a potentially multilingual JSON field.
-
-            If the field contains a JSON object mapping languages to strings, prefer
-            the current language, then fall back to ru/en, else return the raw value.
-            """
+            """Return a localized variant for a potentially multilingual JSON field."""
             try:
                 raw = getattr(obj, field_name, None)
             except Exception:
                 raw = None
-            if not raw:
-                return ''
-            # If stored as JSON mapping (string), try to parse
-            if isinstance(raw, str):
-                s = raw.strip()
-                if s.startswith('{') and s.endswith('}'):
-                    try:
-                        mapping = json.loads(raw)
-                        if isinstance(mapping, dict):
-                            for fav in (current_lang, 'ru', 'en'):
-                                if fav in mapping and mapping[fav]:
-                                    return mapping[fav]
-                    except Exception:
-                        pass
-            # Fallback: return as-is
-            return raw
+            return pick_localized(raw, current_lang)
 
         return {
             'now': datetime.now(timezone.utc).replace(tzinfo=None),
@@ -195,6 +163,8 @@ def create_app(config_class=Config):
             # Helper to render notification fields (prefer multilingual payloads)
             'render_notification_field': render_notification_field,
             'localize_field': localize_field,
+            'strip_transcription': strip_embedded_transcription,
+            'avatar_url': avatar_url,
         }
 
     @app.before_request

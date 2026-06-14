@@ -30,7 +30,7 @@
                             <label class="form-label fw-semibold d-block">{{ t('clinic.doctor_form.avatar_label') }}</label>
                             {% if doctor and doctor.avatar %}
                             <div class="mb-3">
-                                <img src="{{ url_for('static', filename='uploads/avatars/' + doctor.avatar) }}"
+                                <img src="{{ avatar_url(doctor) }}"
                                      alt="{{ t('clinic.doctor_form.current_photo_alt') }}"
                                      class="rounded-circle"
                                      style="width: 120px; height: 120px; object-fit: cover;">
@@ -43,11 +43,16 @@
                                 </div>
                             </div>
                             {% endif %}
-                            {{ form.avatar(class="form-control", accept="image/*") }}
+                            {{ form.avatar(class="form-control", accept=".jpg,.jpeg,.png,.img,image/*") }}
                             {% if form.avatar.errors %}
                                 {% for error in form.avatar.errors %}
                                 <div class="text-danger small mt-1">{{ error }}</div>
                                 {% endfor %}
+                            {% endif %}
+                            {% if doctor and doctor.avatar %}
+                            <button type="submit" name="remove_avatar" value="1" class="btn btn-outline-danger btn-sm mt-2">
+                                <i class="fas fa-trash me-1"></i>{{ t('common.delete_photo') }}
+                            </button>
                             {% endif %}
                         </div>
 

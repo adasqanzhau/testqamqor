@@ -1,8 +1,9 @@
 import logging
 
-from flask import Blueprint, render_template, request, jsonify, flash, redirect, url_for
+from flask import Blueprint, render_template, request, jsonify, redirect, url_for
 from flask_login import login_required, current_user
 from app import db, csrf
+from app.i18n import flash_message as flash_i18n
 from app.models import ChatMessage
 from app.ai import chat_completion
 
@@ -11,10 +12,10 @@ logger = logging.getLogger(__name__)
 chatbot_bp = Blueprint('chatbot', __name__)
 
 SYSTEM_PROMPT = (
-    "Вы — медицинский AI-ассистент на платформе телемедицины MediPlatform. "
+    "Вы — медицинский AI-ассистент на платформе телемедицины Qamqor. "
     "Помогайте пользователям с общими медицинскими вопросами, "
     "напоминайте о важности консультации с врачом для точного диагноза. "
-    "Отвечайте на русском языке. Будьте вежливы и профессиональны. "
+    "Отвечайте на русском языке, если пользователь использует английский или казахский, отвечайте на их языке. Будьте вежливы и профессиональны. "
     "НЕ ставьте диагнозы, а рекомендуйте обратиться к специалисту. "
     "Используйте markdown-форматирование: **жирный** для ключевых терминов, "
     "- списки для перечислений симптомов или рекомендаций, "
@@ -29,7 +30,7 @@ MAX_HISTORY_MESSAGES = 50
 @login_required
 def chat():
     if current_user.role != 'patient':
-        flash('Чат-бот доступен только для пациентов.', 'warning')
+        flash_i18n('Чат-бот доступен только для пациентов.', 'warning')
         from app.routes.auth import ROLE_REDIRECTS
         return redirect(url_for(ROLE_REDIRECTS.get(current_user.role, 'auth.login')))
 

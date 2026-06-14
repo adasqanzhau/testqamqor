@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'partials/_user_avatar.html' import user_avatar %}
 
 {% block title %}{{ t('patient.panel_title', 'Панель пациента') }}{% endblock %}
 
@@ -140,8 +141,8 @@
                         <div class="list-group-item appointment-card widget-list-item status-{{ appointment.status }} py-3">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div class="d-flex align-items-start">
-                                    <div class="bg-light rounded-circle p-2 me-3 text-center" style="width: 48px; height: 48px;">
-                                        <i class="fas fa-user-md text-primary fa-lg mt-1"></i>
+                                    <div class="me-3">
+                                        {{ user_avatar(appointment.doctor, size='48px') }}
                                     </div>
                                     <div>
                                         <h6 class="mb-1 fw-semibold">{{ appointment.doctor.first_name }} {{ appointment.doctor.last_name }}</h6>
@@ -198,8 +199,14 @@
                         <div class="list-group-item widget-list-item">
                             <div class="d-flex justify-content-between align-items-start">
                                 <div>
+                                    {% if record.record_type == 'consultation' %}
+                                    <h6 class="mb-1 small fw-semibold">{{ t('record.video_consultation_title') }} — {{ record.title.split('—')[-1].strip() if '—' in record.title else record.title }}</h6>
+                                {% elif record.record_type == 'examination' %}
+                                    <h6 class="mb-1 small fw-semibold">{{ t('record.examination_title') }} {{ record.title.split('—')[-1].strip() if '—' in record.title else record.title }}</h6>
+                                {% else %}
                                     <h6 class="mb-1 small fw-semibold">{{ record.title }}</h6>
-                                    <span class="badge bg-light text-dark small">{{ record.record_type }}</span>
+                                {% endif %}
+                                <span class="badge bg-light text-dark small">{{ t('record_type.' + record.record_type, record.record_type) }}</span>
                                 </div>
                                 <small class="text-muted">{{ record.created_at.strftime('%d.%m') }}</small>
                             </div>

@@ -194,7 +194,7 @@
     "notes": {{ (appointment.notes or '')|tojson }},
     "diagnosis": {{ (appointment.prescription.diagnosis if appointment.prescription else '')|tojson }},
     "medications": {{ (appointment.prescription.medications if appointment.prescription else '')|tojson }},
-    "summary": {{ (appointment.videocall.summary if appointment.videocall else '')|tojson }}
+    "summary": {{ (localize_field(appointment.videocall, 'summary') if appointment.videocall else '')|tojson }}
 }{% if not loop.last %},{% endif %}
 {% endfor %}
 ]

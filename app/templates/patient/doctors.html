@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'partials/_user_avatar.html' import user_avatar %}
 
 {% block title %}{{ t('patient.doctors.title', 'Наши врачи') }}{% endblock %}
 
@@ -113,8 +114,7 @@
                 <div class="card-body text-center p-4">
                     <div class="mb-3 d-flex justify-content-center">
                         {% if doctor.avatar %}
-                        <img src="{{ url_for('static', filename='uploads/avatars/' + doctor.avatar) }}"
-                             alt="{{ doctor.first_name }}" class="doctor-avatar">
+                        <img src="{{ avatar_url(doctor) }}" alt="{{ doctor.first_name }}" class="doctor-avatar">
                         {% else %}
                         <div class="doctor-avatar-placeholder">
                             <i class="fas fa-user-md"></i>

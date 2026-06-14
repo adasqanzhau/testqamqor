@@ -1,8 +1,10 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, abort, jsonify, current_app
+from flask import Blueprint, render_template, redirect, url_for, request, abort, jsonify, current_app
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta, date, timezone
 from sqlalchemy.exc import IntegrityError
 from app import db
+from app.avatar_utils import remove_user_avatar, replace_user_avatar
+from app.i18n import flash_message as flash_i18n
 from app.models import (User, Clinic, Appointment, VideoCall, Prescription,
                         MedicalRecord, ChatMessage, Notification, Review)
 import app.i18n as i18n
@@ -216,7 +218,7 @@ def book_appointment():
     if form.validate_on_submit():
         time_val = form.scheduled_time.data
         if not time_val:
-            flash('Пожалуйста, выберите время приёма.', 'warning')
+            flash_i18n('Пожалуйста, выберите время приёма.', 'warning')
             return render_template(
                 'patient/book_appointment.html', form=form, time_slots=time_slots,
                 doctors=doctor_list, doctor_id=doctor_id,
@@ -233,7 +235,7 @@ def book_appointment():
         ).filter(Appointment.status.in_(['scheduled', 'in_progress'])).first()
 
         if existing:
-            flash('Это время уже занято. Выберите другое.', 'danger')
+            flash_i18n('Это время уже занято. Выберите другое.', 'danger')
             return render_template(
                 'patient/book_appointment.html', form=form, time_slots=time_slots,
                 doctors=doctor_list, doctor_id=doctor_id,
@@ -241,10 +243,10 @@ def book_appointment():
 
         doctor = db.session.get(User, doctor_id)
         if not doctor or not doctor.is_active or doctor.role != 'doctor':
-            flash('Врач не найден.', 'danger')
+            flash_i18n('Врач не найден.', 'danger')
             return redirect(url_for('patient.book_appointment'))
         if current_user.clinic_id and doctor.clinic_id != current_user.clinic_id:
-            flash('Этот врач не принадлежит вашей клинике.', 'danger')
+            flash_i18n('Этот врач не принадлежит вашей клинике.', 'danger')
             return redirect(url_for('patient.book_appointment'))
         appointment = Appointment(
             patient_id=current_user.id,
@@ -278,12 +280,12 @@ def book_appointment():
             db.session.commit()
         except IntegrityError:
             db.session.rollback()
-            flash('Это время уже занято. Выберите другое.', 'danger')
+            flash_i18n('Это время уже занято. Выберите другое.', 'danger')
             return render_template(
                 'patient/book_appointment.html', form=form, time_slots=time_slots,
                 doctors=doctor_list, doctor_id=doctor_id,
             )
-        flash('Вы успешно записались на приём!', 'success')
+        flash_i18n('Вы успешно записались на приём!', 'success')
         return redirect(url_for('patient.appointments'))
 
     return render_template(
@@ -324,11 +326,11 @@ def cancel_appointment(appointment_id):
     if appointment.patient_id != current_user.id:
         abort(403)
     if appointment.status != 'scheduled':
-        flash('Можно отменить только запланированный приём.', 'warning')
+        flash_i18n('Можно отменить только запланированный приём.', 'warning')
         return redirect(url_for('patient.appointments'))
     appointment.status = 'cancelled'
     db.session.commit()
-    flash('Запись отменена.', 'success')
+    flash_i18n('Запись отменена.', 'success')
     return redirect(url_for('patient.appointments'))
 
 
@@ -367,8 +369,6 @@ def medical_records():
 
     records = query.order_by(MedicalRecord.created_at.desc()).all()
 
-    # For consultation records, attach the related VideoCall (if any) so the patient
-    # can open the full transcription summary directly from medical records.
     record_videocalls = {}
     consultation_doctor_ids = {
         r.doctor_id for r in records
@@ -400,7 +400,6 @@ def medical_records():
                 if best is None or delta < best_delta:
                     best = vc
                     best_delta = delta
-            # Only link if the videocall happened within 1 day of record creation.
             if best and best_delta is not None and best_delta < 86400:
                 record_videocalls[record.id] = best
 
@@ -435,6 +434,7 @@ def profile():
     form = ProfileForm(obj=current_user)
 
     if form.validate_on_submit():
+        remove_avatar = request.form.get('remove_avatar') == '1'
         current_user.first_name = form.first_name.data.strip()
         current_user.last_name = form.last_name.data.strip()
         current_user.phone = form.phone.data.strip() if form.phone.data else None
@@ -442,34 +442,26 @@ def profile():
         current_user.gender = form.gender.data if form.gender.data else None
         current_user.address = form.address.data.strip() if form.address.data else None
 
-        if form.avatar.data and getattr(form.avatar.data, 'filename', ''):
-            from werkzeug.utils import secure_filename
-            import os, uuid
-            filename = secure_filename(form.avatar.data.filename)
-            if filename:
-                ext = filename.rsplit('.', 1)[-1].lower() if '.' in filename else ''
-                if ext not in ('jpg', 'jpeg', 'png'):
-                    flash('Допустимы только изображения (jpg, png).', 'danger')
-                    return redirect(url_for('patient.profile'))
-                try:
-                    unique_name = f'{uuid.uuid4().hex}.{ext}'
-                    upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], 'avatars')
-                    os.makedirs(upload_dir, exist_ok=True)
-                    filepath = os.path.join(upload_dir, unique_name)
-                    form.avatar.data.save(filepath)
-                    current_user.avatar = unique_name
-                except Exception as e:
-                    current_app.logger.error(f"Error saving patient avatar: {e}")
-                    flash('Ошибка при сохранении фото. Проверьте формат файла.', 'danger')
-                    return redirect(url_for('patient.profile'))
+        if remove_avatar and current_user.avatar:
+            remove_user_avatar(current_user)
+            flash_i18n('Фото профиля удалено.', 'success')
+
+        if not remove_avatar and form.avatar.data and getattr(form.avatar.data, 'filename', ''):
+            try:
+                if not replace_user_avatar(current_user, form.avatar.data):
+                    raise ValueError('invalid avatar file')
+            except Exception as e:
+                current_app.logger.error(f"Error saving patient avatar: {e}")
+                flash_i18n('Ошибка при сохранении фото. Проверьте формат файла.', 'danger')
+                return redirect(url_for('patient.profile'))
 
         try:
             db.session.commit()
-            flash('Профиль успешно обновлён.', 'success')
+            flash_i18n('Профиль успешно обновлён.', 'success')
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"Error updating patient profile: {e}")
-            flash('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
+            flash_i18n('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
             return redirect(url_for('patient.profile'))
 
         return redirect(url_for('patient.profile'))
@@ -520,14 +512,14 @@ def leave_review(appointment_id):
         abort(403)
 
     if appointment.status != 'completed':
-        flash('Отзыв можно оставить только после завершённого приёма.', 'warning')
+        flash_i18n('Отзыв можно оставить только после завершённого приёма.', 'warning')
         return redirect(url_for('patient.reviews'))
 
     existing_review = Review.query.filter_by(
         patient_id=current_user.id, appointment_id=appointment_id
     ).first()
     if existing_review:
-        flash('Вы уже оставили отзыв на этот приём.', 'info')
+        flash_i18n('Вы уже оставили отзыв на этот приём.', 'info')
         return redirect(url_for('patient.reviews'))
 
     form = ReviewForm()
@@ -562,7 +554,7 @@ def leave_review(appointment_id):
         db.session.add(notification)
 
         db.session.commit()
-        flash('Спасибо за ваш отзыв!', 'success')
+        flash_i18n('Спасибо за ваш отзыв!', 'success')
         return redirect(url_for('patient.reviews'))
 
     return render_template(
@@ -600,7 +592,7 @@ def mark_notification_read(notification_id):
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return jsonify({'success': True})
 
-    flash('Уведомление отмечено как прочитанное.', 'success')
+    flash_i18n('Уведомление отмечено как прочитанное.', 'success')
     return redirect(url_for('patient.notifications'))
 
 
@@ -614,7 +606,7 @@ def mark_all_notifications_read():
     if request.headers.get('X-Requested-With') == 'XMLHttpRequest':
         return jsonify({'success': True})
 
-    flash('Все уведомления отмечены как прочитанные.', 'success')
+    flash_i18n('Все уведомления отмечены как прочитанные.', 'success')
     return redirect(url_for('patient.notifications'))
 
 
@@ -628,7 +620,7 @@ def health_tracker():
         notes = request.form.get('notes', '').strip()
 
         if not symptom:
-            flash('Введите описание симптома.', 'warning')
+            flash_i18n('Введите описание симптома.', 'warning')
         else:
             record = MedicalRecord(
                 patient_id=current_user.id,
@@ -639,7 +631,7 @@ def health_tracker():
             )
             db.session.add(record)
             db.session.commit()
-            flash('Симптом записан.', 'success')
+            flash_i18n('Симптом записан.', 'success')
             return redirect(url_for('patient.health_tracker'))
 
     symptom_logs = (

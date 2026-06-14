@@ -2,6 +2,8 @@ import json
 import os
 import re
 
+from flask import flash as flask_flash, session
+
 def get_translations(language='ru'):
     """Load translations for the given language."""
     base_path = os.path.dirname(os.path.abspath(__file__))
@@ -248,6 +250,328 @@ def get_dom_translations(language='ru'):
     }
 
 
+FLASH_TRANSLATIONS = {
+    'Укажите email и пароль администратора клиники.': {
+        'ru': 'Укажите email и пароль администратора клиники.',
+        'kz': 'Клиника әкімшісінің email мен құпия сөзін көрсетіңіз.',
+        'en': "Specify the clinic administrator's email and password.",
+    },
+    'Пользователь с таким email уже существует.': {
+        'ru': 'Пользователь с таким email уже существует.',
+        'kz': 'Мұндай email мекенжайы бар пайдаланушы бұрыннан бар.',
+        'en': 'A user with this email already exists.',
+    },
+    'Клиника "%(name)s" успешно создана.': {
+        'ru': 'Клиника "%(name)s" успешно создана.',
+        'kz': '"%(name)s" клиникасы сәтті құрылды.',
+        'en': 'Clinic "%(name)s" was created successfully.',
+    },
+    'Клиника "%(name)s" обновлена.': {
+        'ru': 'Клиника "%(name)s" обновлена.',
+        'kz': '"%(name)s" клиникасы жаңартылды.',
+        'en': 'Clinic "%(name)s" has been updated.',
+    },
+    'Не удалось обновить клинику: %(exc)s': {
+        'ru': 'Не удалось обновить клинику: %(exc)s',
+        'kz': 'Клиниканы жаңарту мүмкін болмады: %(exc)s',
+        'en': 'Failed to update clinic: %(exc)s',
+    },
+    'Клиника "%(name)s" удалена.': {
+        'ru': 'Клиника "%(name)s" удалена.',
+        'kz': '"%(name)s" клиникасы жойылды.',
+        'en': 'Clinic "%(name)s" has been deleted.',
+    },
+    'Не удалось удалить клинику: %(exc)s': {
+        'ru': 'Не удалось удалить клинику: %(exc)s',
+        'kz': 'Клиниканы жою мүмкін болмады: %(exc)s',
+        'en': 'Failed to delete clinic: %(exc)s',
+    },
+    'Клиника "%(name)s" активирована.': {
+        'ru': 'Клиника "%(name)s" активирована.',
+        'kz': '"%(name)s" клиникасы белсендірілді.',
+        'en': 'Clinic "%(name)s" has been activated.',
+    },
+    'Клиника "%(name)s" деактивирована.': {
+        'ru': 'Клиника "%(name)s" деактивирована.',
+        'kz': '"%(name)s" клиникасы өшірілді.',
+        'en': 'Clinic "%(name)s" has been deactivated.',
+    },
+    'Нельзя изменить статус суперадмина.': {
+        'ru': 'Нельзя изменить статус суперадмина.',
+        'kz': 'Суперадминнің статусын өзгертуге болмайды.',
+        'en': 'Cannot change the superadmin status.',
+    },
+    'Пользователь "%(name)s" активирован.': {
+        'ru': 'Пользователь "%(name)s" активирован.',
+        'kz': '"%(name)s" пайдаланушысы белсендірілді.',
+        'en': 'User "%(name)s" has been activated.',
+    },
+    'Пользователь "%(name)s" деактивирован.': {
+        'ru': 'Пользователь "%(name)s" деактивирован.',
+        'kz': '"%(name)s" пайдаланушысы өшірілді.',
+        'en': 'User "%(name)s" has been deactivated.',
+    },
+    'Нельзя удалить суперадмина.': {
+        'ru': 'Нельзя удалить суперадмина.',
+        'kz': 'Суперадминді жоюға болмайды.',
+        'en': 'Cannot delete the superadmin.',
+    },
+    'Пользователь "%(name)s" удалён.': {
+        'ru': 'Пользователь "%(name)s" удалён.',
+        'kz': '"%(name)s" пайдаланушысы жойылды.',
+        'en': 'User "%(name)s" has been deleted.',
+    },
+    'Не удалось удалить пользователя: %(exc)s': {
+        'ru': 'Не удалось удалить пользователя: %(exc)s',
+        'kz': 'Пайдаланушыны жою мүмкін болмады: %(exc)s',
+        'en': 'Failed to delete user: %(exc)s',
+    },
+    'Ошибка при сохранении фото. Проверьте формат файла.': {
+        'ru': 'Ошибка при сохранении фото. Проверьте формат файла.',
+        'kz': 'Фотоны сақтау қатесі. Файл пішімін тексеріңіз.',
+        'en': 'Error saving photo. Check the file format.',
+    },
+    'Профиль обновлен.': {
+        'ru': 'Профиль обновлен.',
+        'kz': 'Профиль жаңартылды.',
+        'en': 'Profile updated.',
+    },
+    'Ошибка при сохранении профиля. Попробуйте снова.': {
+        'ru': 'Ошибка при сохранении профиля. Попробуйте снова.',
+        'kz': 'Профильді сақтау қатесі. Қайта көріңіз.',
+        'en': 'Error saving profile. Please try again.',
+    },
+    'Врач успешно добавлен.': {
+        'ru': 'Врач успешно добавлен.',
+        'kz': 'Дәрігер сәтті қосылды.',
+        'en': 'Doctor added successfully.',
+    },
+    'Ошибка при добавлении врача. Попробуйте снова.': {
+        'ru': 'Ошибка при добавлении врача. Попробуйте снова.',
+        'kz': 'Дәрігерді қосу қатесі. Қайта көріңіз.',
+        'en': 'Error adding doctor. Please try again.',
+    },
+    'Данные врача обновлены.': {
+        'ru': 'Данные врача обновлены.',
+        'kz': 'Дәрігер деректері жаңартылды.',
+        'en': 'Doctor data updated.',
+    },
+    'Ошибка при обновлении врача. Попробуйте снова.': {
+        'ru': 'Ошибка при обновлении врача. Попробуйте снова.',
+        'kz': 'Дәрігерді жаңарту қатесі. Қайта көріңіз.',
+        'en': 'Error updating doctor. Please try again.',
+    },
+    'Врач удалён.': {
+        'ru': 'Врач удалён.',
+        'kz': 'Дәрігер жойылды.',
+        'en': 'Doctor deleted.',
+    },
+    'Настройки клиники обновлены.': {
+        'ru': 'Настройки клиники обновлены.',
+        'kz': 'Клиника баптаулары жаңартылды.',
+        'en': 'Clinic settings updated.',
+    },
+    'Не удалось обновить настройки: %(exc)s': {
+        'ru': 'Не удалось обновить настройки: %(exc)s',
+        'kz': 'Баптауларды жаңарту мүмкін болмады: %(exc)s',
+        'en': 'Failed to update settings: %(exc)s',
+    },
+    'Профиль обновлён.': {
+        'ru': 'Профиль обновлён.',
+        'kz': 'Профиль жаңартылды.',
+        'en': 'Profile updated.',
+    },
+    'Фото профиля удалено.': {
+        'ru': 'Фото профиля удалено.',
+        'kz': 'Профиль фотосы өшірілді.',
+        'en': 'Profile photo deleted.',
+    },
+    'Пожалуйста, выберите время приёма.': {
+        'ru': 'Пожалуйста, выберите время приёма.',
+        'kz': 'Қабылдау уақытын таңдаңыз.',
+        'en': 'Please choose an appointment time.',
+    },
+    'Это время уже занято. Выберите другое.': {
+        'ru': 'Это время уже занято. Выберите другое.',
+        'kz': 'Бұл уақыт бос емес. Басқасын таңдаңыз.',
+        'en': 'This time is already booked. Choose another.',
+    },
+    'Врач не найден.': {
+        'ru': 'Врач не найден.',
+        'kz': 'Дәрігер табылмады.',
+        'en': 'Doctor not found.',
+    },
+    'Этот врач не принадлежит вашей клинике.': {
+        'ru': 'Этот врач не принадлежит вашей клинике.',
+        'kz': 'Бұл дәрігер сіздің клиникаңызға тиесілі емес.',
+        'en': 'This doctor does not belong to your clinic.',
+    },
+    'Вы успешно записались на приём!': {
+        'ru': 'Вы успешно записались на приём!',
+        'kz': 'Сіз қабылдауға сәтті жазылдыңыз!',
+        'en': 'Your appointment has been booked successfully!',
+    },
+    'Можно отменить только запланированный приём.': {
+        'ru': 'Можно отменить только запланированный приём.',
+        'kz': 'Тек жоспарланған қабылдауды ғана болдыруға болады.',
+        'en': 'Only scheduled appointments can be canceled.',
+    },
+    'Запись отменена.': {
+        'ru': 'Запись отменена.',
+        'kz': 'Қабылдау тоқтатылды.',
+        'en': 'Appointment canceled.',
+    },
+    'Допустимы только изображения (jpg, png).': {
+        'ru': 'Допустимы только изображения (jpg, png).',
+        'kz': 'Тек кескіндерге рұқсат етіледі (jpg, png).',
+        'en': 'Only images are allowed (jpg, png).',
+    },
+    'Профиль успешно обновлён.': {
+        'ru': 'Профиль успешно обновлён.',
+        'kz': 'Профиль сәтті жаңартылды.',
+        'en': 'Profile updated successfully.',
+    },
+    'Отзыв можно оставить только после завершённого приёма.': {
+        'ru': 'Отзыв можно оставить только после завершённого приёма.',
+        'kz': 'Пікірді тек аяқталған қабылдаудан кейін ғана қалдыруға болады.',
+        'en': 'You can leave a review only after a completed appointment.',
+    },
+    'Вы уже оставили отзыв на этот приём.': {
+        'ru': 'Вы уже оставили отзыв на этот приём.',
+        'kz': 'Сіз бұл қабылдауға пікір қалдырғансыз.',
+        'en': 'You have already left a review for this appointment.',
+    },
+    'Спасибо за ваш отзыв!': {
+        'ru': 'Спасибо за ваш отзыв!',
+        'kz': 'Пікіріңіз үшін рақмет!',
+        'en': 'Thank you for your review!',
+    },
+    'Уведомление отмечено как прочитанное.': {
+        'ru': 'Уведомление отмечено как прочитанное.',
+        'kz': 'Хабарлама оқылған деп белгіленді.',
+        'en': 'Notification marked as read.',
+    },
+    'Все уведомления отмечены как прочитанные.': {
+        'ru': 'Все уведомления отмечены как прочитанные.',
+        'kz': 'Барлық хабарламалар оқылған деп белгіленді.',
+        'en': 'All notifications marked as read.',
+    },
+    'Введите описание симптома.': {
+        'ru': 'Введите описание симптома.',
+        'kz': 'Симптом сипаттамасын енгізіңіз.',
+        'en': 'Enter a symptom description.',
+    },
+    'Симптом записан.': {
+        'ru': 'Симптом записан.',
+        'kz': 'Симптом жазылды.',
+        'en': 'Symptom recorded.',
+    },
+    'Чат-бот доступен только для пациентов.': {
+        'ru': 'Чат-бот доступен только для пациентов.',
+        'kz': 'Чат-бот тек пациенттерге қолжетімді.',
+        'en': 'Chatbot is available only for patients.',
+    },
+    'Нельзя начать звонок для завершённого или отменённого приёма.': {
+        'ru': 'Нельзя начать звонок для завершённого или отменённого приёма.',
+        'kz': 'Аяқталған немесе тоқтатылған қабылдау үшін қоңырау бастауға болмайды.',
+        'en': 'Cannot start a call for a completed or canceled appointment.',
+    },
+    'Видеозвонок завершён.': {
+        'ru': 'Видеозвонок завершён.',
+        'kz': 'Бейнеқоңырау аяқталды.',
+        'en': 'Video call ended.',
+    },
+    'Ошибка при сохранении фото. Проверьте формат файла (jpg, png, heic).': {
+        'ru': 'Ошибка при сохранении фото. Проверьте формат файла (jpg, png, heic).',
+        'kz': 'Фотоны сақтау қатесі. Файл пішімін тексеріңіз (jpg, png, heic).',
+        'en': 'Error saving photo. Check the file format (jpg, png, heic).',
+    },
+}
+
+
+def translate_flash_text(message, target_language='ru'):
+    if not message or not isinstance(message, str):
+        return message
+    translations = FLASH_TRANSLATIONS.get(message)
+    if isinstance(translations, dict):
+        return translations.get(target_language) or translations.get('ru') or message
+    return message
+
+
+def flash_message(message, category='message', language=None, **params):
+    lang = language or session.get('language', 'ru')
+    translated = translate_flash_text(message, lang)
+    if params:
+        translated = translated % params
+    flask_flash(translated, category)
+    return translated
+
+
+_CYRILLIC_RE = re.compile(r'[А-Яа-яЁё]')
+
+
+def _looks_cyrillic(text):
+    return bool(text and _CYRILLIC_RE.search(text))
+
+
+_LEGACY_NOTIFICATION_TITLES = {
+    'en': {
+        'Completed': 'videocall.consultation_completed',
+    },
+    'kz': {
+        'Аяқталды': 'videocall.consultation_completed',
+    },
+}
+
+_LEGACY_NOTIFICATION_MESSAGE_PATTERNS = {
+    'en': (
+        (re.compile(r'^with doctor (.+)$'), 'videocall.consultation_with_doctor'),
+        (re.compile(r'^with patient (.+)$'), 'videocall.consultation_with_patient'),
+    ),
+}
+
+
+def resolve_notification_field(notification, field, language='ru'):
+    """Return a localized notification title or message for the given language."""
+    payload = None
+    try:
+        payload = getattr(notification, f'{field}_i18n', None)
+    except Exception:
+        payload = None
+
+    if isinstance(payload, dict):
+        if language in payload and payload[language]:
+            text = payload[language]
+            if field == 'title':
+                legacy_key = _LEGACY_NOTIFICATION_TITLES.get(language, {}).get(text.strip())
+                if legacy_key:
+                    return t(legacy_key, language, text)
+            if field == 'message':
+                for pattern, legacy_key in _LEGACY_NOTIFICATION_MESSAGE_PATTERNS.get(language, ()):
+                    m = pattern.match(text.strip())
+                    if m:
+                        return t(legacy_key, language, text) % {'name': m.group(1)}
+            if language != 'ru' and _looks_cyrillic(text):
+                translated = translate_text_from_ru(text, language)
+                if translated != text:
+                    return translated
+            return text
+        for fav in ('ru', 'en', 'kz'):
+            if fav in payload and payload[fav]:
+                text = payload[fav]
+                if language == fav:
+                    return text
+                return translate_text_from_ru(text, language)
+
+    try:
+        orig = getattr(notification, field, '')
+    except Exception:
+        orig = ''
+    if language == 'ru':
+        return orig
+    return translate_text_from_ru(orig, language)
+
+
 def translate_text_from_ru(value, target_language='ru'):
     """
     Try to translate an arbitrary text that was stored in Russian by finding
@@ -301,26 +625,72 @@ def translate_text_from_ru(value, target_language='ru'):
             },
         }
 
-        sentence_patterns = {
-            'en': (
+        sentence_patterns = [
+            (
                 re.compile(
                     r'^Видеоконсультация между врачом\s+(.+?)\s+и пациентом\s+(.+?)\s+состоялась\s+(.+?)\.\s+Подробная транскрипция недоступна\.$'
                 ),
-                'Video consultation between doctor {doctor} and patient {patient} took place on {dt}. Detailed transcript is unavailable.'
+                {
+                    'en': 'Video consultation between doctor {0} and patient {1} took place on {2}. Detailed transcript is unavailable.',
+                    'kz': 'Дәрігер {0} мен пациент {1} арасындағы бейнеконсультация {2} күні өтті. Толық транскрипция қолжетімсіз.',
+                },
             ),
-            'kz': (
-                re.compile(
-                    r'^Видеоконсультация между врачом\s+(.+?)\s+и пациентом\s+(.+?)\s+состоялась\s+(.+?)\.\s+Подробная транскрипция недоступна\.$'
-                ),
-                'Дәрігер {doctor} мен пациент {patient} арасындағы бейнеконсультация {dt} күні өтті. Толық транскрипция қолжетімсіз.'
+            (
+                re.compile(r'^Транскрипция видеоконсультации с доктором (.+?) сохранена\.$'),
+                {
+                    'en': 'Video consultation transcription with doctor {0} has been saved.',
+                    'kz': 'Дәрігер {0}-мен бейнеконсультация транскрипциясы сақталды.',
+                },
             ),
-        }
+            (
+                re.compile(r'^Транскрипция видеоконсультации с пациентом (.+?) сохранена\.$'),
+                {
+                    'en': 'Video consultation transcription with patient {0} has been saved.',
+                    'kz': 'Пациент {0}-пен бейнеконсультация транскрипциясы сақталды.',
+                },
+            ),
+            (
+                re.compile(r'^Видеоконсультация с доктором (.+?) завершена\.$'),
+                {
+                    'en': 'Video consultation with doctor {0} has been completed.',
+                    'kz': 'Дәрігер {0}-мен бейнеконсультация аяқталды.',
+                },
+            ),
+            (
+                re.compile(r'^Видеоконсультация с доктором (.+)$'),
+                {
+                    'en': 'Video consultation with doctor {0}',
+                    'kz': 'Дәрігер {0}-пен бейнеконсультация',
+                },
+            ),
+            (
+                re.compile(r'^Видеоконсультация с пациентом (.+)$'),
+                {
+                    'en': 'Video consultation with patient {0}',
+                    'kz': 'Пациент {0}-пен бейнеконсультация',
+                },
+            ),
+            (
+                re.compile(r'^Пациент (.+?) записался на (.+)$'),
+                {
+                    'en': 'Patient {0} booked an appointment for {1}',
+                    'kz': 'Пациент {0} {1} уақытына жазылды',
+                },
+            ),
+            (
+                re.compile(r'^Пациент (.+?) оставил отзыв \((\d+)/5\)\.$'),
+                {
+                    'en': 'Patient {0} left a review ({1}/5).',
+                    'kz': 'Пациент {0} пікір қалдырды ({1}/5).',
+                },
+            ),
+        ]
 
-        # Replace known standalone sentence pattern first.
-        pattern, template = sentence_patterns[target_language]
-        m = pattern.match(value.strip())
-        if m:
-            return template.format(doctor=m.group(1), patient=m.group(2), dt=m.group(3))
+        stripped = value.strip()
+        for pattern, templates in sentence_patterns:
+            m = pattern.match(stripped)
+            if m and target_language in templates:
+                return templates[target_language].format(*m.groups())
 
         # Translate line-by-line while preserving unknown lines as-is.
         prefixes = line_prefixes[target_language]

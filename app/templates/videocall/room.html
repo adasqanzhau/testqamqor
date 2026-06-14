@@ -887,7 +887,7 @@
 
     function startRecognition() {
         recognition = new SpeechRecognition();
-        recognition.lang = 'ru-RU';
+        recognition.lang = {{ {'ru': 'ru-RU', 'kz': 'kk-KZ', 'en': 'en-US'}.get(current_language, 'ru-RU')|tojson }};
         recognition.continuous = true;
         recognition.interimResults = true;
 

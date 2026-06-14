@@ -25,7 +25,8 @@
     "all_notifications": "All notifications",
     "role": "Role",
       "status": "Status",
-      "date": "Date"
+      "date": "Date",
+      "delete_photo": "Delete photo"
   },
   "chatbot": {
     "title": "AI Assistant - Qamqor",
@@ -102,6 +103,7 @@
   },
   "nav": {
     "dashboard": "Dashboard",
+    "to_dashboard": "Go to dashboard",
     "clinics": "Clinics",
     "users": "Users",
     "analytics": "Analytics",
@@ -132,6 +134,10 @@
     "imaging": "Imaging",
     "note": "Note"
   },
+  "record": {
+    "video_consultation_title": "Video consultation",
+    "examination_title": "Doctor's conclusion — appointment"
+  },
   "roles": {
     "all": "All roles",
     "superadmin": "Superadmin",
@@ -153,6 +159,10 @@
     "have_account": "Already have an account?",
     "login_required": "Please sign in to continue.",
     "invalid_credentials": "Invalid email or password.",
+    "account_deactivated": "Your account has been deactivated. Contact the administrator.",
+    "email_exists": "A user with this email is already registered.",
+    "clinic_unavailable": "The selected clinic is not available.",
+    "register_success": "Registration was successful! Please sign in.",
     "logged_out": "You have been logged out.",
     "welcome_user": "Welcome, %(name)s!"
   },
@@ -175,6 +185,8 @@
     "error": "Error",
     "loading": "Loading...",
     "no_data": "No data",
+    "invalid_avatar_format": "Only image files are allowed (jpg, jpeg, png, img).",
+    "avatar_deleted": "Profile photo deleted.",
     "select_doctor": "Please select a doctor",
     "select_date": "Please select a date",
     "select_time": "Please select a time",
@@ -208,7 +220,9 @@
       "subtitle": "All your medical records in one place",
       "personal_entry": "Personal entry",
       "none_found_title": "No medical records",
-      "none_found_subtitle": "Records will appear after doctor visits"
+      "none_found_subtitle": "Records will appear after doctor visits",
+      "show_full": "Show full",
+      "view_videocall": "Open call transcription"
     },
     "doctors": {
       "title": "Our doctors",
@@ -880,6 +894,12 @@
         }
       }
   },
+  "notifications": {
+    "new_appointment": "New appointment",
+    "appointment_booked": "Patient %(name)s booked an appointment for %(dt)s",
+    "new_review": "New review",
+    "review_left": "Patient %(name)s left a review (%(rating)s/5)."
+  },
   "videocall": {
     "title": "Video consultation results",
     "back_to_my_appointments": "Back to my appointments",
@@ -893,7 +913,13 @@
     "ai_summary": "AI consultation summary",
     "transcription": "Conversation transcription",
     "with_doctor": "with doctor %(name)s",
-    "with_patient": "with patient %(name)s"
+    "with_patient": "with patient %(name)s",
+    "consultation_completed": "Video consultation completed",
+    "consultation_with_doctor": "Video consultation with doctor %(name)s",
+    "consultation_with_patient": "Video consultation with patient %(name)s",
+    "transcription_ready": "Consultation transcription ready",
+    "transcription_saved_doctor": "Video consultation transcription with doctor %(name)s has been saved.",
+    "transcription_saved_patient": "Video consultation transcription with patient %(name)s has been saved."
   },
   "answer": "Answer",
   "button": "Button",

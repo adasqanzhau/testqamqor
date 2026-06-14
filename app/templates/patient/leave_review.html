@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'partials/_user_avatar.html' import user_avatar %}
 
 {% block title %}{{ t('patient.reviews.leave_title') }}{% endblock %}
 
@@ -79,9 +80,7 @@
                 <div class="card-body p-4">
                     <!-- Doctor info -->
                     <div class="doctor-info-row">
-                        <div class="doctor-avatar-circle">
-                            <i class="fas fa-user-md"></i>
-                        </div>
+                        {{ user_avatar(appointment.doctor, size='64px', extra_class='doctor-avatar-circle') }}
                         <div>
                             <h5 class="mb-0 fw-bold">{{ appointment.doctor.full_name }}</h5>
                             <small class="text-muted">{{ appointment.doctor.specialization or t('patient.doctors.default_specialization') }}</small>

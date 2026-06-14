@@ -25,7 +25,8 @@
     "all_notifications": "Все уведомления",
     "role": "Роль",
     "status": "Статус",
-    "date": "Дата"
+    "date": "Дата",
+    "delete_photo": "Удалить фото"
   },
     "chatbot": {
       "title": "AI Ассистент - Qamqor",
@@ -102,6 +103,7 @@
   },
   "nav": {
     "dashboard": "Панель управления",
+    "to_dashboard": "В личный кабинет",
     "clinics": "Клиники",
     "users": "Пользователи",
     "analytics": "Аналитика",
@@ -132,6 +134,10 @@
     "imaging": "Исследование",
     "note": "Заметка"
   },
+  "record": {
+    "video_consultation_title": "Видеоконсультация",
+    "examination_title": "Заключение врача — приём"
+  },
   "roles": {
     "all": "Все роли",
     "superadmin": "Суперадмин",
@@ -153,6 +159,10 @@
     "have_account": "Уже есть аккаунт?",
     "login_required": "Пожалуйста, войдите в систему.",
     "invalid_credentials": "Неверный email или пароль.",
+    "account_deactivated": "Ваш аккаунт деактивирован. Обратитесь к администратору.",
+    "email_exists": "Пользователь с таким email уже зарегистрирован.",
+    "clinic_unavailable": "Выбранная клиника недоступна.",
+    "register_success": "Регистрация прошла успешно! Войдите в систему.",
     "logged_out": "Вы вышли из системы.",
     "welcome_user": "Добро пожаловать, %(name)s!"
   },
@@ -175,6 +185,8 @@
     "error": "Ошибка",
     "loading": "Загрузка...",
     "no_data": "Нет данных",
+    "invalid_avatar_format": "Допустимы только изображения (jpg, jpeg, png, img).",
+    "avatar_deleted": "Фото профиля удалено.",
     "select_doctor": "Пожалуйста, выберите врача",
     "select_date": "Пожалуйста, выберите дату",
     "select_time": "Пожалуйста, выберите время",
@@ -208,7 +220,9 @@
       "subtitle": "Все ваши медицинские записи в одном месте",
       "personal_entry": "Личная запись",
       "none_found_title": "Нет медицинских записей",
-      "none_found_subtitle": "Записи появятся после визитов к врачам"
+      "none_found_subtitle": "Записи появятся после визитов к врачам",
+      "show_full": "Показать полностью",
+      "view_videocall": "Открыть транскрипцию звонка"
     },
   "doctors": {
     "title": "Наши врачи",
@@ -686,6 +700,12 @@
         }
       }
   },
+  "notifications": {
+    "new_appointment": "Новая запись на приём",
+    "appointment_booked": "Пациент %(name)s записался на %(dt)s",
+    "new_review": "Новый отзыв",
+    "review_left": "Пациент %(name)s оставил отзыв (%(rating)s/5)."
+  },
   "videocall": {
     "title": "Результаты видеоконсультации",
     "back_to_my_appointments": "К моим записям",
@@ -699,6 +719,12 @@
     "ai_summary": "AI-резюме консультации",
     "transcription": "Транскрипция разговора",
     "with_doctor": "с доктором %(name)s",
-    "with_patient": "с пациентом %(name)s"
+    "with_patient": "с пациентом %(name)s",
+    "consultation_completed": "Видеоконсультация завершена",
+    "consultation_with_doctor": "Видеоконсультация с доктором %(name)s",
+    "consultation_with_patient": "Видеоконсультация с пациентом %(name)s",
+    "transcription_ready": "Транскрипция консультации готова",
+    "transcription_saved_doctor": "Транскрипция видеоконсультации с доктором %(name)s сохранена.",
+    "transcription_saved_patient": "Транскрипция видеоконсультации с пациентом %(name)s сохранена."
   }
   }

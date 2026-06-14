@@ -3,12 +3,14 @@ import uuid
 from datetime import datetime, date, timedelta
 from functools import wraps
 
-from flask import (Blueprint, render_template, redirect, url_for, flash,
+from flask import (Blueprint, render_template, redirect, url_for,
                    request, abort, current_app)
 from flask_login import login_required, current_user
 from werkzeug.utils import secure_filename
 
 from app import db
+from app.avatar_utils import remove_user_avatar, replace_user_avatar
+from app.i18n import flash_message as flash_i18n
 from app.models import User, Clinic, Appointment, VideoCall, ClinicSpecialization, Review, Notification
 from app.forms import DoctorForm, ClinicForm, ProfileForm
 
@@ -25,7 +27,7 @@ def clinic_admin_required(f):
     return decorated_function
 
 
-ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png'}
+ALLOWED_IMAGE_EXTENSIONS = {'jpg', 'jpeg', 'png', 'img'}
 ALLOWED_LOGO_EXTENSIONS = {'jpg', 'jpeg', 'png', 'svg'}
 
 
@@ -46,19 +48,9 @@ def _save_image(file, subdir, allowed):
     return unique_name
 
 
-def save_avatar(file):
-    """Save a doctor avatar and return the bare filename."""
-    return _save_image(file, 'avatars', ALLOWED_IMAGE_EXTENSIONS)
-
-
 def save_logo(file):
     """Save a clinic logo and return the bare filename."""
-    return _save_image(file, 'clinics', ALLOWED_LOGO_EXTENSIONS)
-
-
-# ---------------------------------------------------------------------------
-# Dashboard
-# ---------------------------------------------------------------------------
+    return _save_image(file, 'clinics', ALLOWED_LOGO_EXTENSIONS)\
 
 @clinic.route('/dashboard')
 @login_required
@@ -70,7 +62,6 @@ def dashboard():
         clinic_id=clinic_obj.id, role='doctor', is_active=True
     ).count()
 
-    # Count patients: those assigned to this clinic OR who have appointments here
     patients_by_clinic = db.session.query(User.id).filter(
         User.clinic_id == clinic_obj.id, User.role == 'patient'
     )
@@ -111,11 +102,6 @@ def dashboard():
         revenue=revenue,
     )
 
-
-# ---------------------------------------------------------------------------
-# Manage Doctors
-# ---------------------------------------------------------------------------
-
 @clinic.route('/doctors')
 @login_required
 @clinic_admin_required
@@ -124,8 +110,6 @@ def doctors():
         clinic_id=current_user.clinic_id, role='doctor', is_active=True
     ).order_by(User.created_at.desc()).all()
 
-    # Pre-load latest reviews for each doctor so the template can render them
-    # without triggering N+1 queries.
     reviews_by_doctor = {}
     if doctors_list:
         doctor_ids = [d.id for d in doctors_list]
@@ -151,9 +135,10 @@ def doctors():
 def add_doctor():
     form = DoctorForm()
     if form.validate_on_submit():
+        remove_avatar = request.form.get('remove_avatar') == '1'
         existing = User.query.filter_by(email=form.email.data).first()
         if existing:
-            flash('Пользователь с таким email уже существует.', 'danger')
+            flash_i18n('Пользователь с таким email уже существует.', 'danger')
             return render_template('clinic/doctor_form.html', form=form, title='Добавить врача')
 
         doctor = User(
@@ -170,20 +155,21 @@ def add_doctor():
         )
         doctor.set_password(form.password.data)
 
-        if form.avatar.data and getattr(form.avatar.data, 'filename', ''):
-            saved = save_avatar(form.avatar.data)
-            if saved:
-                doctor.avatar = saved
+        if remove_avatar and doctor.avatar:
+            remove_user_avatar(doctor)
+            flash_i18n('Фото профиля удалено.', 'success')
+        elif form.avatar.data and getattr(form.avatar.data, 'filename', ''):
+            replace_user_avatar(doctor, form.avatar.data)
 
         try:
             db.session.add(doctor)
             db.session.commit()
-            flash('Врач успешно добавлен.', 'success')
+            flash_i18n('Врач успешно добавлен.', 'success')
             return redirect(url_for('clinic.doctors'))
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"Error adding doctor: {e}")
-            flash('Ошибка при добавлении врача. Попробуйте снова.', 'danger')
+            flash_i18n('Ошибка при добавлении врача. Попробуйте снова.', 'danger')
             return render_template('clinic/doctor_form.html', form=form, title='Добавить врача')
 
     return render_template('clinic/doctor_form.html', form=form, title='Добавить врача')
@@ -199,11 +185,11 @@ def edit_doctor(doctor_id):
 
     form = DoctorForm(obj=doctor)
     if form.validate_on_submit():
-        # Check email uniqueness if changed
+        remove_avatar = request.form.get('remove_avatar') == '1'
         if form.email.data != doctor.email:
             existing = User.query.filter_by(email=form.email.data).first()
             if existing:
-                flash('Пользователь с таким email уже существует.', 'danger')
+                flash_i18n('Пользователь с таким email уже существует.', 'danger')
                 return render_template('clinic/doctor_form.html', form=form,
                                        title='Редактировать врача', doctor=doctor)
 
@@ -219,19 +205,20 @@ def edit_doctor(doctor_id):
         if form.password.data:
             doctor.set_password(form.password.data)
 
-        if form.avatar.data and getattr(form.avatar.data, 'filename', ''):
-            saved = save_avatar(form.avatar.data)
-            if saved:
-                doctor.avatar = saved
+        if remove_avatar and doctor.avatar:
+            remove_user_avatar(doctor)
+            flash_i18n('Фото профиля удалено.', 'success')
+        elif form.avatar.data and getattr(form.avatar.data, 'filename', ''):
+            replace_user_avatar(doctor, form.avatar.data)
 
         try:
             db.session.commit()
-            flash('Данные врача обновлены.', 'success')
+            flash_i18n('Данные врача обновлены.', 'success')
             return redirect(url_for('clinic.doctors'))
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"Error updating doctor: {e}")
-            flash('Ошибка при обновлении врача. Попробуйте снова.', 'danger')
+            flash_i18n('Ошибка при обновлении врача. Попробуйте снова.', 'danger')
             return render_template('clinic/doctor_form.html', form=form,
                            title='Редактировать врача', doctor=doctor)
 
@@ -249,13 +236,8 @@ def delete_doctor(doctor_id):
 
     doctor.is_active = False
     db.session.commit()
-    flash('Врач удалён.', 'success')
+    flash_i18n('Врач удалён.', 'success')
     return redirect(url_for('clinic.doctors'))
-
-
-# ---------------------------------------------------------------------------
-# Patients
-# ---------------------------------------------------------------------------
 
 @clinic.route('/patients')
 @login_required
@@ -270,11 +252,6 @@ def patients():
         .all()
     )
     return render_template('clinic/patients.html', patients=patients_list)
-
-
-# ---------------------------------------------------------------------------
-# Appointments
-# ---------------------------------------------------------------------------
 
 @clinic.route('/appointments')
 @login_required
@@ -306,11 +283,6 @@ def appointments():
     today = date.today().strftime('%Y-%m-%d')
     return render_template('clinic/appointments.html', appointments=appointments_list, today=today)
 
-
-# ---------------------------------------------------------------------------
-# Clinic Settings
-# ---------------------------------------------------------------------------
-
 @clinic.route('/settings', methods=['GET', 'POST'])
 @login_required
 @clinic_admin_required
@@ -341,19 +313,14 @@ def settings():
                     clinic_obj.logo = new_logo
 
             db.session.commit()
-            flash('Настройки клиники обновлены.', 'success')
+            flash_i18n('Настройки клиники обновлены.', 'success')
             return redirect(url_for('clinic.settings'))
         except Exception as exc:
             db.session.rollback()
             current_app.logger.exception('Failed to update clinic settings')
-            flash(f'Не удалось обновить настройки: {exc}', 'danger')
+            flash_i18n('Не удалось обновить настройки: %(exc)s', 'danger', exc=exc)
 
     return render_template('clinic/settings.html', form=form, clinic=clinic_obj)
-
-
-# ---------------------------------------------------------------------------
-# Statistics
-# ---------------------------------------------------------------------------
 
 @clinic.route('/statistics')
 @login_required
@@ -361,7 +328,6 @@ def settings():
 def statistics():
     clinic_obj = db.session.get(Clinic, current_user.clinic_id) or abort(404)
 
-    # Total counts
     total_doctors = User.query.filter_by(
         clinic_id=clinic_obj.id, role='doctor', is_active=True
     ).count()
@@ -374,7 +340,6 @@ def statistics():
         clinic_id=clinic_obj.id, status='cancelled'
     ).count()
 
-    # Revenue (single aggregate query instead of N+1)
     total_revenue = (
         db.session.query(db.func.coalesce(db.func.sum(User.consultation_price), 0))
         .join(Appointment, Appointment.doctor_id == User.id)
@@ -382,12 +347,10 @@ def statistics():
         .scalar()
     ) or 0
 
-    # Monthly revenue for the last 6 months (correct calendar math)
     from calendar import monthrange
     monthly_revenue = []
     today = date.today()
     for i in range(5, -1, -1):
-        # Walk back i months correctly
         month = today.month - i
         year = today.year
         while month <= 0:
@@ -416,7 +379,6 @@ def statistics():
             'revenue': rev,
         })
 
-    # Average rating
     doctor_ids = [d.id for d in User.query.filter_by(
         clinic_id=clinic_obj.id, role='doctor'
     ).all()]
@@ -427,7 +389,6 @@ def statistics():
         ).scalar()
         avg_rating = round(result, 2) if result else None
 
-    # Total patients for this clinic
     patients_by_clinic = db.session.query(User.id).filter(
         User.clinic_id == clinic_obj.id, User.role == 'patient'
     )
@@ -445,7 +406,6 @@ def statistics():
         .count()
     )
 
-    # Top doctors by appointment count
     top_doctors_raw = (
         db.session.query(
             User,
@@ -458,13 +418,11 @@ def statistics():
         .limit(5)
         .all()
     )
-    # Flatten to objects the template can access directly
     top_doctors = []
     for user_obj, apt_count in top_doctors_raw:
         user_obj.appointments_count = apt_count
         top_doctors.append(user_obj)
 
-    # Doctor reviews for this clinic
     doctor_reviews = []
     if doctor_ids:
         doctor_reviews = (
@@ -490,11 +448,6 @@ def statistics():
         doctor_reviews=doctor_reviews,
     )
 
-
-# ---------------------------------------------------------------------------
-# Profile
-# ---------------------------------------------------------------------------
-
 @clinic.route('/profile', methods=['GET', 'POST'])
 @login_required
 @clinic_admin_required
@@ -502,31 +455,29 @@ def profile():
     form = ProfileForm(obj=current_user)
 
     if form.validate_on_submit():
+        remove_avatar = request.form.get('remove_avatar') == '1'
         current_user.first_name = form.first_name.data.strip()
         current_user.last_name = form.last_name.data.strip()
         current_user.phone = form.phone.data.strip() if form.phone.data else None
 
-        if form.avatar.data and getattr(form.avatar.data, 'filename', ''):
-            saved = save_avatar(form.avatar.data)
-            if saved:
-                current_user.avatar = saved
+        if remove_avatar and current_user.avatar:
+            remove_user_avatar(current_user)
+            flash_i18n('Фото профиля удалено.', 'success')
+
+        if not remove_avatar and form.avatar.data and getattr(form.avatar.data, 'filename', ''):
+            replace_user_avatar(current_user, form.avatar.data)
 
         try:
             db.session.commit()
-            flash('Профиль обновлён.', 'success')
+            flash_i18n('Профиль обновлён.', 'success')
             return redirect(url_for('clinic.profile'))
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"Error updating clinic admin profile: {e}")
-            flash('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
+            flash_i18n('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
             return render_template('clinic/profile.html', form=form)
 
     return render_template('clinic/profile.html', form=form)
-
-
-# ---------------------------------------------------------------------------
-# Notifications
-# ---------------------------------------------------------------------------
 
 @clinic.route('/notifications')
 @login_required

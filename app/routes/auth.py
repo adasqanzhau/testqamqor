@@ -40,7 +40,7 @@ def login():
             return render_template('auth/login.html', form=form)
 
         if not user.is_active:
-            flash('Ваш аккаунт деактивирован. Обратитесь к администратору.', 'warning')
+            flash(t('auth.account_deactivated', session.get('language', 'ru'), 'Ваш аккаунт деактивирован. Обратитесь к администратору.'), 'warning')
             return render_template('auth/login.html', form=form)
 
         selected_language = session.get('language')
@@ -73,14 +73,14 @@ def register():
     if form.validate_on_submit():
         existing_user = User.query.filter_by(email=form.email.data.lower().strip()).first()
         if existing_user:
-            flash('Пользователь с таким email уже зарегистрирован.', 'danger')
+            flash(t('auth.email_exists', session.get('language', 'ru'), 'Пользователь с таким email уже зарегистрирован.'), 'danger')
             return render_template('auth/register.html', form=form, clinics=clinics)
 
         clinic_id = request.form.get('clinic_id', type=int)
         if clinic_id:
             clinic = db.session.get(Clinic, clinic_id)
             if not clinic or not clinic.is_active:
-                flash('Выбранная клиника недоступна.', 'danger')
+                flash(t('auth.clinic_unavailable', session.get('language', 'ru'), 'Выбранная клиника недоступна.'), 'danger')
                 return render_template('auth/register.html', form=form, clinics=clinics)
 
         user = User(
@@ -99,7 +99,7 @@ def register():
         db.session.add(user)
         db.session.commit()
 
-        flash('Регистрация прошла успешно! Войдите в систему.', 'success')
+        flash(t('auth.register_success', session.get('language', 'ru'), 'Регистрация прошла успешно! Войдите в систему.'), 'success')
         return redirect(url_for('auth.login'))
 
     return render_template('auth/register.html', form=form, clinics=clinics)

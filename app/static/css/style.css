@@ -1850,6 +1850,16 @@ body {
     box-shadow: 0 26px 70px rgba(15, 23, 42, 0.13) !important;
 }
 
+.dashboard-stats > [class*='col-'] > a.text-decoration-none {
+    display: block;
+    color: inherit;
+    cursor: pointer;
+}
+
+.dashboard-stats > [class*='col-'] > a.text-decoration-none:hover {
+    color: inherit;
+}
+
 .panel-card {
     border: 1px solid rgba(226, 232, 240, 0.95) !important;
     border-radius: 30px !important;
@@ -2324,11 +2334,6 @@ body {
     }
 }
 
-/* ============================================================
-   FINAL UNIFIED DESIGN OVERRIDES — fixes color, shadows, icons
-   ============================================================ */
-
-/* Unify Bootstrap primary/success/info/warning to the teal theme */
 :root {
     --bs-primary: #0f766e;
     --bs-primary-rgb: 15, 118, 110;
@@ -2336,7 +2341,6 @@ body {
     --bs-link-hover-color: #115e59;
 }
 
-/* All blue text-primary -> teal */
 .text-primary,
 .text-info,
 a.text-primary,
@@ -2344,7 +2348,6 @@ a.text-primary,
     color: #0f766e !important;
 }
 
-/* Bootstrap bg-primary / btn-primary -> teal */
 .bg-primary {
     background-color: #0f766e !important;
 }
@@ -2383,8 +2386,6 @@ a.text-primary,
     color: #115e59 !important;
 }
 
-/* Soft-tinted icon containers — replace colored bg-opacity-10 with neutral.
-   Keep .text-* colors intact via overrides below. */
 .bg-primary.bg-opacity-10,
 .bg-success.bg-opacity-10,
 .bg-warning.bg-opacity-10,
@@ -2396,7 +2397,6 @@ a.text-primary,
     color: #0f766e !important;
 }
 
-/* Remove dark black border + bottom stripe from metric cards (clinic dashboard fix) */
 .metric-card,
 .stat-card.metric-card,
 .app-grid .metric-card,
@@ -2415,7 +2415,6 @@ a.text-primary,
     box-shadow: 0 14px 32px rgba(15, 23, 42, 0.10) !important;
 }
 
-/* Metric card icon: clean tinted circle, no dark border, fixed aspect */
 .metric-card .fa-2x,
 .metric-card .rounded-circle,
 .panel-card .rounded-circle.bg-primary,
@@ -2439,7 +2438,6 @@ a.text-primary,
     opacity: 1 !important;
 }
 
-/* Panel-card .text-success/.text-warning/.text-info — keep some semantic tone but soften */
 .metric-card .text-primary,
 .metric-card .text-success,
 .metric-card .text-warning,
@@ -2447,7 +2445,6 @@ a.text-primary,
     color: #0f766e !important;
 }
 
-/* Card body and panel-card: softer border, real elevation */
 .card.panel-card,
 .review-card.panel-card,
 .prescription-card.panel-card,
@@ -2463,13 +2460,11 @@ a.text-primary,
     box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08) !important;
 }
 
-/* All circular avatar/icon placeholders: enforce square aspect, no horizontal squish */
 .rounded-circle {
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
 }
 
-/* Buttons: subtle shadow + smooth lift on hover */
 .btn {
     box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06), 0 2px 6px rgba(15, 23, 42, 0.04) !important;
     transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease !important;
@@ -2499,7 +2494,6 @@ a.text-primary,
     box-shadow: 0 4px 12px rgba(217, 119, 6, 0.18) !important;
 }
 
-/* Remove the underline / bottom stripe from widget rows on hover */
 .widget-list-item:hover,
 .notification-item:hover,
 .appointment-item:hover,
@@ -2508,12 +2502,10 @@ a.text-primary,
     box-shadow: none !important;
 }
 
-/* Hover marker uses brand teal instead of black */
 .appointment-card.widget-list-item::before {
     background: #0f766e !important;
 }
 
-/* Dropdown menu unified design (notifications, language, user, etc.) */
 .dropdown-menu {
     border: 1px solid var(--border) !important;
     border-radius: 16px !important;
@@ -2555,7 +2547,6 @@ a.text-primary,
     border-color: var(--border-light);
 }
 
-/* Modal unified design */
 .modal-content {
     border: none;
     border-radius: 22px;
@@ -2571,7 +2562,6 @@ a.text-primary,
     padding: 16px 24px;
 }
 
-/* Filter button group polish (used on appointments/reviews/medical_records) */
 .btn-sm.rounded-pill {
     padding: 0.4rem 0.95rem !important;
     font-weight: 600;
@@ -2588,7 +2578,6 @@ a.text-primary,
     border-color: var(--border) !important;
 }
 
-/* Notification dropdown specifically — nicer width and look */
 .notification-dropdown {
     width: 380px;
     padding: 0 !important;
@@ -2601,7 +2590,6 @@ a.text-primary,
     border-radius: 0 !important;
 }
 
-/* Step indicator soft theme (book_appointment) */
 .step-number {
     border-color: var(--border) !important;
     color: var(--text-light) !important;
@@ -2617,7 +2605,6 @@ a.text-primary,
     background: var(--border) !important;
 }
 
-/* Time slots use teal */
 .time-slot-btn {
     border: 1px solid var(--border) !important;
     color: var(--text) !important;
@@ -2634,33 +2621,28 @@ a.text-primary,
     color: #fff !important;
 }
 
-/* Booking form selected option teal */
 #bookingForm select[size] option:checked {
     background: #0f766e linear-gradient(#0f766e, #0f766e) !important;
     color: #fff !important;
 }
 
-/* Lang switcher uses teal accent on focus */
 .lang-switcher:hover,
 .lang-switcher:focus {
     border-color: #0f766e !important;
     box-shadow: 0 0 0 4px rgba(15, 118, 110, 0.1), 0 8px 22px rgba(15, 23, 42, 0.10) !important;
 }
 
-/* page-header-card: icon teal not blue */
 .page-header-card h1 i,
 .page-header-card h2 i {
     background: #ecfdf5 !important;
     color: #0f766e !important;
 }
 
-/* Generic FA icons inside h2/h5 in panel-card headers — teal */
 .panel-card > .card-header h5 i {
     background: #ecfdf5 !important;
     color: #0f766e !important;
 }
 
-/* Avatar placeholder (used on doctor cards): use teal not indigo */
 .doctor-avatar-placeholder,
 .clinic-avatar-placeholder,
 .avatar-placeholder,
@@ -2670,14 +2652,12 @@ a.text-primary,
     border-color: var(--border) !important;
 }
 
-/* Remove blue glow from form focus, use teal */
 .form-control:focus,
 .form-select:focus {
     border-color: #14b8a6 !important;
     box-shadow: 0 0 0 4px rgba(20, 184, 166, 0.12) !important;
 }
 
-/* Remove blue link colors in body of cards */
 a {
     color: #0f766e;
 }
@@ -2685,14 +2665,12 @@ a:hover {
     color: #115e59;
 }
 
-/* Patient/clinic profile circular avatars: ensure square */
 .user-avatar,
 .navbar-brand i {
     aspect-ratio: 1 / 1;
     flex-shrink: 0;
 }
 
-/* Inline icon next to header text (text-primary me-2) — keep teal not blue */
 h1 i.text-primary,
 h2 i.text-primary,
 h3 i.text-primary,
@@ -2704,7 +2682,6 @@ p i.text-primary,
     color: #0f766e !important;
 }
 
-/* Review card ratings retain warning yellow, override .text-warning to original */
 .star-rating .fas.fa-star,
 .star-rating .fas.fa-star-half-alt,
 i.text-warning.fa-star,
@@ -2712,9 +2689,6 @@ i.text-warning.fa-star,
     color: #f59e0b !important;
 }
 
-/* ============================================================
-   PREMIUM LANGUAGE DROPDOWN (navbar)
-   ============================================================ */
 .navbar .lang-dropdown {
     position: relative;
 }
@@ -2840,9 +2814,6 @@ i.text-warning.fa-star,
     color: #ffffff;
 }
 
-/* ============================================================
-   BOOKING FILTERS (doctor search + specialization)
-   ============================================================ */
 .booking-filters {
     background: linear-gradient(135deg, #ecfdf5 0%, #f0fdfa 100%);
     border: 1px solid rgba(15, 118, 110, 0.12);
@@ -2899,9 +2870,6 @@ i.text-warning.fa-star,
     font-weight: 600;
 }
 
-/* ============================================================
-   FLATPICKR CALENDAR THEMING
-   ============================================================ */
 .flatpickr-input.form-control {
     background-color: #ffffff !important;
     cursor: pointer;
@@ -3042,7 +3010,6 @@ span.flatpickr-weekday {
     opacity: 0.5;
 }
 
-/* date input visually as flatpickr (when JS active) */
 input[type="date"].form-control,
 input.flatpickr-input.form-control {
     padding-right: 2.5rem;
@@ -3052,7 +3019,6 @@ input.flatpickr-input.form-control {
     background-size: 18px 18px;
 }
 
-/* ─── PREMIUM LANGUAGE DROPDOWN ─────────────────────────────────────── */
 .lang-dropdown { position: relative; }
 
 .lang-dropdown-toggle {
@@ -3079,7 +3045,6 @@ input.flatpickr-input.form-control {
     outline: none;
 }
 
-/* On light backgrounds (auth pages, landing) */
 .auth-language-switcher .lang-dropdown-toggle,
 .navbar-landing .lang-dropdown-toggle {
     background: rgba(15, 118, 110, 0.1);
@@ -3144,8 +3109,6 @@ input.flatpickr-input.form-control {
 .lang-name { flex: 1; }
 .lang-check { font-size: 0.75rem; color: #0f766e; }
 
-/* ─── OVERFLOW FIX for dropdowns inside cards ───────────────────────── */
-/* Tom Select and Bootstrap dropdowns render absolutely — parents must not clip them */
 .panel-card,
 .panel-card .card-body,
 .panel-card .card-header,
@@ -3153,13 +3116,11 @@ input.flatpickr-input.form-control {
 .card.shadow-sm .card-body {
     overflow: visible !important;
 }
-/* But keep table overflow for horizontal scrolling */
 .panel-card .table-responsive,
 .card.shadow-sm .table-responsive {
     overflow-x: auto !important;
 }
 
-/* ─── TOM SELECT OVERRIDES ───────────────────────────────────────────── */
 .ts-wrapper.single .ts-control,
 .ts-wrapper .ts-control {
     border-radius: var(--radius-sm, 8px) !important;

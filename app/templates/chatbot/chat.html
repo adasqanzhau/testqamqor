@@ -387,7 +387,11 @@
                 <div class="message-row {{ msg.role }}">
                     <div class="message-avatar">
                         {% if msg.role == 'user' %}
+                            {% if current_user.avatar %}
+                            <img src="{{ avatar_url(current_user) }}" alt="" class="rounded-circle" style="width:100%;height:100%;object-fit:cover;">
+                            {% else %}
                             <i class="fas fa-user"></i>
+                            {% endif %}
                         {% else %}
                             <i class="fas fa-robot"></i>
                         {% endif %}
@@ -425,6 +429,7 @@
 (function() {
     'use strict';
 
+    const userAvatarUrl = {{ avatar_url(current_user)|tojson }};
     marked.setOptions({ gfm: true, breaks: true });
 
     function renderMarkdown(text) {
@@ -520,9 +525,13 @@
 
         const avatar = document.createElement('div');
         avatar.className = 'message-avatar';
-        avatar.innerHTML = role === 'user'
-            ? '<i class="fas fa-user"></i>'
-            : '<i class="fas fa-robot"></i>';
+        if (role === 'user' && userAvatarUrl) {
+            avatar.innerHTML = '<img src="' + userAvatarUrl + '" alt="" class="rounded-circle" style="width:100%;height:100%;object-fit:cover;">';
+        } else {
+            avatar.innerHTML = role === 'user'
+                ? '<i class="fas fa-user"></i>'
+                : '<i class="fas fa-robot"></i>';
+        }
 
         const content = document.createElement('div');
 

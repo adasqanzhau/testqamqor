@@ -1,9 +1,18 @@
-from flask import Blueprint, jsonify, request, abort
+from flask import Blueprint, jsonify, request, abort, session
 from flask_login import login_required, current_user
 from datetime import datetime, timedelta
 
 from app import db, csrf
+from app.i18n import resolve_notification_field
 from app.models import User, Clinic, Appointment, Notification
+
+
+def _current_language():
+    if 'language' in session:
+        return session['language']
+    if current_user.is_authenticated and current_user.language:
+        return current_user.language
+    return 'ru'
 
 api_bp = Blueprint('api', __name__)
 
@@ -17,11 +26,12 @@ def get_notifications():
         is_read=False
     ).order_by(Notification.created_at.desc()).limit(20).all()
 
+    lang = _current_language()
     return jsonify({
         'notifications': [{
             'id': n.id,
-            'title': n.title,
-            'message': n.message,
+            'title': resolve_notification_field(n, 'title', lang),
+            'message': resolve_notification_field(n, 'message', lang),
             'type': n.type,
             'read': n.is_read,
             'link': n.link,

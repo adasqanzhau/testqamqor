@@ -24,9 +24,9 @@
                                 {% else %}
                                     <i class="fas fa-info-circle text-info me-2"></i>
                                 {% endif %}
-                                <h6 class="mb-0">{{ notif.title }}</h6>
+                                <h6 class="mb-0">{{ render_notification_field(notif, 'title') }}</h6>
                             </div>
-                            <p class="mb-1 text-muted">{{ notif.message }}</p>
+                            <p class="mb-1 text-muted">{{ render_notification_field(notif, 'message') }}</p>
                             {% if notif.link %}
                                 <a href="{{ notif.link }}" class="btn btn-sm btn-outline-primary mt-1">{{ t('admin.notifications.open') }}</a>
                             {% endif %}

@@ -96,6 +96,20 @@ with app.app_context():
     _seed_demo_data()
 
 
+@app.cli.command('relocalize-videocalls')
+def relocalize_videocalls():
+    """Convert legacy videocall summary/transcription text to ru/en/kz JSON."""
+    from app.localized_text import relocalize_videocall
+    from app.models import VideoCall
+
+    updated = 0
+    for videocall in VideoCall.query.all():
+        if relocalize_videocall(videocall):
+            updated += 1
+    db.session.commit()
+    print(f'Updated {updated} videocall record(s).')
+
+
 @app.cli.command('init-db')
 def init_db():
     """Initialize database and create demo accounts."""

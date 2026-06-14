@@ -178,7 +178,11 @@
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#"
                            id="userDropdown" role="button" data-bs-toggle="dropdown">
                             <div class="user-avatar me-2">
+                                {% if current_user.avatar %}
+                                <img src="{{ avatar_url(current_user) }}" alt="" class="rounded-circle" style="width: 34px; height: 34px; object-fit: cover;">
+                                {% else %}
                                 <i class="fas fa-user-circle fa-lg"></i>
+                                {% endif %}
                             </div>
                             <span class="d-none d-lg-inline">{{ current_user.full_name or current_user.email }}</span>
                         </a>

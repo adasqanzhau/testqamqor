@@ -1,6 +1,8 @@
 import re
 from datetime import date
 
+from flask import session
+from flask_login import current_user
 from flask_wtf import FlaskForm
 from werkzeug.datastructures import FileStorage
 from wtforms import (StringField, PasswordField, TextAreaField, SelectField,
@@ -8,6 +10,26 @@ from wtforms import (StringField, PasswordField, TextAreaField, SelectField,
                      TimeField, HiddenField)
 from wtforms.validators import DataRequired, Email, Length, EqualTo, Optional, NumberRange, ValidationError
 from flask_wtf.file import FileField, FileAllowed
+
+from app.avatar_utils import avatar_validation_error
+
+
+def _current_language():
+    lang = session.get('language')
+    if lang:
+        return lang
+    if current_user.is_authenticated and current_user.language:
+        return current_user.language
+    return 'ru'
+
+
+def _gender_choices():
+    language = _current_language()
+    if language == 'kz':
+        return [('', 'Таңдаңыз'), ('male', 'Ер адам'), ('female', 'Әйел адам')]
+    if language == 'en':
+        return [('', 'Choose'), ('male', 'Male'), ('female', 'Female')]
+    return [('', 'Выберите'), ('male', 'Мужской'), ('female', 'Женский')]
 
 
 def _uploaded_extension(field_data):
@@ -40,6 +62,10 @@ class PatientRegistrationForm(FlaskForm):
     phone = StringField('Телефон', validators=[Optional(), Length(max=20)])
     birth_date = DateField('Дата рождения', validators=[Optional()])
     gender = SelectField('Пол', choices=[('', 'Выберите'), ('male', 'Мужской'), ('female', 'Женский')], validators=[Optional()])
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.gender.choices = _gender_choices()
 
     def validate_password(self, field):
         if not any(ch.isdigit() for ch in field.data):
@@ -91,8 +117,8 @@ class DoctorForm(FlaskForm):
 
     def validate_avatar(self, field):
         ext = _uploaded_extension(field.data)
-        if ext and ext not in ('jpg', 'jpeg', 'png'):
-            raise ValidationError('Допустимы только изображения (jpg, png).')
+        if ext and ext not in ('jpg', 'jpeg', 'png', 'img'):
+            raise ValidationError(avatar_validation_error())
 
 
 class ClinicForm(FlaskForm):
@@ -178,10 +204,14 @@ class ProfileForm(FlaskForm):
     gender = SelectField('Пол', choices=[('', 'Выберите'), ('male', 'Мужской'), ('female', 'Женский')], validators=[Optional()])
     address = TextAreaField('Адрес', validators=[Optional()])
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.gender.choices = _gender_choices()
+
     def validate_avatar(self, field):
         ext = _uploaded_extension(field.data)
-        if ext and ext not in ('jpg', 'jpeg', 'png'):
-            raise ValidationError('Допустимы только изображения (jpg, png).')
+        if ext and ext not in ('jpg', 'jpeg', 'png', 'img'):
+            raise ValidationError(avatar_validation_error())
 
 
 class ReviewForm(FlaskForm):

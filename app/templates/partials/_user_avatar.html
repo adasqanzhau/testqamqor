@@ -1,0 +1,10 @@
+{% macro user_avatar(user, size='40px', extra_class='') %}
+{% if user and user.avatar %}
+{% set version = user.updated_at or user.created_at %}
+<img src="{{ url_for('static', filename='uploads/avatars/' ~ user.avatar) }}{% if version %}?v={{ version.timestamp()|int }}{% endif %}" alt="{{ user.full_name }}" class="rounded-circle object-fit-cover flex-shrink-0 {{ extra_class }}" style="width: {{ size }}; height: {{ size }};" loading="lazy">
+{% else %}
+<div class="rounded-circle bg-light d-inline-flex align-items-center justify-content-center flex-shrink-0 {{ extra_class }}" style="width: {{ size }}; height: {{ size }};">
+    <i class="fas fa-{{ 'user-md' if user and user.role == 'doctor' else 'user' }} text-primary"></i>
+</div>
+{% endif %}
+{% endmacro %}

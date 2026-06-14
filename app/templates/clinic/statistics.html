@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% from 'partials/_user_avatar.html' import user_avatar %}
 
 {% block title %}{{ t('clinic.statistics_page.title') }} - Qamqor{% endblock %}
 
@@ -225,17 +226,9 @@
                             </td>
                             <td>
                                 <div class="d-flex align-items-center">
-                                    {% if doctor.avatar %}
-                                    <img src="{{ url_for('static', filename='uploads/avatars/' + doctor.avatar) }}"
-                                         alt="{{ doctor.full_name }}"
-                                         class="rounded-circle me-3"
-                                         style="width: 40px; height: 40px; object-fit: cover;">
-                                    {% else %}
-                                    <div class="rounded-circle bg-primary bg-opacity-10 d-flex align-items-center justify-content-center me-3"
-                                         style="width: 40px; height: 40px;">
-                                        <i class="fas fa-user-md text-primary"></i>
+                                    <div class="me-3">
+                                        {{ user_avatar(doctor, size='40px') }}
                                     </div>
-                                    {% endif %}
                                     <div>
                                         <h6 class="mb-0 fw-semibold">{{ doctor.full_name }}</h6>
                                         <small class="text-muted">{{ doctor.specialization or '' }}</small>

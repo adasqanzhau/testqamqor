@@ -3,14 +3,16 @@ import uuid
 from datetime import datetime, date, timezone
 from functools import wraps
 
-from flask import (Blueprint, render_template, redirect, url_for, flash,
-                   request, abort, current_app, session)
+from flask import (Blueprint, render_template, redirect, url_for,
+                   request, abort, current_app, session, flash)
 from flask_login import login_required, current_user
 from sqlalchemy.exc import IntegrityError
 from werkzeug.utils import secure_filename
 
 from app import db
+from app.avatar_utils import remove_user_avatar, replace_user_avatar
 import app.i18n as i18n
+from app.i18n import flash_message as flash_i18n
 from app.models import (
     User, Appointment, VideoCall, Prescription,
     MedicalRecord, Review, Notification,
@@ -37,27 +39,6 @@ def doctor_required(f):
             abort(403)
         return f(*args, **kwargs)
     return decorated_function
-
-
-def _save_avatar(file_storage):
-    """Save an uploaded avatar and return the bare filename for DB storage."""
-    if not file_storage or not getattr(file_storage, 'filename', ''):
-        return None
-    filename = secure_filename(file_storage.filename)
-    if not filename or '.' not in filename:
-        return None
-    ext = filename.rsplit('.', 1)[-1].lower()
-    if ext not in ('jpg', 'jpeg', 'png'):
-        return None
-    unique_name = f"{uuid.uuid4().hex}.{ext}"
-    upload_dir = os.path.join(current_app.config['UPLOAD_FOLDER'], 'avatars')
-    try:
-        os.makedirs(upload_dir, exist_ok=True)
-        file_storage.save(os.path.join(upload_dir, unique_name))
-        return unique_name
-    except Exception as e:
-        current_app.logger.error(f"Error saving avatar: {e}")
-        return None
 
 
 def _current_language():
@@ -386,12 +367,14 @@ def profile():
         current_user.gender = form.gender.data if form.gender.data else None
         current_user.address = form.address.data.strip() if form.address.data else None
 
-        if form.avatar.data and hasattr(form.avatar.data, 'filename') and form.avatar.data.filename:
-            saved = _save_avatar(form.avatar.data)
-            if saved:
-                current_user.avatar = saved
-            else:
-                flash('Ошибка при сохранении фото. Проверьте формат файла (jpg, png, heic).', 'danger')
+        remove_avatar = request.form.get('remove_avatar') == '1'
+        if remove_avatar and current_user.avatar:
+            remove_user_avatar(current_user)
+            flash_i18n('Фото профиля удалено.', 'success')
+
+        if not remove_avatar and form.avatar.data and hasattr(form.avatar.data, 'filename') and form.avatar.data.filename:
+            if not replace_user_avatar(current_user, form.avatar.data):
+                flash_i18n('Ошибка при сохранении фото. Проверьте формат файла.', 'danger')
 
         try:
             db.session.commit()
@@ -399,7 +382,7 @@ def profile():
         except Exception as e:
             db.session.rollback()
             current_app.logger.error(f"Error updating profile: {e}")
-            flash('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
+            flash_i18n('Ошибка при сохранении профиля. Попробуйте снова.', 'danger')
             return render_template('doctor/profile.html', form=form)
 
         return redirect(url_for('doctor.profile'))

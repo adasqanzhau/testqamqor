@@ -22,7 +22,8 @@
 
     <div class="row dashboard-stats g-3 mb-4">
         <div class="col-xl-3 col-md-6">
-            <div class="card metric-card h-100">
+            <a href="{{ url_for('clinic.doctors') }}" class="text-decoration-none">
+            <div class="card metric-card h-100 stat-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
@@ -35,9 +36,11 @@
                     </div>
                 </div>
             </div>
+            </a>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card metric-card h-100">
+            <a href="{{ url_for('clinic.patients') }}" class="text-decoration-none">
+            <div class="card metric-card h-100 stat-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-success bg-opacity-10 p-3 me-3">
@@ -50,9 +53,11 @@
                     </div>
                 </div>
             </div>
+            </a>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card metric-card h-100">
+            <a href="{{ url_for('clinic.appointments', date=now.strftime('%Y-%m-%d')) }}" class="text-decoration-none">
+            <div class="card metric-card h-100 stat-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
@@ -65,9 +70,11 @@
                     </div>
                 </div>
             </div>
+            </a>
         </div>
         <div class="col-xl-3 col-md-6">
-            <div class="card metric-card h-100">
+            <a href="{{ url_for('clinic.statistics') }}" class="text-decoration-none">
+            <div class="card metric-card h-100 stat-card">
                 <div class="card-body">
                     <div class="d-flex align-items-center">
                         <div class="rounded-circle bg-info bg-opacity-10 p-3 me-3">
@@ -80,6 +87,7 @@
                     </div>
                 </div>
             </div>
+            </a>
         </div>
     </div>
 
